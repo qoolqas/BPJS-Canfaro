@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.nabinbhandari.android.permissions.PermissionHandler;
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     Context mContext = this;
     ProgressDialog loading;
     SharedPrefManager sharedPrefManager;
+    TextView register;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,15 @@ public class LoginActivity extends AppCompatActivity {
                 // do your task.
             }
         });
+        register = findViewById(R.id.txtRegister);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
         initComponents();
     }
     private void initComponents(){
