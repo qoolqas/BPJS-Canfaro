@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ListView_BPJS">
+
+    <LinearLayout
+        android:id="@+id/panel_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left|center"
+        android:layout_margin="10dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_cari_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|top"
+                android:hint="Cari Nama Kontak Person"
+                android:textColorHint="@android:color/white" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/icocari"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@mipmap/search"/>
+
+        <ImageView
+            android:id="@+id/refresh"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@mipmap/ico_refresh"/>
+
+        <ImageView
+            android:id="@+id/download"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@mipmap/download"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/list"
+        android:layout_below="@id/panel_action"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_form"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/custom_listview_formdata"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/add_bpjs"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/add_data_bpjs"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"/>
+
+</RelativeLayout>

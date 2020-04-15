@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InsertDataBPJS">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:padding="10dp"
+            tools:viewBindingIgnore="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/colorSoftBlue"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="FORMULIS CANVASSING\nKUNJUNGAN BADAN USAHA"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/iv_Photo"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:src="@mipmap/blank_photo"/>
+
+                <LinearLayout
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/bt_gallery"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:background="@drawable/blueroundedbutton"
+                        android:textColor="@android:color/white"
+                        android:text="Gallery"
+                        android:layout_marginRight="3dp"
+                        android:gravity="center"/>
+
+                    <Button
+                        android:id="@+id/bt_camera"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_marginLeft="3dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:background="@drawable/blueroundedbutton"
+                        android:textColor="@android:color/white"
+                        android:text="Camera"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Waktu Kunjungan"
+                android:textColor="@color/colorSoftBlue"/>
+            <Button
+                android:id="@+id/bt_wkt_knj"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Set Tanggal dan jam"
+                android:background="@drawable/blueroundedbutton"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tanggal Penyerahan Surat Kesediaan Pendaftaran"
+                android:textColor="@color/colorSoftBlue"/>
+            <Button
+                android:id="@+id/bt_tgl_pnd"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Set Tanggal"
+                android:layout_marginBottom="10dp"
+                android:paddingHorizontal="10dp"
+                android:background="@drawable/blueroundedbutton"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tanggal Peringatan Pendaftaran"
+                android:textColor="@color/colorSoftBlue"/>
+
+            <Button
+                android:id="@+id/bt_tgl_peringatan_daftar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Set Tanggal"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/blueroundedbutton"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tanggal Max Pendaftaran BU"
+                android:textColor="@color/colorSoftBlue"/>
+            <Button
+                android:id="@+id/bt_tgl_max_bu"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Set Tanggal"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/blueroundedbutton"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tanggal Penyerahan Data"
+                android:textColor="@color/colorSoftBlue"/>
+            <Button
+                android:id="@+id/bt_tgl_serah_data"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Set Tanggal"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/blueroundedbutton"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="IDENTITAS BADAN USAHA (BU)"
+                        android:textColor="@color/colorSoftBlue"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_nama_badan_usaha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nama Badan Usaha"
+                            android:textColorHint="@android:color/white"
+                            android:textColor="@drawable/text_disabled_with_normal_color"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_alamat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:hint="Alamat"
+                            android:lines="3"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_telp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Telp"
+                            android:inputType="number"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Email"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:inputType="textEmailAddress"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_bid_usaha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Bidang Usaha"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:text="Jumlah"
+                        android:textColor="@color/colorSoftBlue" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_jumlah_karyawan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:hint="Jumlah Karyawan"
+                                android:textColor="@drawable/text_disabled_with_normal_color"
+                                android:inputType="number"
+                                android:textColorHint="@android:color/white" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_jumlah_keluarga"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:hint="Jumlah Keluarga"
+                                android:textColor="@drawable/text_disabled_with_normal_color"
+                                android:inputType="number"
+                                android:textColorHint="@android:color/white" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center|left"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Mengikuti Sosialisasi BPJS Kesehatan" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_sosialisasibpjs"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rd_sosialisasi_bpjs_sudah"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Sudah" />
+
+                            <RadioButton
+                                android:id="@+id/rd_sosialisasi_bpjs_belum"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:checked="true"
+                                android:text="Belum" />
+
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center|left"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Kepesertaan JKN KIS" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_kepersertaan_jkn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rd_jknkis_sudah"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Sudah" />
+
+                            <RadioButton
+                                android:id="@+id/rd_jknkis_belum"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:checked="true"
+                                android:text="Belum" />
+
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="Jumlah Terdaftar"
+                        android:textColor="@color/colorSoftBlue" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_jumlah_karyawan_terdaftar"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:hint="Jumlah Karyawan"
+                                android:inputType="number"
+                                android:textColor="@drawable/text_disabled_with_normal_color"
+                                android:textColorHint="@android:color/white" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_jumlah_keluarga_terdaftar"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:hint="Jumlah Keluarga"
+                                android:textColor="@drawable/text_disabled_with_normal_color"
+                                android:inputType="number"
+                                android:textColorHint="@android:color/white" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center|left"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Asuransi Kesehatan" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_asuransikes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rd_asurankes_sudah"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Sudah" />
+
+                            <RadioButton
+                                android:id="@+id/rd_asurankes_belum"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:checked="true"
+                                android:text="Belum" />
+
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_tambahan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:hint="Tambahan/Lain Lain : Sebutkan Jika Ada"
+                            android:lines="3"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="KONTAK PERSON BADAN USAHA"
+                        android:textColor="@color/colorSoftBlue"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_ps_nama"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:hint="Nama"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_ps_jabatan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:hint="Jabatan"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_ps_unitkerja"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:hint="Unit Kerja"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_ps_nophone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:hint="Handphone"
+                            android:inputType="number"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="HASIL CANVASSING"
+                        android:textColor="@color/colorSoftBlue"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center|left"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Bersedia Mendaftar" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_bersediamendaftar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rd_bersediadaftar_ya"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Ya" />
+
+                            <RadioButton
+                                android:id="@+id/rd_bersediadaftar_tidak"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:checked="true"
+                                android:text="Tidak" />
+
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_alasan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:hint="Alasan"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_tindak_lanjut"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:hint="Tindak Lanjut"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_kendala"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:hint="Kendala"
+                            android:textColorHint="@android:color/white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tanda tangan"
+                        android:layout_margin="5dp"
+                        android:textColor="@color/colorSoftBlue"/>
+
+                    <com.github.gcacace.signaturepad.views.SignaturePad
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/signature_pad"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        app:penColor="@android:color/black"
+                        />
+
+                    <Button
+                        android:id="@+id/bt_signature_clear"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:background="@drawable/roundedredbutton"
+                        android:textColor="@android:color/white"
+                        android:text="Ulangi Tanda Tangan"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center"/>
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bt_draft_form"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="DRAFT"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:background="@drawable/greenroundedbutton"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    />
+                <Button
+                    android:id="@+id/bt_save_form"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="SUBMIT"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:background="@drawable/blueroundedbutton"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    />
+
+                <Button
+                    android:id="@+id/bt_save_media"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="DOWNLOAD MEDIA"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:background="@drawable/greenroundedbutton"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:visibility="gone"
+                    />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

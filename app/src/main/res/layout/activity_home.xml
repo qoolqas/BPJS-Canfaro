@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bpjsbanner" />
+
+    <ImageView
+        android:id="@+id/ico_newdoc"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@mipmap/ico_newdoc" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Document"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/ico_newdoc"
+        app:layout_constraintStart_toStartOf="@+id/ico_newdoc"
+        app:layout_constraintTop_toBottomOf="@+id/ico_newdoc" />
+
+    <ImageView
+        android:id="@+id/ico_draftdoc"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toStartOf="@+id/ico_posteddoc"
+        app:layout_constraintStart_toEndOf="@+id/ico_newdoc"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@mipmap/ico_draft_form" />
+
+    <ImageView
+        android:id="@+id/ico_posteddoc"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@mipmap/ico_posted_doc" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Draft Document"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/ico_draftdoc"
+        app:layout_constraintStart_toStartOf="@+id/ico_draftdoc"
+        app:layout_constraintTop_toBottomOf="@+id/ico_draftdoc" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Posted Document"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/ico_posteddoc"
+        app:layout_constraintStart_toStartOf="@+id/ico_posteddoc"
+        app:layout_constraintTop_toBottomOf="@+id/ico_posteddoc" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:src="@drawable/canfarobanner"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:text="Versi 1.0.0\nCanfaro © 2020\nBPJS Kesehatan KC.Sibolga"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/ico_laporan"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/ico_newdoc"
+        app:layout_constraintStart_toStartOf="@+id/ico_newdoc"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:srcCompat="@mipmap/ico_laporan" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monitoring Canvasing"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/ico_laporan"
+        app:layout_constraintStart_toStartOf="@+id/ico_laporan"
+        app:layout_constraintTop_toBottomOf="@+id/ico_laporan" />
+</androidx.constraintlayout.widget.ConstraintLayout>
