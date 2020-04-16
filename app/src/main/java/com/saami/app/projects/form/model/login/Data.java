@@ -49,6 +49,7 @@ public class Data{
 	@SerializedName("email")
 	private String email;
 
+
 	public void setImage(Object image){
 		this.image = image;
 	}

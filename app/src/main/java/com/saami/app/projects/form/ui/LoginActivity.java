@@ -124,7 +124,10 @@ public class LoginActivity extends AppCompatActivity {
 //                            sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_SUDAH_LOGIN, true);
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class)
                                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra("firstName",loginResponse.getData().getFirstName());
+                            intent.putExtra("lastName",loginResponse.getData().getLastName());
                             startActivity(intent);
+                            finish();
                         } else {
                             AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(mContext);
 
