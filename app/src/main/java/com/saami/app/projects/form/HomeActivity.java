@@ -3,6 +3,7 @@ package com.saami.app.projects.form;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.nabinbhandari.android.permissions.PermissionHandler;
@@ -85,6 +87,7 @@ public class HomeActivity extends AppCompatActivity
         laporandoc = findViewById(R.id.ico_laporan);
         laporandoc.setOnClickListener(new View.OnClickListener()
         {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view)
             {
@@ -96,10 +99,10 @@ public class HomeActivity extends AppCompatActivity
                 kcab.add("KC.Sibolga");
                 kcab.add("KC.Jakarta");
                 kcab.add("KC.Sumatera");
-                ArrayList<String> kptugas = new ArrayList<String>();
-                kptugas.add("Sahat Martua");
-                kptugas.add("Yanto");
-                kptugas.add("Mulyo");
+//                ArrayList<String> kptugas = new ArrayList<String>();
+//                kptugas.add("Sahat Martua");
+//                kptugas.add("Yanto");
+//                kptugas.add("Mulyo");
                 ArrayList<String> kwaktu = new ArrayList<String>();
                 kwaktu.add("1 Bulan Terakhir");
                 kwaktu.add("6 Bulan Terakhir");
@@ -111,11 +114,13 @@ public class HomeActivity extends AppCompatActivity
                 spncab.setAdapter(adaptercab);
                 spncab.setTitle("");
 
-                SearchableSpinner spnptugas = dialog.findViewById(R.id.spinner_petugas);
-                ArrayAdapter adapterptugas = new ArrayAdapter(HomeActivity.this, android.R.layout.simple_spinner_item, kptugas);
-                adapterptugas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spnptugas.setAdapter(adapterptugas);
-                spnptugas.setTitle("");
+                TextView spnptugas = dialog.findViewById(R.id.spinner_petugas);
+                spnptugas.setText(getIntent().getStringExtra("firstName") + " " +getIntent().getStringExtra("lastName"));
+//                SearchableSpinner spnptugas = dialog.findViewById(R.id.spinner_petugas);
+//                ArrayAdapter adapterptugas = new ArrayAdapter(HomeActivity.this, android.R.layout.simple_spinner_item, kptugas);
+//                adapterptugas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                spnptugas.setAdapter(adapterptugas);
+//                spnptugas.setTitle("");
 
                 SearchableSpinner spnwaktu = dialog.findViewById(R.id.spinner_waktu);
                 ArrayAdapter adapterwaktu = new ArrayAdapter(HomeActivity.this, android.R.layout.simple_spinner_item, kwaktu);
