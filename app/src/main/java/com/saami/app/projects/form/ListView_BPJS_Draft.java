@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.saami.app.projects.form.model.badanusaha.DataItem;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 import com.saami.app.projects.form.sqlite.FormData;
 
@@ -46,6 +47,7 @@ public class ListView_BPJS_Draft extends AppCompatActivity
     private ImageView cari,filter;
     private ImageView refresh;
     final Calendar myCalendar = Calendar.getInstance();
+    private List<DataItem> getBU = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -176,7 +178,7 @@ public class ListView_BPJS_Draft extends AppCompatActivity
         listParkir.setLayoutManager(mLayoutManager);
         listParkir.addItemDecoration(new DividerItemDecoration(this, 0));
         listParkir.setItemAnimator(new DefaultItemAnimator());
-        adapter = new adapterFormList(arraylistform, ListView_BPJS_Draft.this, ListView_BPJS_Draft.this);
+        adapter = new adapterFormList(arraylistform, ListView_BPJS_Draft.this, ListView_BPJS_Draft.this, getBU);
         listParkir.setAdapter(adapter);
     }
 

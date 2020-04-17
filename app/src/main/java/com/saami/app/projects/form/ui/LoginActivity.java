@@ -117,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("tes", loginResponse.getData().getToken());
 
                             sharedPrefManager.saveToken(SharedPrefManager.SP_TOKEN,loginResponse.getData().getToken());
+                            sharedPrefManager.saveUID(SharedPrefManager.SP_UID, String.valueOf(loginResponse.getData().getId()));
                             sharedPrefManager.getSpToken();
                             Log.d("token", sharedPrefManager.getSpToken());
 

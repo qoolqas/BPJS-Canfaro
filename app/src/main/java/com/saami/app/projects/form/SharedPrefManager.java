@@ -11,6 +11,7 @@ public class SharedPrefManager {
 
     public static final String SP_SUDAH_LOGIN = "spSudahLogin";
     public static final String SP_TOKEN = "token";
+    public static final String SP_UID = "uid";
 
 
     private SharedPreferences sp;
@@ -27,6 +28,10 @@ public class SharedPrefManager {
         spEditor.putString(keySP, value);
         spEditor.commit();
     }
+    public void saveUID(String keySP, String value) {
+        spEditor.putString(keySP, value);
+        spEditor.commit();
+    }
 
     public void saveSPBoolean(String keySP, boolean value) {
         spEditor.putBoolean(keySP, value);
@@ -38,5 +43,8 @@ public class SharedPrefManager {
     }
     public String getSpToken() {
         return sp.getString(SP_TOKEN, "token");
+    }
+    public String getSpUID() {
+        return sp.getString(SP_UID, "uid");
     }
 }
