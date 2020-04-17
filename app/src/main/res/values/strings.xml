@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Canfaro</string>
     <string name="register">Register</string>
+    <string name="petugas_r_o">Petugas R.O</string>
 </resources>
