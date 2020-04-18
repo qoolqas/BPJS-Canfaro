@@ -32,7 +32,11 @@ public interface Service {
             @Field("password") String password
     );
     @GET("badan-usaha")
-    Call<BadanUsahaGetResponse> getLaptop(@Header("Authorization") String authorization,
+    Call<BadanUsahaGetResponse> getBu(@Header("Authorization") String authorization,
                                           @Query("q") String uid);
+    @GET("badan-usaha")
+    Call<BadanUsahaGetResponse> getBuSearch(@Header("Authorization") String authorization,
+                                          @Query("q") String uid,
+                                          @Query("field") String search);
 
 }

@@ -39,7 +39,7 @@ public class ListView_BPJS_Draft extends AppCompatActivity
     ProviderFormList provform;
     ImageView addBpjs,download;
     DBDataSource dataSource;
-    private adapterFormList adapter;
+    private AdapterDraft adapter;
     private List<ProviderFormList> arraylistform = new ArrayList<>();
     private EasyCsv easyCsv;
     List<String> headerList,dataList;
@@ -178,7 +178,7 @@ public class ListView_BPJS_Draft extends AppCompatActivity
         listParkir.setLayoutManager(mLayoutManager);
         listParkir.addItemDecoration(new DividerItemDecoration(this, 0));
         listParkir.setItemAnimator(new DefaultItemAnimator());
-        adapter = new adapterFormList(arraylistform, ListView_BPJS_Draft.this, ListView_BPJS_Draft.this, getBU);
+        adapter = new AdapterDraft(arraylistform, ListView_BPJS_Draft.this, ListView_BPJS_Draft.this);
         listParkir.setAdapter(adapter);
     }
 

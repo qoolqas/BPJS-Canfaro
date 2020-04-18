@@ -27,6 +27,7 @@ import com.saami.app.projects.form.model.badanusaha.DataItem;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 import com.saami.app.projects.form.sqlite.FormData;
 import com.saami.app.projects.form.ui.FixViewModel;
+import com.saami.app.projects.form.ui.SearchViewModel;
 
 import net.ozaydin.serkan.easy_csv.EasyCsv;
 import net.ozaydin.serkan.easy_csv.FileCallback;
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class ListView_BPJS extends AppCompatActivity {
 
@@ -52,6 +54,7 @@ public class ListView_BPJS extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
     private List<DataItem> getBU = new ArrayList<>();
     private FixViewModel fixViewModel;
+    private SearchViewModel searchViewModel;
     RecyclerView listParkir;
 
     @Override
@@ -63,6 +66,7 @@ public class ListView_BPJS extends AppCompatActivity {
         easyCsv.setSeparatorColumn("|");
         easyCsv.setSeperatorLine("`");
         fixViewModel = ViewModelProviders.of(this).get(FixViewModel.class);
+        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
 
         view();
         getData();
@@ -91,7 +95,7 @@ public class ListView_BPJS extends AppCompatActivity {
         cari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getformDataByNama();
+                getDataByNama();
             }
         });
 
@@ -294,6 +298,27 @@ public class ListView_BPJS extends AppCompatActivity {
 
             }
         });
+    }
+    private void getDataByNama(){
+        String nameQuery = Objects.requireNonNull(edtCarinama.getText()).toString();
+        searchViewModel.liveGet(nameQuery).observe(this, new Observer<BadanUsahaGetResponse>() {
+            @Override
+            public void onChanged(BadanUsahaGetResponse badanUsahaGetResponse) {
+                getBU.clear();
+                if (badanUsahaGetResponse != null){
+                    getBU.addAll(badanUsahaGetResponse.getData());
+                    listParkir.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+                }else {
+                    Toast.makeText(ListView_BPJS.this, edtCarinama.getText().toString() + " Tidak ditemukan", Toast.LENGTH_LONG).show();
+                    getBU.clear();
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+
     }
 
 }

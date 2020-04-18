@@ -19,25 +19,25 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FixViewModel extends AndroidViewModel {
+public class SearchViewModel extends AndroidViewModel {
     private MutableLiveData<BadanUsahaGetResponse> getBU;
     private SharedPrefManager sharedPrefManager;
 
-    public FixViewModel(@NonNull Application application) {
+    public SearchViewModel(@NonNull Application application) {
         super(application);
         sharedPrefManager = new SharedPrefManager(application);
     }
 
-    void loadEvent() {
+    void loadSearch(String query) {
         String token = sharedPrefManager.getSpToken();
         String uid = sharedPrefManager.getSpUID();
         Service service = Client.getClient().create(Service.class);
-        Call<BadanUsahaGetResponse> call = service.getBu("Bearer " + token, uid);
+        Call<BadanUsahaGetResponse> call = service.getBuSearch("Bearer " + token, uid, query);
         call.enqueue(new Callback<BadanUsahaGetResponse>() {
 
             @Override
             public void onResponse(@NotNull Call<BadanUsahaGetResponse> call, @NotNull Response<BadanUsahaGetResponse> response) {
-                getBU.setValue(response.body());
+                getBU.postValue(response.body());
             }
 
             @Override
@@ -48,10 +48,10 @@ public class FixViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<BadanUsahaGetResponse> liveGet() {
+    public LiveData<BadanUsahaGetResponse> liveGet(String query) {
         if (getBU == null) {
             getBU = new MutableLiveData<>();
-            loadEvent();
+            loadSearch(query);
         }
         return getBU;
     }
