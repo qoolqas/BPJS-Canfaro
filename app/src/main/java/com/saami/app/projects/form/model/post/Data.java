@@ -13,6 +13,8 @@ public class Data{
 	@SerializedName("badanUsaha")
 	private BadanUsaha badanUsaha;
 
+
+
 	public void setKunjungan(Kunjungan kunjungan){
 		this.kunjungan = kunjungan;
 	}

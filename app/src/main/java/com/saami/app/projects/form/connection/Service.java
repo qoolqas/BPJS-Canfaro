@@ -63,7 +63,7 @@ public interface Service {
     Call<KunjunganResponse> deleteKunjungan(@Header("Authorization") String authorization,
                                             @Path("id") String id);
 
-    @FormUrlEncoded
+
     @POST("kunjungan")
     Call<PostResponse> saveKunjungan(@Header("Authorization") String authorization,
                                      @Body Data data);

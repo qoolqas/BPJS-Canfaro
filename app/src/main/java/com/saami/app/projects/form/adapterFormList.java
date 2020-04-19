@@ -175,7 +175,6 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
     // Return the size arraylist
     @Override
     public int getItemCount() {
-        Log.d("aa", String.valueOf(kunjungan.size()));
         return kunjungan.size();
     }
 
