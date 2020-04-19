@@ -1,10 +1,8 @@
-package com.saami.app.projects.form.model.kunjungan;
+package com.saami.app.projects.form.model.badanusaha.byid;
 
 import com.google.gson.annotations.SerializedName;
-import com.saami.app.projects.form.model.kunjunganrelation.BadanUsaha;
-import com.saami.app.projects.form.model.kunjunganrelation.ContactBadanUsaha;
 
-public class DataItem{
+public class Kunjungan{
 
 	@SerializedName("ttdImage")
 	private TtdImage ttdImage;
@@ -24,9 +22,6 @@ public class DataItem{
 	@SerializedName("alasan")
 	private String alasan;
 
-	@SerializedName("createdAt")
-	private String createdAt;
-
 	@SerializedName("TPP")
 	private String tPP;
 
@@ -36,14 +31,8 @@ public class DataItem{
 	@SerializedName("kendala")
 	private String kendala;
 
-	@SerializedName("targetKunjungan")
-	private int targetKunjungan;
-
 	@SerializedName("tindakLanjut")
 	private String tindakLanjut;
-
-	@SerializedName("targetRecruitment")
-	private int targetRecruitment;
 
 	@SerializedName("TPSKP")
 	private String tPSKP;
@@ -56,32 +45,6 @@ public class DataItem{
 
 	@SerializedName("totalRecruitment")
 	private int totalRecruitment;
-
-	@SerializedName("status")
-	private boolean status;
-
-	@SerializedName("badanUsaha")
-	private BadanUsaha badanUsaha;
-
-	@SerializedName("contactBadanUsaha")
-	private ContactBadanUsaha contactBadanUsaha;
-
-
-	public BadanUsaha getBadanUsaha() {
-		return badanUsaha;
-	}
-
-	public void setBadanUsaha(BadanUsaha badanUsaha) {
-		this.badanUsaha = badanUsaha;
-	}
-
-	public ContactBadanUsaha getContactBadanUsaha() {
-		return contactBadanUsaha;
-	}
-
-	public void setContactBadanUsaha(ContactBadanUsaha contactBadanUsaha) {
-		this.contactBadanUsaha = contactBadanUsaha;
-	}
 
 	public void setTtdImage(TtdImage ttdImage){
 		this.ttdImage = ttdImage;
@@ -131,14 +94,6 @@ public class DataItem{
 		return alasan;
 	}
 
-	public void setCreatedAt(String createdAt){
-		this.createdAt = createdAt;
-	}
-
-	public String getCreatedAt(){
-		return createdAt;
-	}
-
 	public void setTPP(String tPP){
 		this.tPP = tPP;
 	}
@@ -163,28 +118,12 @@ public class DataItem{
 		return kendala;
 	}
 
-	public void setTargetKunjungan(int targetKunjungan){
-		this.targetKunjungan = targetKunjungan;
-	}
-
-	public int getTargetKunjungan(){
-		return targetKunjungan;
-	}
-
 	public void setTindakLanjut(String tindakLanjut){
 		this.tindakLanjut = tindakLanjut;
 	}
 
 	public String getTindakLanjut(){
 		return tindakLanjut;
-	}
-
-	public void setTargetRecruitment(int targetRecruitment){
-		this.targetRecruitment = targetRecruitment;
-	}
-
-	public int getTargetRecruitment(){
-		return targetRecruitment;
 	}
 
 	public void setTPSKP(String tPSKP){
@@ -219,36 +158,24 @@ public class DataItem{
 		return totalRecruitment;
 	}
 
-	public void setStatus(boolean status){
-		this.status = status;
-	}
-
-	public boolean isStatus(){
-		return status;
-	}
-
 	@Override
  	public String toString(){
 		return 
-			"DataItem{" + 
+			"Kunjungan{" + 
 			"ttdImage = '" + ttdImage + '\'' + 
 			",note = '" + note + '\'' + 
 			",tMP_BU = '" + tMPBU + '\'' + 
 			",reminder = '" + reminder + '\'' + 
 			",tPD = '" + tPD + '\'' + 
 			",alasan = '" + alasan + '\'' + 
-			",createdAt = '" + createdAt + '\'' + 
 			",tPP = '" + tPP + '\'' + 
 			",createdBy = '" + createdBy + '\'' + 
 			",kendala = '" + kendala + '\'' + 
-			",targetKunjungan = '" + targetKunjungan + '\'' + 
 			",tindakLanjut = '" + tindakLanjut + '\'' + 
-			",targetRecruitment = '" + targetRecruitment + '\'' + 
 			",tPSKP = '" + tPSKP + '\'' + 
 			",badanUsahaId = '" + badanUsahaId + '\'' + 
 			",id = '" + id + '\'' + 
 			",totalRecruitment = '" + totalRecruitment + '\'' + 
-			",status = '" + status + '\'' + 
 			"}";
 		}
 }

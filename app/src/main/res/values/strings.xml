@@ -2,4 +2,6 @@
     <string name="app_name">Canfaro</string>
     <string name="register">Register</string>
     <string name="petugas_r_o">Petugas R.O</string>
+    <string name="msg_success">Successful</string>
+    <string name="msg_gagal">Gagal</string>
 </resources>

@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -30,6 +31,13 @@ import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mindorks.paracamera.Camera;
+import com.saami.app.projects.form.connection.Client;
+import com.saami.app.projects.form.connection.Service;
+import com.saami.app.projects.form.model.post.BadanUsaha;
+import com.saami.app.projects.form.model.post.ContactBadanUsaha;
+import com.saami.app.projects.form.model.post.Data;
+import com.saami.app.projects.form.model.post.Kunjungan;
+import com.saami.app.projects.form.model.post.PostResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 import com.saami.app.projects.form.sqlite.FormData;
 import com.saami.app.projects.form.sqlite.FormFile;
@@ -46,14 +54,20 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
 
-public class InsertDataBPJS extends AppCompatActivity
-{
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class InsertDataBPJS extends AppCompatActivity {
     DBDataSource dataSource;
     ImageView photo;
-    Button btnCamera,btnGallery,tgl_wkt_knj,tgl_pnd,tgl_peringatan_daftar,tgl_max_bu,tgl_serah_data,save_form,draft_form;
-    TextInputEditText edtNamaBadanUsaha,edtAlamat,edtTelp,edtEmail,edtBidangUsaha,edtJumlahKaryawan,edtJumlahKeluarga,edtJumlahKaryawanTerdaftar,edtJumlahKeluargaTerdaftar,
-            edtTambahan,edtPsNama,edtPsJabatan,edtPsUnitKerja,edtPsPhone,edtalasan,edttindaklanjut,edtkendala;
-    RadioGroup rGroupSosialisasiBpjs,rGroupJknKis,rGroupAskes,rGroupBersediaMendaftar;
+    Button btnCamera, btnGallery, tgl_wkt_knj, tgl_pnd, tgl_peringatan_daftar, tgl_max_bu, tgl_serah_data, save_form, draft_form;
+    TextInputEditText edtNamaBadanUsaha, edtAlamat, edtTelp, edtEmail, edtBidangUsaha, edtJumlahKaryawan, edtJumlahKeluarga, edtJumlahKaryawanTerdaftar, edtJumlahKeluargaTerdaftar,
+            edtTambahan, edtPsNama, edtPsJabatan, edtPsUnitKerja, edtPsPhone, edtalasan, edttindaklanjut, edtkendala, edtNotes,
+            edtJumlahRekrutmen;
+    RadioGroup rGroupSosialisasiBpjs, rGroupJknKis, rGroupAskes, rGroupBersediaMendaftar;
+    LinearLayout linearRekrutmen;
 
     final Calendar myCalendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener date;
@@ -65,61 +79,51 @@ public class InsertDataBPJS extends AppCompatActivity
     String kodeForm = "";
     private Camera camera;
     private Bitmap bitmapPhoto;
-    private SignaturePad mSignaturePad;
-    private Button clearSignature;
+    private SignaturePad mSignaturePad, mSignaturePad2;
+    private Button clearSignature, clearsignature2;
     String savedraft = "0";
     private Button save_media;
+    SharedPrefManager sharedPrefManager;
 
 
 //    BitMapToString(bitmapImage1)
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dataSource = new DBDataSource(this);
-        try
-        {
+        sharedPrefManager = new SharedPrefManager(this);
+        try {
             home = getIntent().getExtras().getString("home");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             home = "0";
         }
 
-        try
-        {
+        try {
             view = getIntent().getExtras().getString("view");
             kodeForm = getIntent().getExtras().getString("kodeForm");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             view = "0";
         }
 
-        try
-        {
+        try {
             edit = getIntent().getExtras().getString("edit");
             kodeForm = getIntent().getExtras().getString("kodeForm");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             edit = "0";
         }
 
         view();
     }
 
-    private void view()
-    {
+    private void view() {
         photo = findViewById(R.id.iv_Photo);
 
         btnCamera = findViewById(R.id.bt_camera);
-        btnCamera.setOnClickListener(new View.OnClickListener()
-        {
+        btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 camera = new Camera.Builder()
                         .resetToCorrectOrientation(true)// it will rotate the camera bitmap to the correct orientation from meta data
                         .setTakePhotoRequestCode(1)
@@ -131,20 +135,18 @@ public class InsertDataBPJS extends AppCompatActivity
 
                 try {
                     camera.takePicture();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
         btnGallery = findViewById(R.id.bt_gallery);
-        btnGallery.setOnClickListener(new View.OnClickListener()
-        {
+        btnGallery.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , 2);//one can be replaced with any action code
+                startActivityForResult(pickPhoto, 2);//one can be replaced with any action code
             }
         });
 
@@ -152,52 +154,42 @@ public class InsertDataBPJS extends AppCompatActivity
         String myFormats = "dd/MM/yyyy hh:mm:ss"; //In which you need put here
         SimpleDateFormat sdfc = new SimpleDateFormat(myFormats, Locale.US);
         tgl_wkt_knj.setText(sdfc.format(myCalendar.getTime()));
-        tgl_wkt_knj.setOnClickListener(new View.OnClickListener()
-        {
+        tgl_wkt_knj.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                tgl =1;
+            public void onClick(View view) {
+                tgl = 1;
                 datePicker();
             }
         });
         tgl_pnd = findViewById(R.id.bt_tgl_pnd);
-        tgl_pnd.setOnClickListener(new View.OnClickListener()
-        {
+        tgl_pnd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                tgl=2;
+            public void onClick(View view) {
+                tgl = 2;
                 datePicker();
             }
         });
         tgl_peringatan_daftar = findViewById(R.id.bt_tgl_peringatan_daftar);
-        tgl_peringatan_daftar.setOnClickListener(new View.OnClickListener()
-        {
+        tgl_peringatan_daftar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                tgl=3;
+            public void onClick(View view) {
+                tgl = 3;
                 datePicker();
             }
         });
         tgl_max_bu = findViewById(R.id.bt_tgl_max_bu);
-        tgl_max_bu.setOnClickListener(new View.OnClickListener()
-        {
+        tgl_max_bu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                tgl=4;
+            public void onClick(View view) {
+                tgl = 4;
                 datePicker();
             }
         });
         tgl_serah_data = findViewById(R.id.bt_tgl_serah_data);
-        tgl_serah_data.setOnClickListener(new View.OnClickListener()
-        {
+        tgl_serah_data.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                tgl=5;
+            public void onClick(View view) {
+                tgl = 5;
                 datePicker();
             }
         });
@@ -223,57 +215,78 @@ public class InsertDataBPJS extends AppCompatActivity
         edtalasan = findViewById(R.id.edt_alasan);
         edttindaklanjut = findViewById(R.id.edt_tindak_lanjut);
         edtkendala = findViewById(R.id.edt_kendala);
+        edtNotes = findViewById(R.id.edt_notes);
+        edtJumlahRekrutmen = findViewById(R.id.edt_jumlah_rekrutmen);
+        linearRekrutmen = findViewById(R.id.linearRekrutmen);
 
-        mSignaturePad = (SignaturePad) findViewById(R.id.signature_pad);
-        clearSignature = findViewById(R.id.bt_signature_clear);
-        clearSignature.setOnClickListener(new View.OnClickListener()
-        {
+        rGroupBersediaMendaftar.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+
+                RadioButton rButtonSosialisasiBpjs, rButtonJknKis, rButtonAsKes, rButtonBersediaMendaftar;
+                int selectedIdBersedia = rGroupBersediaMendaftar.getCheckedRadioButtonId();
+                rButtonBersediaMendaftar = findViewById(selectedIdBersedia);
+//                badanUsaha.setPesertaJKNOrKIS(rButtonBersediaMendaftar.getText().toString());
+                Log.d("bersedia", rButtonBersediaMendaftar.getText().toString());
+                if (rButtonBersediaMendaftar.getText().toString().equals("Ya")) {
+                    linearRekrutmen.setVisibility(View.VISIBLE);
+                } else {
+                    linearRekrutmen.setVisibility(View.GONE);
+                    edtJumlahRekrutmen.setText("");
+                }
+            }
+        });
+
+        mSignaturePad = findViewById(R.id.signature_pad);
+        clearSignature = findViewById(R.id.bt_signature_clear);
+        clearSignature.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 mSignaturePad.clear();
             }
         });
+        mSignaturePad2 = findViewById(R.id.signature_pad2);
+        clearsignature2 = findViewById(R.id.bt_signature_clear2);
+        clearsignature2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSignaturePad2.clear();
+            }
+        });
+
+
 
         save_form = findViewById(R.id.bt_save_form);
         draft_form = findViewById(R.id.bt_draft_form);
 
-        if(edit.equals("1"))
-        {
+        if (edit.equals("1")) {
             save_form.setText("Simpan Pembaruan");
             setEditData();
         }
-        save_form.setOnClickListener(new View.OnClickListener()
-        {
+        save_form.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 savedraft = "0";
-                if(mSignaturePad.isEmpty())
-                {
+                if (mSignaturePad.isEmpty()) {
 
-                    Toast.makeText(InsertDataBPJS.this,"Silahkan Tanda Tangan Terlebih Dahulu",Toast.LENGTH_LONG).show();
+                    Toast.makeText(InsertDataBPJS.this, "Silahkan Tanda Tangan Terlebih Dahulu", Toast.LENGTH_LONG).show();
 
-                }else {
-                    if (edit.equals("1"))
-                    {
+                } else {
+                    if (edit.equals("1")) {
                         new AlertDialog.Builder(InsertDataBPJS.this)
                                 .setMessage("Update Data, Apakah data sudah benar ?")
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-                                {
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int arg1)
-                                    {
+                                    public void onClick(DialogInterface dialog, int arg1) {
                                         dialog.dismiss();
                                         editForm();
                                         editFile();
                                     }
                                 })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
-                                {
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which)
-                                    {
+                                    public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
                                     }
                                 })
@@ -281,25 +294,20 @@ public class InsertDataBPJS extends AppCompatActivity
                                 .create()
                                 .show();
 
-                    } else
-                    {
+                    } else {
                         new AlertDialog.Builder(InsertDataBPJS.this)
                                 .setMessage("Simpan Data, Apakah data sudah benar ?")
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-                                {
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int arg1)
-                                    {
+                                    public void onClick(DialogInterface dialog, int arg1) {
                                         dialog.dismiss();
                                         saveNewData();
                                         saveFile();
                                     }
                                 })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
-                                {
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which)
-                                    {
+                                    public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
                                     }
                                 })
@@ -307,34 +315,28 @@ public class InsertDataBPJS extends AppCompatActivity
                                 .create()
                                 .show();
 
-                    }}
+                    }
+                }
             }
         });
-        draft_form.setOnClickListener(new View.OnClickListener()
-        {
+        draft_form.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 savedraft = "1";
-                if (edit.equals("1"))
-                {
+                if (edit.equals("1")) {
                     new AlertDialog.Builder(InsertDataBPJS.this)
                             .setMessage("Update Draft ? Kamu bisa lengkapi kembali data ini nanti")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-                            {
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int arg1)
-                                {
+                                public void onClick(DialogInterface dialog, int arg1) {
                                     dialog.dismiss();
                                     editForm();
                                     editFile();
                                 }
                             })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
-                            {
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
+                                public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                 }
                             })
@@ -342,43 +344,37 @@ public class InsertDataBPJS extends AppCompatActivity
                             .create()
                             .show();
 
-                } else
-                {
+                } else {
                     new AlertDialog.Builder(InsertDataBPJS.this)
                             .setMessage("Simpan Draft ? Kamu bisa lengkapi kembali data ini nanti")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-                            {
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int arg1)
-                                {
+                                public void onClick(DialogInterface dialog, int arg1) {
                                     dialog.dismiss();
                                     saveNewData();
                                     saveFile();
                                 }
                             })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
-                            {
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
+                                public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                 }
                             })
 
                             .create()
                             .show();
-                }}
+                }
+            }
         });
 
         save_media = findViewById(R.id.bt_save_media);
-        save_media.setOnClickListener(new View.OnClickListener()
-        {
+        save_media.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 photo.setDrawingCacheEnabled(true);
                 Bitmap bitmapPhotos = photo.getDrawingCache();
-                saveMediaPhotoTtd(bitmapPhotos,mSignaturePad.getSignatureBitmap());
+                saveMediaPhotoTtd(bitmapPhotos, mSignaturePad.getSignatureBitmap());
             }
         });
 
@@ -396,29 +392,17 @@ public class InsertDataBPJS extends AppCompatActivity
                 String myFormat = "dd/MM/yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-                if(tgl==1)
-                {
+                if (tgl == 1) {
                     String myFormats = "dd/MM/yyyy hh:mm:ss"; //In which you need put here
                     SimpleDateFormat sdfc = new SimpleDateFormat(myFormats, Locale.US);
                     tgl_wkt_knj.setText(sdfc.format(myCalendar.getTime()));
-                }
-
-                else if(tgl==2)
-                {
+                } else if (tgl == 2) {
                     tgl_pnd.setText(sdf.format(myCalendar.getTime()));
-                }
-                else if(tgl==3)
-                {
+                } else if (tgl == 3) {
                     tgl_peringatan_daftar.setText(sdf.format(myCalendar.getTime()));
-                }
-
-                else if(tgl==4)
-                {
+                } else if (tgl == 4) {
                     tgl_max_bu.setText(sdf.format(myCalendar.getTime()));
-                }
-
-                else if(tgl==5)
-                {
+                } else if (tgl == 5) {
                     tgl_serah_data.setText(sdf.format(myCalendar.getTime()));
                 }
 
@@ -426,12 +410,11 @@ public class InsertDataBPJS extends AppCompatActivity
 
         };
 
-        if(view.equals("1")) {
+        if (view.equals("1")) {
             setviewOnly();
         }
 
     }
-
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
@@ -439,24 +422,24 @@ public class InsertDataBPJS extends AppCompatActivity
         RequestOptions myOptions = new RequestOptions()
                 .centerCrop()
                 .override(300, 300);
-        switch(requestCode) {
+        switch (requestCode) {
             case 1:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     Bitmap bitmap = camera.getCameraBitmap();
-                    if(bitmap != null) {
+                    if (bitmap != null) {
                         Glide.with(InsertDataBPJS.this)
                                 .asBitmap()
                                 .apply(myOptions)
                                 .load(bitmap)
                                 .into(photo);
-                    }else{
-                        Toast.makeText(this.getApplicationContext(),"Picture not taken!",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this.getApplicationContext(), "Picture not taken!", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 break;
             case 2:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
 
                     Uri selectedImage = imageReturnedIntent.getData();
 
@@ -471,30 +454,28 @@ public class InsertDataBPJS extends AppCompatActivity
     }
 
 
-    public Bitmap StringToBitMap(String encodedString){
+    public Bitmap StringToBitMap(String encodedString) {
         try {
-            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.getMessage();
             return null;
         }
     }
 
-    public String BitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos = new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp=Base64.encodeToString(b, Base64.NO_WRAP);
+    public String BitMapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.NO_WRAP);
         return temp;
     }
 
-    void setEditData()
-    {
+    void setEditData() {
         ArrayList<FormData> forms = dataSource.getAllformbykode(kodeForm);
-        if (forms.size() == 1)
-        {
+        if (forms.size() == 1) {
             final FormData data = forms.get(0);
 //                Toast.makeText(InsertDataBPJS.this, data.getF_ASURANSIKES()+","+data.getF_HC_BERSEDIA_MENDAFTAR() ,Toast.LENGTH_LONG).show();
             tgl_wkt_knj.setText(data.getF_TGL_KUNJUNGAN());
@@ -509,25 +490,22 @@ public class InsertDataBPJS extends AppCompatActivity
             edtBidangUsaha.setText(data.getF_BIDANG_USH());
             edtJumlahKaryawan.setText(data.getF_JUMLAHKAR());
             edtJumlahKeluarga.setText(data.getF_JUMLAHKEL());
-            if(data.getF_MENGIKUTI_SOSIALISASI_BPJS_KES().toLowerCase().equals("sudah"))
-            {
+            if (data.getF_MENGIKUTI_SOSIALISASI_BPJS_KES().toLowerCase().equals("sudah")) {
                 rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
-            }else {
+            } else {
                 rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
             }
-            if(data.getF_JKN_KIS().toLowerCase().equals("sudah"))
-            {
+            if (data.getF_JKN_KIS().toLowerCase().equals("sudah")) {
                 rGroupJknKis.check(R.id.rd_jknkis_sudah);
-            }else {
+            } else {
                 rGroupJknKis.check(R.id.rd_jknkis_belum);
             }
             edtJumlahKaryawanTerdaftar.setText(data.getF_JUMLAHTERDAFTARKAR());
             edtJumlahKeluargaTerdaftar.setText(data.getF_JUMLAHTERDAFTARKEL());
 
-            if(data.getF_ASURANSIKES().toLowerCase().equals("sudah"))
-            {
+            if (data.getF_ASURANSIKES().toLowerCase().equals("sudah")) {
                 rGroupAskes.check(R.id.rd_asurankes_sudah);
-            }else {
+            } else {
                 rGroupAskes.check(R.id.rd_asurankes_belum);
             }
             edtTambahan.setText(data.getF_TAMBAHAN());
@@ -535,45 +513,37 @@ public class InsertDataBPJS extends AppCompatActivity
             edtPsJabatan.setText(data.getF_KP_JABATAN());
             edtPsUnitKerja.setText(data.getF_KP_UNIT_KERJA());
             edtPsPhone.setText(data.getF_KP_PHONE());
-            if(data.getF_HC_BERSEDIA_MENDAFTAR().toLowerCase().equals("ya"))
-            {
+            if (data.getF_HC_BERSEDIA_MENDAFTAR().toLowerCase().equals("ya")) {
                 rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_ya);
-            }
-            else
-            {
+            } else {
                 rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_tidak);
             }
             edtalasan.setText(data.getF_HC_ALASAN());
             edttindaklanjut.setText(data.getF_HC_TINDAK_LANJUT());
             edtkendala.setText(data.getF_HC_KENDALA());
-            if(data.getF_SAVE_DRAFT().equals("1"))
-            {
+            if (data.getF_SAVE_DRAFT().equals("1")) {
                 savedraft = "1";
-            }else {
+            } else {
                 savedraft = "0";
             }
 
             ArrayList<FormFile> file = dataSource.getAllfilebykode(kodeForm);
-            if (file.size() == 1)
-            {
+            if (file.size() == 1) {
                 final FormFile files = file.get(0);
-                Log.d("imgs",files.getFile_image());
+                Log.d("imgs", files.getFile_image());
                 photo.setImageBitmap(StringToBitMap(files.getFile_image()));
                 mSignaturePad.setSignatureBitmap(StringToBitMap(files.getFile_ttd()));
             }
 
-        }
-        else
-        {
-            Toast.makeText(InsertDataBPJS.this, "Data tidak ditemukan" ,Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(InsertDataBPJS.this, "Data tidak ditemukan", Toast.LENGTH_LONG).show();
         }
 
     }
 
-    void setviewOnly(){
+    void setviewOnly() {
         ArrayList<FormData> forms = dataSource.getAllformbykode(kodeForm);
-        if (forms.size() == 1)
-        {
+        if (forms.size() == 1) {
             final FormData data = forms.get(0);
 //                Toast.makeText(InsertDataBPJS.this, data.getF_ASURANSIKES()+","+data.getF_HC_BERSEDIA_MENDAFTAR() ,Toast.LENGTH_LONG).show();
             tgl_wkt_knj.setText(data.getF_TGL_KUNJUNGAN());
@@ -588,25 +558,22 @@ public class InsertDataBPJS extends AppCompatActivity
             edtBidangUsaha.setText(data.getF_BIDANG_USH());
             edtJumlahKaryawan.setText(data.getF_JUMLAHKAR());
             edtJumlahKeluarga.setText(data.getF_JUMLAHKEL());
-            if(data.getF_MENGIKUTI_SOSIALISASI_BPJS_KES().toLowerCase().equals("sudah"))
-            {
+            if (data.getF_MENGIKUTI_SOSIALISASI_BPJS_KES().toLowerCase().equals("sudah")) {
                 rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
-            }else {
+            } else {
                 rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
             }
-            if(data.getF_JKN_KIS().toLowerCase().equals("sudah"))
-            {
+            if (data.getF_JKN_KIS().toLowerCase().equals("sudah")) {
                 rGroupJknKis.check(R.id.rd_jknkis_sudah);
-            }else {
+            } else {
                 rGroupJknKis.check(R.id.rd_jknkis_belum);
             }
             edtJumlahKaryawanTerdaftar.setText(data.getF_JUMLAHTERDAFTARKAR());
             edtJumlahKeluargaTerdaftar.setText(data.getF_JUMLAHTERDAFTARKEL());
 
-            if(data.getF_ASURANSIKES().toLowerCase().equals("sudah"))
-            {
+            if (data.getF_ASURANSIKES().toLowerCase().equals("sudah")) {
                 rGroupAskes.check(R.id.rd_asurankes_sudah);
-            }else {
+            } else {
                 rGroupAskes.check(R.id.rd_asurankes_belum);
             }
             edtTambahan.setText(data.getF_TAMBAHAN());
@@ -614,12 +581,9 @@ public class InsertDataBPJS extends AppCompatActivity
             edtPsJabatan.setText(data.getF_KP_JABATAN());
             edtPsUnitKerja.setText(data.getF_KP_UNIT_KERJA());
             edtPsPhone.setText(data.getF_KP_PHONE());
-            if(data.getF_HC_BERSEDIA_MENDAFTAR().toLowerCase().equals("ya"))
-            {
+            if (data.getF_HC_BERSEDIA_MENDAFTAR().toLowerCase().equals("ya")) {
                 rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_ya);
-            }
-            else
-            {
+            } else {
                 rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_tidak);
             }
             edtalasan.setText(data.getF_HC_ALASAN());
@@ -627,17 +591,14 @@ public class InsertDataBPJS extends AppCompatActivity
             edtkendala.setText(data.getF_HC_KENDALA());
 
             ArrayList<FormFile> file = dataSource.getAllfilebykode(kodeForm);
-            if (file.size() == 1)
-            {
+            if (file.size() == 1) {
                 final FormFile files = file.get(0);
                 photo.setImageBitmap(StringToBitMap(files.getFile_image()));
                 mSignaturePad.setSignatureBitmap(StringToBitMap(files.getFile_ttd()));
             }
 
-        }
-        else
-        {
-            Toast.makeText(InsertDataBPJS.this, "Data tidak ditemukan" ,Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(InsertDataBPJS.this, "Data tidak ditemukan", Toast.LENGTH_LONG).show();
         }
 
         btnCamera.setVisibility(View.GONE);
@@ -649,50 +610,110 @@ public class InsertDataBPJS extends AppCompatActivity
         tgl_max_bu.setEnabled(false);
         tgl_serah_data.setEnabled(false);
 
-        edtNamaBadanUsaha .setEnabled(false);
+        edtNamaBadanUsaha.setEnabled(false);
         edtAlamat.setEnabled(false);
-        edtTelp .setEnabled(false);
-        edtEmail .setEnabled(false);
-        edtBidangUsaha .setEnabled(false);
+        edtTelp.setEnabled(false);
+        edtEmail.setEnabled(false);
+        edtBidangUsaha.setEnabled(false);
         edtJumlahKaryawan.setEnabled(false);
-        edtJumlahKeluarga .setEnabled(false);
+        edtJumlahKeluarga.setEnabled(false);
         rGroupSosialisasiBpjs.setEnabled(false);
-        rGroupJknKis .setEnabled(false);
-        edtJumlahKaryawanTerdaftar .setEnabled(false);
-        edtJumlahKeluargaTerdaftar .setEnabled(false);
-        rGroupAskes .setEnabled(false);
-        edtTambahan .setEnabled(false);
-        edtPsNama .setEnabled(false);
+        rGroupJknKis.setEnabled(false);
+        edtJumlahKaryawanTerdaftar.setEnabled(false);
+        edtJumlahKeluargaTerdaftar.setEnabled(false);
+        rGroupAskes.setEnabled(false);
+        edtTambahan.setEnabled(false);
+        edtPsNama.setEnabled(false);
         edtPsJabatan.setEnabled(false);
-        edtPsUnitKerja .setEnabled(false);
-        edtPsPhone .setEnabled(false);
-        rGroupBersediaMendaftar .setEnabled(false);
-        edtalasan .setEnabled(false);
-        edttindaklanjut .setEnabled(false);
-        edtkendala .setEnabled(false);
+        edtPsUnitKerja.setEnabled(false);
+        edtPsPhone.setEnabled(false);
+        rGroupBersediaMendaftar.setEnabled(false);
+        edtalasan.setEnabled(false);
+        edttindaklanjut.setEnabled(false);
+        edtkendala.setEnabled(false);
 
         rGroupSosialisasiBpjs.setEnabled(false);
         rGroupBersediaMendaftar.setEnabled(false);
         rGroupAskes.setEnabled(false);
         rGroupJknKis.setEnabled(false);
 
-        mSignaturePad .setEnabled(false);
-        clearSignature .setVisibility(View.GONE);
+        mSignaturePad.setEnabled(false);
+        clearSignature.setVisibility(View.GONE);
 
-        save_form .setVisibility(View.GONE);
-        draft_form .setVisibility(View.GONE);
+        save_form.setVisibility(View.GONE);
+        draft_form.setVisibility(View.GONE);
 
         save_media.setVisibility(View.VISIBLE);
 
     }
 
-    void saveNewData(){
+    void savePost(Data data) {
+        String token = sharedPrefManager.getSpToken();
+        Service service = Client.getClient().create(Service.class);
+        Call<PostResponse> call = service.saveKunjungan("Bearer " + token, data);
+        call.enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    void body() {
+        RadioButton rButtonSosialisasiBpjs, rButtonJknKis, rButtonAsKes, rButtonBersediaMendaftar;
+        BadanUsaha badanUsaha = new BadanUsaha();
+        badanUsaha.setName(edtNamaBadanUsaha.getText().toString());
+        badanUsaha.setAddress(edtAlamat.getText().toString());
+        badanUsaha.setPhone(edtTelp.getText().toString());
+        badanUsaha.setEmail(edtEmail.getText().toString());
+        badanUsaha.setBidangUsaha(edtBidangUsaha.getText().toString());
+        badanUsaha.setJumlahKaryawan(edtJumlahKaryawan.getText().toString());
+        badanUsaha.setJumlahKeluarga(edtJumlahKeluarga.getText().toString());
+        badanUsaha.setJumlahKaryawanTerdaftar(edtJumlahKaryawanTerdaftar.getText().toString());
+        badanUsaha.setJumlahKeluargaTerdaftar(edtJumlahKeluargaTerdaftar.getText().toString());
+
+        int selectedIdSosialisasiBpjs = rGroupSosialisasiBpjs.getCheckedRadioButtonId();
+        rButtonSosialisasiBpjs = findViewById(selectedIdSosialisasiBpjs);
+        String valueSosial = rButtonSosialisasiBpjs.getText().toString();
+        if (valueSosial.equals("Ya")){
+            badanUsaha.setSosialisasiBPJS("1");
+        }else {
+            badanUsaha.setSosialisasiBPJS("0");
+        }
+
+        int selectedIdJknKis = rGroupJknKis.getCheckedRadioButtonId();
+        rButtonJknKis = findViewById(selectedIdJknKis);
+        String valuePesertaJKN = rButtonJknKis.getText().toString();
+        if (valuePesertaJKN.equals("Ya")){
+            badanUsaha.setPesertaJKNOrKIS("1");
+        }else{
+            badanUsaha.setPesertaJKNOrKIS("0");
+        }
+
+        int selectedIdAsKes = rGroupAskes.getCheckedRadioButtonId();
+        rButtonAsKes = findViewById(selectedIdAsKes);
+        String valueAsuransi = rButtonAsKes.getText().toString();
+        if (valueAsuransi.equals("Ya")){
+            badanUsaha.setAsuransiKesehatan("1");
+        }else {
+            badanUsaha.setAsuransiKesehatan("0");
+        }
+        badanUsaha.setAsuransiKesehatan(rButtonAsKes.getText().toString());
+
+        badanUsaha.setKeterangan(edtTambahan.getText().toString());
+    }
+
+    void saveNewData() {
         BitmapDrawable drawable1 = (BitmapDrawable) photo.getDrawable();
         bitmapPhoto = drawable1.getBitmap();
-
-        RadioButton rButtonSosialisasiBpjs,rButtonJknKis,rButtonAsKes,rButtonBersediaMendaftar;
+        RadioButton rButtonSosialisasiBpjs, rButtonJknKis, rButtonAsKes, rButtonBersediaMendaftar;
         FormData data = new FormData();
-        data.setF_KODE(tgl_wkt_knj.getText().toString().replaceAll("/","").replace(" ","").replaceAll(":",""));
+        data.setF_KODE(tgl_wkt_knj.getText().toString().replaceAll("/", "").replace(" ", "").replaceAll(":", ""));
         data.setF_TGL_KUNJUNGAN(tgl_wkt_knj.getText().toString());
         data.setF_TGL_KESEDIAAN_PENDAFTARAN(tgl_pnd.getText().toString());
         data.setF_TGL_PERINGATAN_PENDAFTARAN(tgl_peringatan_daftar.getText().toString());
@@ -730,28 +751,28 @@ public class InsertDataBPJS extends AppCompatActivity
         data.setF_SAVE_DRAFT(savedraft);
         long result = dataSource.createForm(data);
 //                Toast.makeText(MainActivity.this,String.valueOf(result),Toast.LENGTH_LONG).show();
-        if(result > 0) {
-            if(home.equals("200")) {
+        if (result > 0) {
+            if (home.equals("200")) {
                 Intent is;
-                if(savedraft.equals("1")){
-                    is = new Intent(InsertDataBPJS.this,ListView_BPJS_Draft.class);
-                }else
-                {
-                    is = new Intent(InsertDataBPJS.this, ListView_BPJS.class);
-                }
+//                if(savedraft.equals("1")){
+                is = new Intent(InsertDataBPJS.this, ListView_BPJS_Draft.class);
+//                }else
+//                {
+//                    is = new Intent(InsertDataBPJS.this, ListView_BPJS.class);
+//                }
                 startActivity(is);
                 finish();
             }
-        }else {
-            Toast.makeText(InsertDataBPJS.this,"Simpan gagal, Silahkan coba lagi",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(InsertDataBPJS.this, "Simpan gagal, Silahkan coba lagi", Toast.LENGTH_LONG).show();
         }
     }
 
-    void editForm(){
+    void editForm() {
         BitmapDrawable drawable1 = (BitmapDrawable) photo.getDrawable();
         bitmapPhoto = drawable1.getBitmap();
 
-        RadioButton rButtonSosialisasiBpjs,rButtonJknKis,rButtonAsKes,rButtonBersediaMendaftar;
+        RadioButton rButtonSosialisasiBpjs, rButtonJknKis, rButtonAsKes, rButtonBersediaMendaftar;
         FormData data = new FormData();
         data.setF_KODE(kodeForm);
         data.setF_TGL_KUNJUNGAN(tgl_wkt_knj.getText().toString());
@@ -791,34 +812,31 @@ public class InsertDataBPJS extends AppCompatActivity
         data.setF_SAVE_DRAFT(savedraft);
         long result = dataSource.updateform(data);
 //                Toast.makeText(MainActivity.this,String.valueOf(result),Toast.LENGTH_LONG).show();
-        if(result > 0) {
-            if(home.equals("200")) {
+        if (result > 0) {
+            if (home.equals("200")) {
                 Intent is;
-                if(savedraft.equals("1")){
-                    is = new Intent(InsertDataBPJS.this,ListView_BPJS_Draft.class);
-                }else
-                {
+                if (savedraft.equals("1")) {
+                    is = new Intent(InsertDataBPJS.this, ListView_BPJS_Draft.class);
+                } else {
                     is = new Intent(InsertDataBPJS.this, ListView_BPJS.class);
                 }
                 startActivity(is);
                 finish();
             }
-        }else {
-            Toast.makeText(InsertDataBPJS.this,"Simpan gagal, Silahkan coba lagi",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(InsertDataBPJS.this, "Simpan gagal, Silahkan coba lagi", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void saveFile()
-    {
+    private void saveFile() {
         FormFile file = new FormFile();
-        file.setFile_kode(tgl_wkt_knj.getText().toString().replaceAll("/","").replace(" ","").replaceAll(":",""));
+        file.setFile_kode(tgl_wkt_knj.getText().toString().replaceAll("/", "").replace(" ", "").replaceAll(":", ""));
         file.setFile_image(BitMapToString(bitmapPhoto));
         file.setFile_ttd(BitMapToString(mSignaturePad.getSignatureBitmap()));
         dataSource.createFile(file);
     }
 
-    private void editFile()
-    {
+    private void editFile() {
         FormFile file = new FormFile();
         file.setFile_kode(kodeForm);
         file.setFile_image(BitMapToString(bitmapPhoto));
@@ -826,7 +844,7 @@ public class InsertDataBPJS extends AppCompatActivity
         dataSource.updatefile(file);
     }
 
-    void datePicker(){
+    void datePicker() {
         new DatePickerDialog(InsertDataBPJS.this, date, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -834,48 +852,42 @@ public class InsertDataBPJS extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if(edit.equals("1"))
-        {
+        if (edit.equals("1")) {
             new AlertDialog.Builder(this)
                     .setMessage("Dou you want cancel edit ?")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-                    {
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface arg0, int arg1)
-                        {
+                        public void onClick(DialogInterface arg0, int arg1) {
                             Intent is;
-                            if(savedraft.equals("1")){
-                                is = new Intent(InsertDataBPJS.this,ListView_BPJS_Draft.class);
-                            }else
-                            {
+                            if (savedraft.equals("1")) {
+                                is = new Intent(InsertDataBPJS.this, ListView_BPJS_Draft.class);
+                            } else {
                                 is = new Intent(InsertDataBPJS.this, ListView_BPJS.class);
                             }
                             startActivity(is);
                             finish();
                         }
                     })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
-                    {
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
+                        public void onClick(DialogInterface dialog, int which) {
 
                         }
                     })
 
                     .create()
                     .show();
-        }else {
+        } else {
             InsertDataBPJS.this.finish();
         }
     }
 
-    private void saveMediaPhotoTtd(Bitmap bitmapPhoto,Bitmap ttdBitmap) {
+    private void saveMediaPhotoTtd(Bitmap bitmapPhoto, Bitmap ttdBitmap) {
         File myDirPhotos = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Photo");
         myDirPhotos.mkdirs();
-        String photoname = edtPsNama.getText().toString()+"_"+ kodeForm +"_.png";
-        File file = new File (myDirPhotos, photoname);
-        if (file.exists ()) file.delete ();
+        String photoname = edtPsNama.getText().toString() + "_" + kodeForm + "_.png";
+        File file = new File(myDirPhotos, photoname);
+        if (file.exists()) file.delete();
         try {
             FileOutputStream out = new FileOutputStream(file);
             bitmapPhoto.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -888,9 +900,9 @@ public class InsertDataBPJS extends AppCompatActivity
 
         File myDirTtd = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Tanda Tangan");
         myDirTtd.mkdirs();
-        String ttdname = edtPsNama.getText().toString()+"_"+ kodeForm +"_.png";
-        File files = new File (myDirTtd, ttdname);
-        if (files.exists ()) files.delete ();
+        String ttdname = edtPsNama.getText().toString() + "_" + kodeForm + "_.png";
+        File files = new File(myDirTtd, ttdname);
+        if (files.exists()) files.delete();
         try {
             FileOutputStream out = new FileOutputStream(files);
             ttdBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -904,8 +916,7 @@ public class InsertDataBPJS extends AppCompatActivity
         ToatsMessage();
     }
 
-    private void ToatsMessage()
-    {
+    private void ToatsMessage() {
         View parentLayout = this.findViewById(android.R.id.content);
         Snackbar.make(parentLayout, "Photo dan Tanda Tangan Berhasil Disimpan, Silahkan Periksa Folder Canfaro di Directory anda", Snackbar.LENGTH_INDEFINITE)
                 .setAction("Tutup", new View.OnClickListener() {
@@ -914,7 +925,7 @@ public class InsertDataBPJS extends AppCompatActivity
 
                     }
                 })
-                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
                 .show();
     }
 

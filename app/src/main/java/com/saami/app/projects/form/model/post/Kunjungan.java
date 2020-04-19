@@ -1,10 +1,8 @@
-package com.saami.app.projects.form.model.kunjungan;
+package com.saami.app.projects.form.model.post;
 
 import com.google.gson.annotations.SerializedName;
-import com.saami.app.projects.form.model.kunjunganrelation.BadanUsaha;
-import com.saami.app.projects.form.model.kunjunganrelation.ContactBadanUsaha;
 
-public class DataItem{
+public class Kunjungan{
 
 	@SerializedName("ttdImage")
 	private TtdImage ttdImage;
@@ -36,9 +34,6 @@ public class DataItem{
 	@SerializedName("kendala")
 	private String kendala;
 
-	@SerializedName("targetKunjungan")
-	private int targetKunjungan;
-
 	@SerializedName("tindakLanjut")
 	private String tindakLanjut;
 
@@ -55,33 +50,13 @@ public class DataItem{
 	private int id;
 
 	@SerializedName("totalRecruitment")
-	private int totalRecruitment;
+	private String totalRecruitment;
 
 	@SerializedName("status")
-	private boolean status;
+	private String status;
 
-	@SerializedName("badanUsaha")
-	private BadanUsaha badanUsaha;
-
-	@SerializedName("contactBadanUsaha")
-	private ContactBadanUsaha contactBadanUsaha;
-
-
-	public BadanUsaha getBadanUsaha() {
-		return badanUsaha;
-	}
-
-	public void setBadanUsaha(BadanUsaha badanUsaha) {
-		this.badanUsaha = badanUsaha;
-	}
-
-	public ContactBadanUsaha getContactBadanUsaha() {
-		return contactBadanUsaha;
-	}
-
-	public void setContactBadanUsaha(ContactBadanUsaha contactBadanUsaha) {
-		this.contactBadanUsaha = contactBadanUsaha;
-	}
+	@SerializedName("updatedAt")
+	private String updatedAt;
 
 	public void setTtdImage(TtdImage ttdImage){
 		this.ttdImage = ttdImage;
@@ -163,14 +138,6 @@ public class DataItem{
 		return kendala;
 	}
 
-	public void setTargetKunjungan(int targetKunjungan){
-		this.targetKunjungan = targetKunjungan;
-	}
-
-	public int getTargetKunjungan(){
-		return targetKunjungan;
-	}
-
 	public void setTindakLanjut(String tindakLanjut){
 		this.tindakLanjut = tindakLanjut;
 	}
@@ -211,26 +178,34 @@ public class DataItem{
 		return id;
 	}
 
-	public void setTotalRecruitment(int totalRecruitment){
+	public void setTotalRecruitment(String totalRecruitment){
 		this.totalRecruitment = totalRecruitment;
 	}
 
-	public int getTotalRecruitment(){
+	public String getTotalRecruitment(){
 		return totalRecruitment;
 	}
 
-	public void setStatus(boolean status){
+	public void setStatus(String status){
 		this.status = status;
 	}
 
-	public boolean isStatus(){
+	public String getStatus(){
 		return status;
+	}
+
+	public void setUpdatedAt(String updatedAt){
+		this.updatedAt = updatedAt;
+	}
+
+	public String getUpdatedAt(){
+		return updatedAt;
 	}
 
 	@Override
  	public String toString(){
 		return 
-			"DataItem{" + 
+			"Kunjungan{" + 
 			"ttdImage = '" + ttdImage + '\'' + 
 			",note = '" + note + '\'' + 
 			",tMP_BU = '" + tMPBU + '\'' + 
@@ -241,7 +216,6 @@ public class DataItem{
 			",tPP = '" + tPP + '\'' + 
 			",createdBy = '" + createdBy + '\'' + 
 			",kendala = '" + kendala + '\'' + 
-			",targetKunjungan = '" + targetKunjungan + '\'' + 
 			",tindakLanjut = '" + tindakLanjut + '\'' + 
 			",targetRecruitment = '" + targetRecruitment + '\'' + 
 			",tPSKP = '" + tPSKP + '\'' + 
@@ -249,6 +223,7 @@ public class DataItem{
 			",id = '" + id + '\'' + 
 			",totalRecruitment = '" + totalRecruitment + '\'' + 
 			",status = '" + status + '\'' + 
+			",updatedAt = '" + updatedAt + '\'' + 
 			"}";
 		}
 }
