@@ -34,7 +34,7 @@ public class FixViewModel extends AndroidViewModel {
         String token = sharedPrefManager.getSpToken();
         String uid = sharedPrefManager.getSpUID();
         Service service = Client.getClient().create(Service.class);
-        Call<KunjunganGetResponse> call = service.getKunjungan("Bearer " + token, uid);
+        Call<KunjunganGetResponse> call = service.getKunjungan("Bearer " + token, uid, 1);
         call.enqueue(new Callback<KunjunganGetResponse>() {
 
             @Override

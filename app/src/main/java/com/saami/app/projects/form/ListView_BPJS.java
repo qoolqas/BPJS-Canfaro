@@ -26,6 +26,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.saami.app.projects.form.model.badanusaha.BadanUsahaGetResponse;
 import com.saami.app.projects.form.model.badanusaha.DataItem;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
+import com.saami.app.projects.form.model.kunjunganrelation.KunjunganResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 import com.saami.app.projects.form.sqlite.FormData;
 import com.saami.app.projects.form.ui.FixViewModel;
@@ -102,7 +103,7 @@ public class ListView_BPJS extends AppCompatActivity {
         cari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDataByNama();
+//                getDataByNama();
             }
         });
 
@@ -168,7 +169,7 @@ public class ListView_BPJS extends AppCompatActivity {
         listParkir.setLayoutManager(mLayoutManager);
         listParkir.addItemDecoration(new DividerItemDecoration(this, 0));
         listParkir.setItemAnimator(new DefaultItemAnimator());
-        adapter = new adapterFormList(arraylistform, ListView_BPJS.this, ListView_BPJS.this, getBU, getKunjungan);
+        adapter = new adapterFormList(arraylistform, ListView_BPJS.this, ListView_BPJS.this, getKunjungan);
         listParkir.setAdapter(adapter);
     }
 
@@ -311,28 +312,28 @@ public class ListView_BPJS extends AppCompatActivity {
         });
     }
 
-    private void getDataByNama() {
-        String nameQuery = Objects.requireNonNull(edtCarinama.getText()).toString();
-        searchViewModel.liveGet(nameQuery).observe(this, new Observer<BadanUsahaGetResponse>() {
-            @Override
-            public void onChanged(BadanUsahaGetResponse badanUsahaGetResponse) {
-                getBU.clear();
-                if (badanUsahaGetResponse != null) {
-                    getBU.addAll(badanUsahaGetResponse.getData());
-                    listParkir.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    pb.setVisibility(View.GONE);
-
-
-                } else {
-                    Toast.makeText(ListView_BPJS.this, edtCarinama.getText().toString() + " Tidak ditemukan", Toast.LENGTH_LONG).show();
-                    getBU.clear();
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
-
-
-    }
+//    private void getDataByNama() {
+//        String nameQuery = Objects.requireNonNull(edtCarinama.getText()).toString();
+//        searchViewModel.liveGet(nameQuery).observe(this, new Observer<KunjunganResponse>() {
+//            @Override
+//            public void onChanged(KunjunganResponse kunjunganGetResponse) {
+//                getKunjungan.clear();
+//                if (kunjunganGetResponse != null) {
+//                    getKunjungan.addAll(kunjunganGetResponse.getData());
+//                    listParkir.setAdapter(adapter);
+//                    adapter.notifyDataSetChanged();
+//                    pb.setVisibility(View.GONE);
+//
+//
+//                } else {
+//                    Toast.makeText(ListView_BPJS.this, edtCarinama.getText().toString() + " Tidak ditemukan", Toast.LENGTH_LONG).show();
+//                    getKunjungan.clear();
+//                    adapter.notifyDataSetChanged();
+//                }
+//            }
+//        });
+//
+//
+//    }
 
 }

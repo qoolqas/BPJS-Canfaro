@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
-import com.saami.app.projects.form.model.badanusaha.BadanUsahaGetResponse;
-import com.saami.app.projects.form.model.badanusaha.DataItem;
-import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
+import com.saami.app.projects.form.model.kunjungan.DataItem;
+import com.saami.app.projects.form.model.kunjunganrelation.KunjunganResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 
-import java.io.Externalizable;
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -41,16 +39,14 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
     private DecimalFormat kursIndonesia;
     private DBDataSource datasource;
     private String header, harga, check;
-    List<DataItem> dataItems;
-    List<com.saami.app.projects.form.model.kunjungan.DataItem> kunjungan;
+    private List<DataItem> kunjungan;
     SharedPrefManager sharedPrefManager;
 
-    public adapterFormList(List<ProviderFormList> incom, Context ctx, Activity act, List<DataItem> data, List<com.saami.app.projects.form.model.kunjungan.DataItem> kunjungan) {
+    public adapterFormList(List<ProviderFormList> incom, Context ctx, Activity act, List<DataItem> kunjungan) {
         this.assList = incom;
         this.mContext = ctx;
         this.mActivity = act;
         mInflater = LayoutInflater.from(mContext);
-        this.dataItems = data;
         this.kunjungan = kunjungan;
     }
 
@@ -77,12 +73,11 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
 //        viewHolder.email.setText(item.getF_EMAIL());
 //        viewHolder.tglkunjungan.setText(item.getF_TGL_KUNJUNGAN());
         viewHolder.tglkunjungan.setText(kunjungan.get(position).getCreatedAt());
-//        viewHolder.nama.setText(dataItems.get(position).getName());
-//        viewHolder.phone.setText(dataItems.get(position).getPhone());
-//        viewHolder.badanusaha.setText(dataItems.get(position).getBidangUsaha());
-//        viewHolder.alamat.setText(dataItems.get(position).getAddress());
-//        viewHolder.email.setText(dataItems.get(position).getEmail());
-//        viewHolder.tglkunjungan.setText(dataItems.get(position).get);
+        viewHolder.nama.setText(kunjungan.get(position).getBadanUsaha().getName());
+        viewHolder.phone.setText(kunjungan.get(position).getBadanUsaha().getPhone());
+        viewHolder.badanusaha.setText(kunjungan.get(position).getBadanUsaha().getBidangUsaha());
+        viewHolder.alamat.setText(kunjungan.get(position).getBadanUsaha().getAddress());
+        viewHolder.email.setText(kunjungan.get(position).getBadanUsaha().getEmail());
 
 //        if (item.getF_SAVE_DRAFT().equals("1")) {
 //            viewHolder.draft.setVisibility(View.VISIBLE);
@@ -139,10 +134,10 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
                                 sharedPrefManager = new SharedPrefManager(v.getContext());
                                 String token = sharedPrefManager.getSpToken();
                                 Service service = Client.getClient().create(Service.class);
-                                Call<KunjunganGetResponse> delete = service.deleteKunjungan("Bearer " + token, String.valueOf(kunjungan.get(position).getId()));
-                                delete.enqueue(new Callback<KunjunganGetResponse>() {
+                                Call<KunjunganResponse> delete = service.deleteKunjungan("Bearer " + token, String.valueOf(kunjungan.get(position).getId()));
+                                delete.enqueue(new Callback<KunjunganResponse>() {
                                     @Override
-                                    public void onResponse(Call<KunjunganGetResponse> call, Response<KunjunganGetResponse> response) {
+                                    public void onResponse(Call<KunjunganResponse> call, Response<KunjunganResponse> response) {
                                         if (response.isSuccessful()) {
                                             Toast.makeText(mActivity.getApplicationContext(), v.getContext().getString(R.string.msg_success), Toast.LENGTH_SHORT).show();
                                             kunjungan.remove(kunjungan.get(position));
@@ -153,26 +148,11 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
                                     }
 
                                     @Override
-                                    public void onFailure(Call<KunjunganGetResponse> call, Throwable t) {
+                                    public void onFailure(Call<KunjunganResponse> call, Throwable t) {
 
                                     }
                                 });
 
-                                // Continue with delete operation
-
-//                                long a = datasource.deleteformwherekode(item.getF_KODE());
-//                                if (a > 0) {
-//
-//                                    dialog.dismiss();
-//                                    if (item.getF_SAVE_DRAFT().equals("0")) {
-//                                        ((ListView_BPJS) mContext).getformData();
-//                                    } else {
-//                                        ((ListView_BPJS_Draft) mContext).getformData();
-//                                    }
-//                                } else {
-//                                    Toast.makeText(mContext, "Gagal hapus data, silahkan coba lagi", Toast.LENGTH_LONG).show();
-//                                    dialog.dismiss();
-//                                }
                             }
                         })
 
@@ -195,6 +175,7 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
     // Return the size arraylist
     @Override
     public int getItemCount() {
+        Log.d("aa", String.valueOf(kunjungan.size()));
         return kunjungan.size();
     }
 

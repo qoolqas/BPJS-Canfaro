@@ -233,6 +233,7 @@ public class InsertDataBPJS extends AppCompatActivity {
                     linearRekrutmen.setVisibility(View.VISIBLE);
                 } else {
                     linearRekrutmen.setVisibility(View.GONE);
+                    edtJumlahRekrutmen.setText("");
                 }
             }
         });
@@ -678,14 +679,30 @@ public class InsertDataBPJS extends AppCompatActivity {
 
         int selectedIdSosialisasiBpjs = rGroupSosialisasiBpjs.getCheckedRadioButtonId();
         rButtonSosialisasiBpjs = findViewById(selectedIdSosialisasiBpjs);
-        badanUsaha.setSosialisasiBPJS(rButtonSosialisasiBpjs.getText().toString());
+        String valueSosial = rButtonSosialisasiBpjs.getText().toString();
+        if (valueSosial.equals("Ya")){
+            badanUsaha.setSosialisasiBPJS("1");
+        }else {
+            badanUsaha.setSosialisasiBPJS("0");
+        }
 
         int selectedIdJknKis = rGroupJknKis.getCheckedRadioButtonId();
         rButtonJknKis = findViewById(selectedIdJknKis);
-        badanUsaha.setPesertaJKNOrKIS(rButtonJknKis.getText().toString());
+        String valuePesertaJKN = rButtonJknKis.getText().toString();
+        if (valuePesertaJKN.equals("Ya")){
+            badanUsaha.setPesertaJKNOrKIS("1");
+        }else{
+            badanUsaha.setPesertaJKNOrKIS("0");
+        }
 
         int selectedIdAsKes = rGroupAskes.getCheckedRadioButtonId();
         rButtonAsKes = findViewById(selectedIdAsKes);
+        String valueAsuransi = rButtonAsKes.getText().toString();
+        if (valueAsuransi.equals("Ya")){
+            badanUsaha.setAsuransiKesehatan("1");
+        }else {
+            badanUsaha.setAsuransiKesehatan("0");
+        }
         badanUsaha.setAsuransiKesehatan(rButtonAsKes.getText().toString());
 
         badanUsaha.setKeterangan(edtTambahan.getText().toString());

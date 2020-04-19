@@ -12,6 +12,7 @@ import com.saami.app.projects.form.SharedPrefManager;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
 import com.saami.app.projects.form.model.badanusaha.BadanUsahaGetResponse;
+import com.saami.app.projects.form.model.kunjunganrelation.KunjunganResponse;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SearchViewModel extends AndroidViewModel {
-    private MutableLiveData<BadanUsahaGetResponse> getBU;
+    private MutableLiveData<KunjunganResponse> getBU;
     private SharedPrefManager sharedPrefManager;
 
     public SearchViewModel(@NonNull Application application) {
@@ -32,23 +33,23 @@ public class SearchViewModel extends AndroidViewModel {
         String token = sharedPrefManager.getSpToken();
         String uid = sharedPrefManager.getSpUID();
         Service service = Client.getClient().create(Service.class);
-        Call<BadanUsahaGetResponse> call = service.getBuSearch("Bearer " + token, uid, query);
-        call.enqueue(new Callback<BadanUsahaGetResponse>() {
+        Call<KunjunganResponse> call = service.getKunjunganSearch("Bearer " + token, uid, query, 1);
+        call.enqueue(new Callback<KunjunganResponse>() {
 
             @Override
-            public void onResponse(@NotNull Call<BadanUsahaGetResponse> call, @NotNull Response<BadanUsahaGetResponse> response) {
+            public void onResponse(@NotNull Call<KunjunganResponse> call, @NotNull Response<KunjunganResponse> response) {
                 getBU.postValue(response.body());
             }
 
             @Override
-            public void onFailure(@NotNull Call<BadanUsahaGetResponse> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<KunjunganResponse> call, @NotNull Throwable t) {
                 Log.e("failure", t.toString());
 
             }
         });
     }
 
-    public LiveData<BadanUsahaGetResponse> liveGet(String query) {
+    public LiveData<KunjunganResponse> liveGet(String query) {
         if (getBU == null) {
             getBU = new MutableLiveData<>();
             loadSearch(query);

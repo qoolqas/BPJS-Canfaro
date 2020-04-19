@@ -1,8 +1,6 @@
-package com.saami.app.projects.form.model.kunjungan;
+package com.saami.app.projects.form.model.kunjunganrelation;
 
 import com.google.gson.annotations.SerializedName;
-import com.saami.app.projects.form.model.kunjunganrelation.BadanUsaha;
-import com.saami.app.projects.form.model.kunjunganrelation.ContactBadanUsaha;
 
 public class DataItem{
 
@@ -26,6 +24,9 @@ public class DataItem{
 
 	@SerializedName("createdAt")
 	private String createdAt;
+
+	@SerializedName("contactBadanUsaha")
+	private ContactBadanUsaha contactBadanUsaha;
 
 	@SerializedName("TPP")
 	private String tPP;
@@ -62,26 +63,6 @@ public class DataItem{
 
 	@SerializedName("badanUsaha")
 	private BadanUsaha badanUsaha;
-
-	@SerializedName("contactBadanUsaha")
-	private ContactBadanUsaha contactBadanUsaha;
-
-
-	public BadanUsaha getBadanUsaha() {
-		return badanUsaha;
-	}
-
-	public void setBadanUsaha(BadanUsaha badanUsaha) {
-		this.badanUsaha = badanUsaha;
-	}
-
-	public ContactBadanUsaha getContactBadanUsaha() {
-		return contactBadanUsaha;
-	}
-
-	public void setContactBadanUsaha(ContactBadanUsaha contactBadanUsaha) {
-		this.contactBadanUsaha = contactBadanUsaha;
-	}
 
 	public void setTtdImage(TtdImage ttdImage){
 		this.ttdImage = ttdImage;
@@ -137,6 +118,14 @@ public class DataItem{
 
 	public String getCreatedAt(){
 		return createdAt;
+	}
+
+	public void setContactBadanUsaha(ContactBadanUsaha contactBadanUsaha){
+		this.contactBadanUsaha = contactBadanUsaha;
+	}
+
+	public ContactBadanUsaha getContactBadanUsaha(){
+		return contactBadanUsaha;
 	}
 
 	public void setTPP(String tPP){
@@ -227,6 +216,14 @@ public class DataItem{
 		return status;
 	}
 
+	public void setBadanUsaha(BadanUsaha badanUsaha){
+		this.badanUsaha = badanUsaha;
+	}
+
+	public BadanUsaha getBadanUsaha(){
+		return badanUsaha;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -238,6 +235,7 @@ public class DataItem{
 			",tPD = '" + tPD + '\'' + 
 			",alasan = '" + alasan + '\'' + 
 			",createdAt = '" + createdAt + '\'' + 
+			",contactBadanUsaha = '" + contactBadanUsaha + '\'' + 
 			",tPP = '" + tPP + '\'' + 
 			",createdBy = '" + createdBy + '\'' + 
 			",kendala = '" + kendala + '\'' + 
@@ -249,6 +247,7 @@ public class DataItem{
 			",id = '" + id + '\'' + 
 			",totalRecruitment = '" + totalRecruitment + '\'' + 
 			",status = '" + status + '\'' + 
+			",badanUsaha = '" + badanUsaha + '\'' + 
 			"}";
 		}
 }
