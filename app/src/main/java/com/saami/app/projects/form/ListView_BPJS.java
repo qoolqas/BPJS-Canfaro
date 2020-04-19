@@ -18,12 +18,14 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.saami.app.projects.form.model.badanusaha.BadanUsahaGetResponse;
 import com.saami.app.projects.form.model.badanusaha.DataItem;
+import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 import com.saami.app.projects.form.sqlite.FormData;
 import com.saami.app.projects.form.ui.FixViewModel;
@@ -53,9 +55,11 @@ public class ListView_BPJS extends AppCompatActivity {
     private ImageView refresh;
     final Calendar myCalendar = Calendar.getInstance();
     private List<DataItem> getBU = new ArrayList<>();
+    private List<com.saami.app.projects.form.model.kunjungan.DataItem> getKunjungan = new ArrayList<>();
     private FixViewModel fixViewModel;
     private SearchViewModel searchViewModel;
     RecyclerView listParkir;
+    private ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +71,11 @@ public class ListView_BPJS extends AppCompatActivity {
         easyCsv.setSeperatorLine("`");
         fixViewModel = ViewModelProviders.of(this).get(FixViewModel.class);
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
-
+        pb = findViewById(R.id.pb);
         view();
         getData();
+
+        pb.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -90,6 +96,7 @@ public class ListView_BPJS extends AppCompatActivity {
 
     private void view() {
         edtCarinama = findViewById(R.id.edt_cari_form);
+
 
         cari = findViewById(R.id.icocari);
         cari.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +124,7 @@ public class ListView_BPJS extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getData();
+                onBackPressed();
             }
         });
 
@@ -160,7 +168,7 @@ public class ListView_BPJS extends AppCompatActivity {
         listParkir.setLayoutManager(mLayoutManager);
         listParkir.addItemDecoration(new DividerItemDecoration(this, 0));
         listParkir.setItemAnimator(new DefaultItemAnimator());
-        adapter = new adapterFormList(arraylistform, ListView_BPJS.this, ListView_BPJS.this, getBU);
+        adapter = new adapterFormList(arraylistform, ListView_BPJS.this, ListView_BPJS.this, getBU, getKunjungan);
         listParkir.setAdapter(adapter);
     }
 
@@ -288,29 +296,35 @@ public class ListView_BPJS extends AppCompatActivity {
     private void getData() {
 
 
-        fixViewModel.liveGet().observe(this, new Observer<BadanUsahaGetResponse>() {
+        fixViewModel.liveGet().observe(this, new Observer<KunjunganGetResponse>() {
             @Override
-            public void onChanged(BadanUsahaGetResponse badanUsahaGetResponse) {
-                getBU.clear();
-                getBU.addAll(badanUsahaGetResponse.getData());
+            public void onChanged(KunjunganGetResponse kunjunganGetResponse) {
+
+                getKunjungan.clear();
+                getKunjungan.addAll(kunjunganGetResponse.getData());
                 listParkir.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+                pb.setVisibility(View.GONE);
+
 
             }
         });
     }
-    private void getDataByNama(){
+
+    private void getDataByNama() {
         String nameQuery = Objects.requireNonNull(edtCarinama.getText()).toString();
         searchViewModel.liveGet(nameQuery).observe(this, new Observer<BadanUsahaGetResponse>() {
             @Override
             public void onChanged(BadanUsahaGetResponse badanUsahaGetResponse) {
                 getBU.clear();
-                if (badanUsahaGetResponse != null){
+                if (badanUsahaGetResponse != null) {
                     getBU.addAll(badanUsahaGetResponse.getData());
                     listParkir.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    pb.setVisibility(View.GONE);
 
-                }else {
+
+                } else {
                     Toast.makeText(ListView_BPJS.this, edtCarinama.getText().toString() + " Tidak ditemukan", Toast.LENGTH_LONG).show();
                     getBU.clear();
                     adapter.notifyDataSetChanged();

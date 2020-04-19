@@ -2,15 +2,21 @@ package com.saami.app.projects.form.connection;
 
 
 import com.saami.app.projects.form.model.badanusaha.BadanUsahaGetResponse;
+import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.model.login.LoginResponse;
+import com.saami.app.projects.form.model.post.Data;
+import com.saami.app.projects.form.model.post.PostResponse;
 import com.saami.app.projects.form.model.register.RegisterResponse;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface Service {
@@ -34,9 +40,22 @@ public interface Service {
     @GET("badan-usaha")
     Call<BadanUsahaGetResponse> getBu(@Header("Authorization") String authorization,
                                           @Query("q") String uid);
+    @GET("/badan-usaha/{id}")
+    Call<BadanUsahaGetResponse> getBuId(@Header("Authorization") String authorization,
+                                      @Path("id") String id);
+    @GET("kunjungan")
+    Call<KunjunganGetResponse> getKunjungan(@Header("Authorization") String authorization,
+                                      @Query("q") String uid);
     @GET("badan-usaha")
     Call<BadanUsahaGetResponse> getBuSearch(@Header("Authorization") String authorization,
                                           @Query("q") String uid,
                                           @Query("field") String search);
+    @DELETE("kunjungan/{id}")
+    Call<KunjunganGetResponse> deleteKunjungan(@Header("Authorization") String authorization,
+                                               @Path("id") String id);
+    @FormUrlEncoded
+    @POST("kunjungan")
+    Call<PostResponse> saveKunjungan(@Header("Authorization")String authorization,
+                                     @Body Data data);
 
 }

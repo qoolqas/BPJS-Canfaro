@@ -12,11 +12,11 @@
         android:scrollbars="none">
 
         <LinearLayout
-            android:padding="10dp"
-            tools:viewBindingIgnore="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp"
+            tools:viewBindingIgnore="true">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -27,23 +27,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="FORMULIS CANVASSING\nKUNJUNGAN BADAN USAHA"
                 android:textColor="@color/colorSoftBlue"
-                android:textStyle="bold"
                 android:textSize="18dp"
-                android:text="FORMULIS CANVASSING\nKUNJUNGAN BADAN USAHA"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/iv_Photo"
                     android:layout_width="250dp"
                     android:layout_height="250dp"
-                    android:src="@mipmap/blank_photo"/>
+                    android:src="@mipmap/blank_photo" />
 
                 <LinearLayout
                     android:layout_width="250dp"
@@ -53,28 +53,28 @@
                     <Button
                         android:id="@+id/bt_gallery"
                         android:layout_width="0dp"
-                        android:layout_weight="2"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:background="@drawable/blueroundedbutton"
-                        android:textColor="@android:color/white"
-                        android:text="Gallery"
                         android:layout_marginRight="3dp"
-                        android:gravity="center"/>
+                        android:layout_weight="2"
+                        android:background="@drawable/blueroundedbutton"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:text="Gallery"
+                        android:textColor="@android:color/white" />
 
                     <Button
                         android:id="@+id/bt_camera"
                         android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:layout_marginLeft="3dp"
                         android:layout_height="30dp"
+                        android:layout_marginLeft="3dp"
                         android:layout_marginTop="5dp"
-                        android:foreground="?attr/selectableItemBackground"
+                        android:layout_weight="2"
                         android:background="@drawable/blueroundedbutton"
-                        android:textColor="@android:color/white"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center"
                         android:text="Camera"
-                        android:gravity="center"/>
+                        android:textColor="@android:color/white" />
 
                 </LinearLayout>
 
@@ -82,80 +82,86 @@
             </LinearLayout>
 
             <TextView
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:text="Waktu Kunjungan"
-                android:textColor="@color/colorSoftBlue"/>
+                android:textColor="@color/colorSoftBlue" />
+
             <Button
                 android:id="@+id/bt_wkt_knj"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Set Tanggal dan jam"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/blueroundedbutton"
                 android:foreground="?attr/selectableItemBackground"
-                android:textColor="@android:color/white"
-                android:layout_marginBottom="10dp"/>
+                android:text="Set Tanggal dan jam"
+                android:textColor="@android:color/white" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tanggal Penyerahan Surat Kesediaan Pendaftaran"
-                android:textColor="@color/colorSoftBlue"/>
+                android:textColor="@color/colorSoftBlue" />
+
             <Button
                 android:id="@+id/bt_tgl_pnd"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Set Tanggal"
                 android:layout_marginBottom="10dp"
-                android:paddingHorizontal="10dp"
                 android:background="@drawable/blueroundedbutton"
                 android:foreground="?attr/selectableItemBackground"
-                android:textColor="@android:color/white"/>
+                android:paddingHorizontal="10dp"
+                android:text="Set Tanggal"
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tanggal Peringatan Pendaftaran"
-                android:textColor="@color/colorSoftBlue"/>
+                android:textColor="@color/colorSoftBlue" />
 
             <Button
                 android:id="@+id/bt_tgl_peringatan_daftar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Set Tanggal"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/blueroundedbutton"
                 android:foreground="?attr/selectableItemBackground"
-                android:textColor="@android:color/white"/>
+                android:text="Set Tanggal"
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tanggal Max Pendaftaran BU"
-                android:textColor="@color/colorSoftBlue"/>
+                android:textColor="@color/colorSoftBlue" />
+
             <Button
                 android:id="@+id/bt_tgl_max_bu"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Set Tanggal"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/blueroundedbutton"
                 android:foreground="?attr/selectableItemBackground"
-                android:textColor="@android:color/white"/>
+                android:text="Set Tanggal"
+                android:textColor="@android:color/white" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tanggal Penyerahan Data"
-                android:textColor="@color/colorSoftBlue"/>
+                android:textColor="@color/colorSoftBlue" />
+
             <Button
                 android:id="@+id/bt_tgl_serah_data"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Set Tanggal"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/blueroundedbutton"
                 android:foreground="?attr/selectableItemBackground"
-                android:textColor="@android:color/white"/>
+                android:text="Set Tanggal"
+                android:textColor="@android:color/white" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -193,8 +199,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Nama Badan Usaha"
-                            android:textColorHint="@android:color/white"
-                            android:textColor="@drawable/text_disabled_with_normal_color"/>
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:textColorHint="@android:color/white" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -247,8 +253,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Email"
-                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:inputType="textEmailAddress"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:textColorHint="@android:color/white" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -297,8 +303,8 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:hint="Jumlah Karyawan"
-                                android:textColor="@drawable/text_disabled_with_normal_color"
                                 android:inputType="number"
+                                android:textColor="@drawable/text_disabled_with_normal_color"
                                 android:textColorHint="@android:color/white" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -317,8 +323,8 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:hint="Jumlah Keluarga"
-                                android:textColor="@drawable/text_disabled_with_normal_color"
                                 android:inputType="number"
+                                android:textColor="@drawable/text_disabled_with_normal_color"
                                 android:textColorHint="@android:color/white" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -451,8 +457,8 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:hint="Jumlah Keluarga"
-                                android:textColor="@drawable/text_disabled_with_normal_color"
                                 android:inputType="number"
+                                android:textColor="@drawable/text_disabled_with_normal_color"
                                 android:textColorHint="@android:color/white" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -511,9 +517,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="left|top"
-                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:hint="Tambahan/Lain Lain : Sebutkan Jika Ada"
                             android:lines="3"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:textColorHint="@android:color/white" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -558,8 +564,8 @@
                             android:id="@+id/edt_ps_nama"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:hint="Nama"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:textColorHint="@android:color/white" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -575,8 +581,8 @@
                             android:id="@+id/edt_ps_jabatan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:hint="Jabatan"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:textColorHint="@android:color/white" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -592,8 +598,8 @@
                             android:id="@+id/edt_ps_unitkerja"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:hint="Unit Kerja"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:textColorHint="@android:color/white" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -609,9 +615,9 @@
                             android:id="@+id/edt_ps_nophone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:hint="Handphone"
                             android:inputType="number"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:textColorHint="@android:color/white" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -681,6 +687,7 @@
                         </RadioGroup>
 
                     </LinearLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -692,8 +699,8 @@
                             android:id="@+id/edt_alasan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:hint="Alasan"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:textColorHint="@android:color/white" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -709,8 +716,8 @@
                             android:id="@+id/edt_tindak_lanjut"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:hint="Tindak Lanjut"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:textColorHint="@android:color/white" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -726,11 +733,93 @@
                             android:id="@+id/edt_kendala"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:hint="Kendala"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
                             android:textColorHint="@android:color/white" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_notes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Catatan"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:textColorHint="@android:color/white" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center|left"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Push Notofikasi" />
+                    <RadioGroup
+                        android:id="@+id/rg_notifikasi"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rd_notifikasi_ya"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Ya" />
+
+                        <RadioButton
+                            android:id="@+id/rd_notifikasi_tidak"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:checked="true"
+                            android:text="Tidak" />
+                    </RadioGroup>
+
+
+                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/linearRekrutmen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_jumlah_rekrutmen"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Jumlah Rekrutmen"
+                                android:inputType="number"
+                                android:textColor="@drawable/text_disabled_with_normal_color"
+                                android:textColorHint="@android:color/white" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+
+
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -742,6 +831,7 @@
                 app:cardElevation="2dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -750,35 +840,75 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tanda tangan"
                         android:layout_margin="5dp"
-                        android:textColor="@color/colorSoftBlue"/>
+                        android:text="Tanda tangan"
+                        android:textColor="@color/colorSoftBlue" />
 
-                    <com.github.gcacace.signaturepad.views.SignaturePad
-                        xmlns:android="http://schemas.android.com/apk/res/android"
+                    <com.github.gcacace.signaturepad.views.SignaturePad xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/signature_pad"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
-                        app:penColor="@android:color/black"
-                        />
+                        app:penColor="@android:color/black" />
 
                     <Button
                         android:id="@+id/bt_signature_clear"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:layout_marginTop="5dp"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:background="@drawable/roundedredbutton"
-                        android:textColor="@android:color/white"
-                        android:text="Ulangi Tanda Tangan"
                         android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:gravity="center"/>
+                        android:background="@drawable/roundedredbutton"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:text="Ulangi Tanda Tangan"
+                        android:textColor="@android:color/white" />
 
 
                 </LinearLayout>
 
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Tanda tangan"
+                        android:textColor="@color/colorSoftBlue" />
+
+                    <com.github.gcacace.signaturepad.views.SignaturePad
+                        android:id="@+id/signature_pad2"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        app:penColor="@android:color/black" />
+
+                    <Button
+                        android:id="@+id/bt_signature_clear2"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/roundedredbutton"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:text="Ulangi Tanda Tangan"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
@@ -789,52 +919,48 @@
                 <Button
                     android:id="@+id/bt_draft_form"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:text="DRAFT"
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_weight="2"
                     android:background="@drawable/greenroundedbutton"
                     android:foreground="?attr/selectableItemBackground"
-                    android:layout_marginVertical="10dp"
-                    android:layout_marginHorizontal="10dp"
-                    />
+                    android:gravity="center"
+                    android:text="DRAFT"
+                    android:textColor="@android:color/white" />
+
                 <Button
                     android:id="@+id/bt_save_form"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:text="SUBMIT"
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_weight="2"
                     android:background="@drawable/blueroundedbutton"
                     android:foreground="?attr/selectableItemBackground"
-                    android:layout_marginVertical="10dp"
-                    android:layout_marginHorizontal="10dp"
-                    />
+                    android:gravity="center"
+                    android:text="SUBMIT"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:id="@+id/bt_save_media"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:text="DOWNLOAD MEDIA"
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_weight="2"
                     android:background="@drawable/greenroundedbutton"
                     android:foreground="?attr/selectableItemBackground"
-                    android:layout_marginVertical="10dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:visibility="gone"
-                    />
+                    android:gravity="center"
+                    android:text="DOWNLOAD MEDIA"
+                    android:textColor="@android:color/white"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
 
-
         </LinearLayout>
     </ScrollView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

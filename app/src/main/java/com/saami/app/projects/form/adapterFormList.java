@@ -15,14 +15,21 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.saami.app.projects.form.connection.Client;
+import com.saami.app.projects.form.connection.Service;
 import com.saami.app.projects.form.model.badanusaha.BadanUsahaGetResponse;
 import com.saami.app.projects.form.model.badanusaha.DataItem;
+import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 
 import java.io.Externalizable;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHolder> {
@@ -35,27 +42,30 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
     private DBDataSource datasource;
     private String header, harga, check;
     List<DataItem> dataItems;
+    List<com.saami.app.projects.form.model.kunjungan.DataItem> kunjungan;
+    SharedPrefManager sharedPrefManager;
 
-    public adapterFormList(List<ProviderFormList> incom, Context ctx, Activity act, List<DataItem> data) {
+    public adapterFormList(List<ProviderFormList> incom, Context ctx, Activity act, List<DataItem> data, List<com.saami.app.projects.form.model.kunjungan.DataItem> kunjungan) {
         this.assList = incom;
         this.mContext = ctx;
         this.mActivity = act;
         mInflater = LayoutInflater.from(mContext);
         this.dataItems = data;
+        this.kunjungan = kunjungan;
     }
 
     @Override
     public adapterFormList.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.custom_listview_formdata, parent, false);
-            ViewHolder viewHolder = new ViewHolder(itemLayoutView);
+        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.custom_listview_formdata, parent, false);
+        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
 
-            return viewHolder;
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
 
 //        datasource = new DBDataSource(mActivity);
 //
@@ -66,11 +76,12 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
 //        viewHolder.alamat.setText(item.getF_ALAMAT());
 //        viewHolder.email.setText(item.getF_EMAIL());
 //        viewHolder.tglkunjungan.setText(item.getF_TGL_KUNJUNGAN());
-        viewHolder.nama.setText(dataItems.get(position).getName());
-        viewHolder.phone.setText(dataItems.get(position).getPhone());
-        viewHolder.badanusaha.setText(dataItems.get(position).getBidangUsaha());
-        viewHolder.alamat.setText(dataItems.get(position).getAddress());
-        viewHolder.email.setText(dataItems.get(position).getEmail());
+        viewHolder.tglkunjungan.setText(kunjungan.get(position).getCreatedAt());
+//        viewHolder.nama.setText(dataItems.get(position).getName());
+//        viewHolder.phone.setText(dataItems.get(position).getPhone());
+//        viewHolder.badanusaha.setText(dataItems.get(position).getBidangUsaha());
+//        viewHolder.alamat.setText(dataItems.get(position).getAddress());
+//        viewHolder.email.setText(dataItems.get(position).getEmail());
 //        viewHolder.tglkunjungan.setText(dataItems.get(position).get);
 
 //        if (item.getF_SAVE_DRAFT().equals("1")) {
@@ -120,12 +131,32 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
         });
         viewHolder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 new AlertDialog.Builder(mContext)
                         .setMessage("Are you sure you want to delete this data?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                sharedPrefManager = new SharedPrefManager(v.getContext());
+                                String token = sharedPrefManager.getSpToken();
+                                Service service = Client.getClient().create(Service.class);
+                                Call<KunjunganGetResponse> delete = service.deleteKunjungan("Bearer " + token, String.valueOf(kunjungan.get(position).getId()));
+                                delete.enqueue(new Callback<KunjunganGetResponse>() {
+                                    @Override
+                                    public void onResponse(Call<KunjunganGetResponse> call, Response<KunjunganGetResponse> response) {
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(mActivity.getApplicationContext(), v.getContext().getString(R.string.msg_success), Toast.LENGTH_SHORT).show();
+                                            kunjungan.remove(kunjungan.get(position));
+                                            notifyDataSetChanged();
+                                        }else {
+                                            Toast.makeText(mActivity.getApplicationContext(), v.getContext().getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onFailure(Call<KunjunganGetResponse> call, Throwable t) {
+
+                                    }
+                                });
 
                                 // Continue with delete operation
 
@@ -164,7 +195,7 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
     // Return the size arraylist
     @Override
     public int getItemCount() {
-        return  dataItems.size();
+        return kunjungan.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

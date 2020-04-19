@@ -12,6 +12,7 @@ import com.saami.app.projects.form.SharedPrefManager;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
 import com.saami.app.projects.form.model.badanusaha.BadanUsahaGetResponse;
+import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +22,7 @@ import retrofit2.Response;
 
 public class FixViewModel extends AndroidViewModel {
     private MutableLiveData<BadanUsahaGetResponse> getBU;
+    private MutableLiveData<KunjunganGetResponse> getKunjungan;
     private SharedPrefManager sharedPrefManager;
 
     public FixViewModel(@NonNull Application application) {
@@ -32,7 +34,25 @@ public class FixViewModel extends AndroidViewModel {
         String token = sharedPrefManager.getSpToken();
         String uid = sharedPrefManager.getSpUID();
         Service service = Client.getClient().create(Service.class);
-        Call<BadanUsahaGetResponse> call = service.getBu("Bearer " + token, uid);
+        Call<KunjunganGetResponse> call = service.getKunjungan("Bearer " + token, uid);
+        call.enqueue(new Callback<KunjunganGetResponse>() {
+
+            @Override
+            public void onResponse(@NotNull Call<KunjunganGetResponse> call, @NotNull Response<KunjunganGetResponse> response) {
+                getKunjungan.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<KunjunganGetResponse> call, @NotNull Throwable t) {
+                Log.e("failure", t.toString());
+
+            }
+        });
+    }
+    public void loadBU(String path){
+        String token = sharedPrefManager.getSpToken();
+        Service service = Client.getClient().create(Service.class);
+        Call<BadanUsahaGetResponse> call = service.getBu("Bearer " + token, path);
         call.enqueue(new Callback<BadanUsahaGetResponse>() {
 
             @Override
@@ -48,11 +68,11 @@ public class FixViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<BadanUsahaGetResponse> liveGet() {
-        if (getBU == null) {
-            getBU = new MutableLiveData<>();
+    public LiveData<KunjunganGetResponse> liveGet() {
+        if (getKunjungan == null) {
+            getKunjungan = new MutableLiveData<>();
             loadEvent();
         }
-        return getBU;
+        return getKunjungan;
     }
 }
