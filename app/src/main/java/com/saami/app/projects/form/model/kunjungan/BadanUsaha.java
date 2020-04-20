@@ -1,9 +1,11 @@
 package com.saami.app.projects.form.model.kunjungan;
 
-import com.google.gson.annotations.SerializedName;
-import com.saami.app.projects.form.model.kunjunganrelation.TtdImage;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class BadanUsaha{
+import com.google.gson.annotations.SerializedName;
+
+public class BadanUsaha implements Parcelable {
 
 	@SerializedName("ttdImage")
 	private TtdImage ttdImage;
@@ -191,4 +193,61 @@ public class BadanUsaha{
 			",email = '" + email + '\'' + 
 			"}";
 		}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeParcelable( this.ttdImage, flags);
+		dest.writeString(this.keterangan);
+		dest.writeString(this.address);
+		dest.writeInt(this.jumlahKeluargaTerdaftar);
+		dest.writeByte(this.pesertaJKNOrKIS ? (byte) 1 : (byte) 0);
+		dest.writeInt(this.jumlahKaryawanTerdaftar);
+		dest.writeInt(this.jumlahKeluarga);
+		dest.writeString(this.bidangUsaha);
+		dest.writeString(this.phone);
+		dest.writeByte(this.sosialisasiBPJS ? (byte) 1 : (byte) 0);
+		dest.writeString(this.name);
+		dest.writeInt(this.jumlahKaryawan);
+		dest.writeInt(this.id);
+		dest.writeByte(this.asuransiKesehatan ? (byte) 1 : (byte) 0);
+		dest.writeString(this.email);
+	}
+
+	public BadanUsaha() {
+	}
+
+	protected BadanUsaha(Parcel in) {
+		this.ttdImage = in.readParcelable(TtdImage.class.getClassLoader());
+		this.keterangan = in.readString();
+		this.address = in.readString();
+		this.jumlahKeluargaTerdaftar = in.readInt();
+		this.pesertaJKNOrKIS = in.readByte() != 0;
+		this.jumlahKaryawanTerdaftar = in.readInt();
+		this.jumlahKeluarga = in.readInt();
+		this.bidangUsaha = in.readString();
+		this.phone = in.readString();
+		this.sosialisasiBPJS = in.readByte() != 0;
+		this.name = in.readString();
+		this.jumlahKaryawan = in.readInt();
+		this.id = in.readInt();
+		this.asuransiKesehatan = in.readByte() != 0;
+		this.email = in.readString();
+	}
+
+	public static final Parcelable.Creator<BadanUsaha> CREATOR = new Parcelable.Creator<BadanUsaha>() {
+		@Override
+		public BadanUsaha createFromParcel(Parcel source) {
+			return new BadanUsaha(source);
+		}
+
+		@Override
+		public BadanUsaha[] newArray(int size) {
+			return new BadanUsaha[size];
+		}
+	};
 }

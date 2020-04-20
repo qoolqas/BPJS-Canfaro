@@ -1,8 +1,8 @@
-package com.saami.app.projects.form.model.badanusaha.byid;
+package com.saami.app.projects.form.model.image;
 
 import com.google.gson.annotations.SerializedName;
 
-public class BuByIdResponse{
+public class ImageResponse{
 
 	@SerializedName("data")
 	private Data data;
@@ -40,7 +40,7 @@ public class BuByIdResponse{
 	@Override
  	public String toString(){
 		return 
-			"BuByIdResponse{" + 
+			"ImageResponse{" + 
 			"data = '" + data + '\'' + 
 			",success = '" + success + '\'' + 
 			",meta = '" + meta + '\'' + 
