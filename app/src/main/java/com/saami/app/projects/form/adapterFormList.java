@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
 import com.saami.app.projects.form.model.kunjungan.DataItem;
-import com.saami.app.projects.form.model.kunjunganrelation.KunjunganResponse;
+import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 
 import java.text.DecimalFormat;
@@ -89,8 +89,9 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
 
                 Intent i = new Intent(mActivity, InsertDataBPJS.class);
                 i.putExtra("home", "0");
-                i.putExtra("view", "1");
+                i.putExtra("view", "2");
                 i.putExtra("edit", "0");
+                i.putExtra("data", kunjungan.get(position));
 //                i.putExtra("kodeForm", item.getF_KODE());
                 mActivity.startActivity(i);
 
@@ -106,15 +107,10 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
                                 Intent i = new Intent(mContext, InsertDataBPJS.class);
                                 i.putExtra("home", "200");
                                 i.putExtra("view", "0");
-                                i.putExtra("edit", "1");
-//                                i.putExtra("kodeForm", item.getF_KODE());
+                                i.putExtra("edit", "2");
+                                i.putExtra("data", kunjungan.get(position));
+                                i.putExtra("id", kunjungan.get(position).getId());
                                 mContext.startActivity(i);
-//                                if (item.getF_SAVE_DRAFT().equals("0")) {
-//                                    ((ListView_BPJS) mContext).finish();
-//                                } else {
-//                                    ((ListView_BPJS_Draft) mContext).finish();
-//                                }
-
                             }
                         })
 
@@ -134,10 +130,10 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
                                 sharedPrefManager = new SharedPrefManager(v.getContext());
                                 String token = sharedPrefManager.getSpToken();
                                 Service service = Client.getClient().create(Service.class);
-                                Call<KunjunganResponse> delete = service.deleteKunjungan("Bearer " + token, String.valueOf(kunjungan.get(position).getId()));
-                                delete.enqueue(new Callback<KunjunganResponse>() {
+                                Call<KunjunganGetResponse> delete = service.deleteKunjungan("Bearer " + token, String.valueOf(kunjungan.get(position).getId()));
+                                delete.enqueue(new Callback<KunjunganGetResponse>() {
                                     @Override
-                                    public void onResponse(Call<KunjunganResponse> call, Response<KunjunganResponse> response) {
+                                    public void onResponse(Call<KunjunganGetResponse> call, Response<KunjunganGetResponse> response) {
                                         if (response.isSuccessful()) {
                                             Toast.makeText(mActivity.getApplicationContext(), v.getContext().getString(R.string.msg_success), Toast.LENGTH_SHORT).show();
                                             kunjungan.remove(kunjungan.get(position));
@@ -148,7 +144,7 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
                                     }
 
                                     @Override
-                                    public void onFailure(Call<KunjunganResponse> call, Throwable t) {
+                                    public void onFailure(Call<KunjunganGetResponse> call, Throwable t) {
 
                                     }
                                 });

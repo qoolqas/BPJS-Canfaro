@@ -1,8 +1,5 @@
 package com.saami.app.projects.form;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Base64;
@@ -24,15 +20,18 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mindorks.paracamera.Camera;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
+import com.saami.app.projects.form.model.kunjungan.DataItem;
 import com.saami.app.projects.form.model.post.BadanUsaha;
 import com.saami.app.projects.form.model.post.ContactBadanUsaha;
 import com.saami.app.projects.form.model.post.Data;
@@ -44,17 +43,12 @@ import com.saami.app.projects.form.sqlite.FormFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Random;
 
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,7 +60,7 @@ public class InsertDataBPJS extends AppCompatActivity {
     TextInputEditText edtNamaBadanUsaha, edtAlamat, edtTelp, edtEmail, edtBidangUsaha, edtJumlahKaryawan, edtJumlahKeluarga, edtJumlahKaryawanTerdaftar, edtJumlahKeluargaTerdaftar,
             edtTambahan, edtPsNama, edtPsJabatan, edtPsUnitKerja, edtPsPhone, edtalasan, edttindaklanjut, edtkendala, edtNotes,
             edtJumlahRekrutmen;
-    RadioGroup rGroupSosialisasiBpjs, rGroupJknKis, rGroupAskes, rGroupBersediaMendaftar,rGroupNotifikasi;
+    RadioGroup rGroupSosialisasiBpjs, rGroupJknKis, rGroupAskes, rGroupBersediaMendaftar, rGroupNotifikasi;
     LinearLayout linearRekrutmen;
 
     final Calendar myCalendar = Calendar.getInstance();
@@ -77,6 +71,7 @@ public class InsertDataBPJS extends AppCompatActivity {
     String edit = "0";
     String view = "0";
     String kodeForm = "";
+    String idKunjungan = "";
     private Camera camera;
     private Bitmap bitmapPhoto;
     private SignaturePad mSignaturePad, mSignaturePad2;
@@ -84,6 +79,7 @@ public class InsertDataBPJS extends AppCompatActivity {
     String savedraft = "0";
     private Button save_media;
     SharedPrefManager sharedPrefManager;
+    DataItem dataItem;
 
 
 //    BitMapToString(bitmapImage1)
@@ -92,6 +88,8 @@ public class InsertDataBPJS extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dataItem = getIntent().getParcelableExtra("data");
+        Log.d("data", String.valueOf(dataItem));
         dataSource = new DBDataSource(this);
         sharedPrefManager = new SharedPrefManager(this);
         try {
@@ -105,6 +103,17 @@ public class InsertDataBPJS extends AppCompatActivity {
             kodeForm = getIntent().getExtras().getString("kodeForm");
         } catch (Exception e) {
             view = "0";
+        }
+        try {
+            view = getIntent().getExtras().getString("view");
+        } catch (Exception e) {
+            view = "0";
+        }
+        try {
+            edit = getIntent().getExtras().getString("edit");
+            idKunjungan = getIntent().getExtras().getString("id");
+        } catch (Exception e) {
+            edit = "0";
         }
 
         try {
@@ -225,7 +234,7 @@ public class InsertDataBPJS extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
 
-                RadioButton rButtonSosialisasiBpjs, rButtonJknKis, rButtonAsKes, rButtonBersediaMendaftar;
+                RadioButton rButtonBersediaMendaftar;
                 int selectedIdBersedia = rGroupBersediaMendaftar.getCheckedRadioButtonId();
                 rButtonBersediaMendaftar = findViewById(selectedIdBersedia);
 //                badanUsaha.setPesertaJKNOrKIS(rButtonBersediaMendaftar.getText().toString());
@@ -257,13 +266,16 @@ public class InsertDataBPJS extends AppCompatActivity {
         });
 
 
-
         save_form = findViewById(R.id.bt_save_form);
         draft_form = findViewById(R.id.bt_draft_form);
 
         if (edit.equals("1")) {
             save_form.setText("Simpan Pembaruan");
             setEditData();
+        }
+        if (edit.equals("2")){
+            save_form.setText("Simpan Pembaruan");
+            setEditApi();
         }
         save_form.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -294,7 +306,10 @@ public class InsertDataBPJS extends AppCompatActivity {
                                 .create()
                                 .show();
 
-                    } else {
+                    } else if(edit.equals("2")){
+
+                    }
+                    else {
                         new AlertDialog.Builder(InsertDataBPJS.this)
                                 .setMessage("Simpan Data, Apakah data sudah benar ?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -413,6 +428,9 @@ public class InsertDataBPJS extends AppCompatActivity {
 
         if (view.equals("1")) {
             setviewOnly();
+        }
+        if (view.equals("2")) {
+            setViewApi();
         }
 
     }
@@ -541,6 +559,69 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
 
     }
+    void setEditApi(){
+        draft_form.setVisibility(View.GONE);
+
+        tgl_wkt_knj.setText(dataItem.getCreatedAt());
+        tgl_pnd.setText(dataItem.getTPSKP());
+        tgl_peringatan_daftar.setText(dataItem.getTPP());
+        tgl_max_bu.setText(dataItem.getTMPBU());
+        tgl_serah_data.setText(dataItem.getTPD());
+//            mSignaturePad2.setSignatureBitmap(StringToBitMap(dataItem.getTtdImage().getUrl()));
+        edtNotes.setText(dataItem.getNote());
+        if (dataItem.isReminder()) {
+            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
+        } else {
+            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
+        }
+        edtalasan.setText(dataItem.getAlasan());
+        edttindaklanjut.setText(dataItem.getTindakLanjut());
+        edtkendala.setText(dataItem.getKendala());
+        edtJumlahRekrutmen.setText(String.valueOf(dataItem.getTotalRecruitment()));
+
+        if (dataItem.isStatus()) {
+            rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_ya);
+        } else {
+            rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_tidak);
+        }
+
+        Log.d("namab", dataItem.getBadanUsaha().getName());
+        Log.d("namabd", dataItem.getBadanUsaha().getName());
+        edtNamaBadanUsaha.setText(dataItem.getBadanUsaha().getName());
+        edtAlamat.setText(dataItem.getBadanUsaha().getAddress());
+        edtTelp.setText(dataItem.getBadanUsaha().getPhone());
+        edtEmail.setText(dataItem.getBadanUsaha().getEmail());
+        edtBidangUsaha.setText(dataItem.getBadanUsaha().getBidangUsaha());
+        edtJumlahKaryawan.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKaryawan()));
+        edtJumlahKeluarga.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKeluarga()));
+        if (dataItem.getBadanUsaha().isSosialisasiBPJS()) {
+            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
+        } else {
+            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
+        }
+        if (dataItem.getBadanUsaha().isPesertaJKNOrKIS()) {
+            rGroupJknKis.check(R.id.rd_jknkis_sudah);
+        } else {
+            rGroupJknKis.check(R.id.rd_jknkis_belum);
+        }
+
+        edtJumlahKaryawanTerdaftar.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKaryawanTerdaftar()));
+        edtJumlahKeluargaTerdaftar.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKeluargaTerdaftar()));
+        if (dataItem.getBadanUsaha().isAsuransiKesehatan()) {
+            rGroupAskes.check(R.id.rd_asurankes_sudah);
+        } else {
+            rGroupAskes.check(R.id.rd_asurankes_belum);
+        }
+
+        edtTambahan.setText(dataItem.getBadanUsaha().getKeterangan());
+//            mSignaturePad.setSignatureBitmap(StringToBitMap(dataItem.getBadanUsaha().getTtdImage().getUrl()));
+
+        edtPsNama.setText(dataItem.getContactBadanUsaha().getName());
+        edtPsJabatan.setText(dataItem.getContactBadanUsaha().getJabatan());
+        edtPsUnitKerja.setText(dataItem.getContactBadanUsaha().getUnitKerja());
+        edtPsPhone.setText(dataItem.getContactBadanUsaha().getPhone());
+
+    }
 
     void setviewOnly() {
         ArrayList<FormData> forms = dataSource.getAllformbykode(kodeForm);
@@ -647,110 +728,225 @@ public class InsertDataBPJS extends AppCompatActivity {
         save_media.setVisibility(View.VISIBLE);
 
     }
-        Data constructData() {
 
-            RadioButton rButtonSosialisasiBpjs, rButtonJknKis, rButtonAsKes, rButtonBersediaMendaftar, rButtonNotifikasi;
-            Kunjungan kunjungan = new Kunjungan();
-            BadanUsaha badanUsaha = new BadanUsaha();
-            ContactBadanUsaha contactBadanUsaha = new ContactBadanUsaha();
-            Data data = new Data();
-            data.setKunjungan(kunjungan);
-            data.setBadanUsaha(badanUsaha);
-            data.setContactBadanUsaha(contactBadanUsaha);
+    void setViewApi() {
 
-            kunjungan.setTPSKP(tgl_pnd.getText().toString());
-            kunjungan.setTPP(tgl_peringatan_daftar.getText().toString());
-            kunjungan.setTMPBU(tgl_max_bu.getText().toString());
-            kunjungan.setTPD(tgl_serah_data.getText().toString());
-            kunjungan.setTtdImage(BitMapToString(mSignaturePad2.getSignatureBitmap()));
-            kunjungan.setNote(edtNotes.getText().toString());
-            int selectedIdNotifikasi = rGroupNotifikasi.getCheckedRadioButtonId();
-            rButtonNotifikasi = findViewById(selectedIdNotifikasi);
-            String valueNotif = rButtonNotifikasi.getText().toString();
-            if (valueNotif.equals("Ya")){
-                kunjungan.setReminder(1);
-            }else {
-                kunjungan.setReminder(0);
+            Log.d("note", String.valueOf(dataItem));
+            tgl_wkt_knj.setText(dataItem.getCreatedAt());
+            tgl_pnd.setText(dataItem.getTPSKP());
+            tgl_peringatan_daftar.setText(dataItem.getTPP());
+            tgl_max_bu.setText(dataItem.getTMPBU());
+            tgl_serah_data.setText(dataItem.getTPD());
+            mSignaturePad2.setSignatureBitmap(StringToBitMap(dataItem.getTtdImage().getUrl()));
+            edtNotes.setText(dataItem.getNote());
+            if (dataItem.isReminder()) {
+                rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
+            } else {
+                rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
             }
-            kunjungan.setAlasan(edtalasan.getText().toString());
-            kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());
-            kunjungan.setKendala(edtkendala.getText().toString());
-            kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
+            edtalasan.setText(dataItem.getAlasan());
+            edttindaklanjut.setText(dataItem.getTindakLanjut());
+            edtkendala.setText(dataItem.getKendala());
+            edtJumlahRekrutmen.setText(String.valueOf(dataItem.getTotalRecruitment()));
 
-            int selectedIdStatus = rGroupBersediaMendaftar.getCheckedRadioButtonId();
-            rButtonBersediaMendaftar = findViewById(selectedIdStatus);
-            String valueStatus = rButtonBersediaMendaftar.getText().toString();
-            if (valueStatus.equals("Ya")){
-                kunjungan.setStatus("1");
-            }else {
-                kunjungan.setStatus("0");
+            if (dataItem.isStatus()) {
+                rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_ya);
+            } else {
+                rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_tidak);
             }
 
-
-
-            badanUsaha.setName(edtNamaBadanUsaha.getText().toString());
-            badanUsaha.setAddress(edtAlamat.getText().toString());
-            badanUsaha.setPhone(edtTelp.getText().toString());
-            badanUsaha.setEmail(edtEmail.getText().toString());
-            badanUsaha.setBidangUsaha(edtBidangUsaha.getText().toString());
-            badanUsaha.setJumlahKaryawan(edtJumlahKaryawan.getText().toString());
-            badanUsaha.setJumlahKeluarga(edtJumlahKeluarga.getText().toString());
-
-            int selectedIdSosialisasiBpjs = rGroupSosialisasiBpjs.getCheckedRadioButtonId();
-            rButtonSosialisasiBpjs = findViewById(selectedIdSosialisasiBpjs);
-            String valueSosial = rButtonSosialisasiBpjs.getText().toString();
-            if (valueSosial.equals("Ya")){
-                badanUsaha.setSosialisasiBPJS("1");
-            }else {
-                badanUsaha.setSosialisasiBPJS("0");
+            Log.d("namab", dataItem.getBadanUsaha().getName());
+            Log.d("namabd", dataItem.getBadanUsaha().getName());
+            edtNamaBadanUsaha.setText(dataItem.getBadanUsaha().getName());
+            edtAlamat.setText(dataItem.getBadanUsaha().getAddress());
+            edtTelp.setText(dataItem.getBadanUsaha().getPhone());
+            edtEmail.setText(dataItem.getBadanUsaha().getEmail());
+            edtBidangUsaha.setText(dataItem.getBadanUsaha().getBidangUsaha());
+            edtJumlahKaryawan.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKaryawan()));
+            edtJumlahKeluarga.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKeluarga()));
+            if (dataItem.getBadanUsaha().isSosialisasiBPJS()) {
+                rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
+            } else {
+                rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
+            }
+            if (dataItem.getBadanUsaha().isPesertaJKNOrKIS()) {
+                rGroupJknKis.check(R.id.rd_jknkis_sudah);
+            } else {
+                rGroupJknKis.check(R.id.rd_jknkis_belum);
             }
 
-            int selectedIdJknKis = rGroupJknKis.getCheckedRadioButtonId();
-            rButtonJknKis = findViewById(selectedIdJknKis);
-            String valuePesertaJKN = rButtonJknKis.getText().toString();
-            if (valuePesertaJKN.equals("Ya")){
-                badanUsaha.setPesertaJKNOrKIS("1");
-            }else{
-                badanUsaha.setPesertaJKNOrKIS("0");
+            edtJumlahKaryawanTerdaftar.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKaryawanTerdaftar()));
+            edtJumlahKeluargaTerdaftar.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKeluargaTerdaftar()));
+            if (dataItem.getBadanUsaha().isAsuransiKesehatan()) {
+                rGroupAskes.check(R.id.rd_asurankes_sudah);
+            } else {
+                rGroupAskes.check(R.id.rd_asurankes_belum);
             }
 
-            badanUsaha.setJumlahKaryawanTerdaftar(edtJumlahKaryawanTerdaftar.getText().toString());
-            badanUsaha.setJumlahKeluargaTerdaftar(edtJumlahKeluargaTerdaftar.getText().toString());
+            edtTambahan.setText(dataItem.getBadanUsaha().getKeterangan());
+            mSignaturePad.setSignatureBitmap(StringToBitMap(dataItem.getBadanUsaha().getTtdImage().getUrl()));
 
-            int selectedIdAsKes = rGroupAskes.getCheckedRadioButtonId();
-            rButtonAsKes = findViewById(selectedIdAsKes);
-            String valueAsuransi = rButtonAsKes.getText().toString();
-            if (valueAsuransi.equals("Ya")){
-                badanUsaha.setAsuransiKesehatan("1");
-            }else {
-                badanUsaha.setAsuransiKesehatan("0");
-            }
-            badanUsaha.setKeterangan(edtTambahan.getText().toString());
-            badanUsaha.setTtdImage(BitMapToString(mSignaturePad.getSignatureBitmap()));
+            edtPsNama.setText(dataItem.getContactBadanUsaha().getName());
+            edtPsJabatan.setText(dataItem.getContactBadanUsaha().getJabatan());
+            edtPsUnitKerja.setText(dataItem.getContactBadanUsaha().getUnitKerja());
+            edtPsPhone.setText(dataItem.getContactBadanUsaha().getPhone());
 
-            contactBadanUsaha.setName(edtPsNama.getText().toString());
-            contactBadanUsaha.setJabatan(edtPsJabatan.getText().toString());
-            contactBadanUsaha.setUnitKerja(edtPsUnitKerja.getText().toString());
-            contactBadanUsaha.setPhone(edtPsPhone.getText().toString());
-            return data;
+
+
+        btnCamera.setVisibility(View.GONE);
+        btnGallery.setVisibility(View.GONE);
+
+        tgl_wkt_knj.setEnabled(false);
+        tgl_pnd.setEnabled(false);
+        tgl_peringatan_daftar.setEnabled(false);
+        tgl_max_bu.setEnabled(false);
+        tgl_serah_data.setEnabled(false);
+
+        edtNamaBadanUsaha.setEnabled(false);
+        edtAlamat.setEnabled(false);
+        edtTelp.setEnabled(false);
+        edtEmail.setEnabled(false);
+        edtBidangUsaha.setEnabled(false);
+        edtJumlahKaryawan.setEnabled(false);
+        edtJumlahKeluarga.setEnabled(false);
+        rGroupSosialisasiBpjs.setEnabled(false);
+        rGroupJknKis.setEnabled(false);
+        edtJumlahKaryawanTerdaftar.setEnabled(false);
+        edtJumlahKeluargaTerdaftar.setEnabled(false);
+        rGroupAskes.setEnabled(false);
+        edtTambahan.setEnabled(false);
+        edtPsNama.setEnabled(false);
+        edtPsJabatan.setEnabled(false);
+        edtPsUnitKerja.setEnabled(false);
+        edtPsPhone.setEnabled(false);
+        rGroupBersediaMendaftar.setEnabled(false);
+        edtalasan.setEnabled(false);
+        edttindaklanjut.setEnabled(false);
+        edtkendala.setEnabled(false);
+
+        rGroupSosialisasiBpjs.setEnabled(false);
+        rGroupBersediaMendaftar.setEnabled(false);
+        rGroupAskes.setEnabled(false);
+        rGroupJknKis.setEnabled(false);
+        edtNotes.setEnabled(false);
+        rGroupNotifikasi.setEnabled(false);
+        edtJumlahRekrutmen.setEnabled(false);
+
+        mSignaturePad.setEnabled(false);
+        clearSignature.setVisibility(View.GONE);
+
+        mSignaturePad2.setEnabled(false);
+        clearsignature2.setVisibility(View.GONE);
+
+        save_form.setVisibility(View.GONE);
+        draft_form.setVisibility(View.GONE);
+
+        save_media.setVisibility(View.VISIBLE);
+    }
+
+    Data constructData() {
+
+        RadioButton rButtonSosialisasiBpjs, rButtonJknKis, rButtonAsKes, rButtonBersediaMendaftar, rButtonNotifikasi;
+        Kunjungan kunjungan = new Kunjungan();
+        BadanUsaha badanUsaha = new BadanUsaha();
+        ContactBadanUsaha contactBadanUsaha = new ContactBadanUsaha();
+        Data data = new Data();
+        data.setKunjungan(kunjungan);
+        data.setBadanUsaha(badanUsaha);
+        data.setContactBadanUsaha(contactBadanUsaha);
+
+        kunjungan.setTPSKP(tgl_pnd.getText().toString());
+        kunjungan.setTPP(tgl_peringatan_daftar.getText().toString());
+        kunjungan.setTMPBU(tgl_max_bu.getText().toString());
+        kunjungan.setTPD(tgl_serah_data.getText().toString());
+        kunjungan.setTtdImage(BitMapToString(mSignaturePad2.getSignatureBitmap()));
+        kunjungan.setNote(edtNotes.getText().toString());
+        int selectedIdNotifikasi = rGroupNotifikasi.getCheckedRadioButtonId();
+        rButtonNotifikasi = findViewById(selectedIdNotifikasi);
+        String valueNotif = rButtonNotifikasi.getText().toString();
+        if (valueNotif.equals("Ya")) {
+            kunjungan.setReminder(1);
+        } else {
+            kunjungan.setReminder(0);
         }
-        void savePost(final Data data) {
-            String token = sharedPrefManager.getSpToken();
-            Service service = Client.getClient().create(Service.class);
-            Call<PostResponse> call = service.saveKunjungan("Bearer " + token, data);
-            call.enqueue(new Callback<PostResponse>() {
-                @Override
-                public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
-                    Log.d("test", data.toString());
-                }
+        kunjungan.setAlasan(edtalasan.getText().toString());
+        kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());
+        kunjungan.setKendala(edtkendala.getText().toString());
+        kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
 
-                @Override
-                public void onFailure(Call<PostResponse> call, Throwable t) {
-                    Log.d("test2", data.toString());
-                }
-            });
+        int selectedIdStatus = rGroupBersediaMendaftar.getCheckedRadioButtonId();
+        rButtonBersediaMendaftar = findViewById(selectedIdStatus);
+        String valueStatus = rButtonBersediaMendaftar.getText().toString();
+        if (valueStatus.equals("Ya")) {
+            kunjungan.setStatus("1");
+        } else {
+            kunjungan.setStatus("0");
         }
 
+
+        badanUsaha.setName(edtNamaBadanUsaha.getText().toString());
+        badanUsaha.setAddress(edtAlamat.getText().toString());
+        badanUsaha.setPhone(edtTelp.getText().toString());
+        badanUsaha.setEmail(edtEmail.getText().toString());
+        badanUsaha.setBidangUsaha(edtBidangUsaha.getText().toString());
+        badanUsaha.setJumlahKaryawan(edtJumlahKaryawan.getText().toString());
+        badanUsaha.setJumlahKeluarga(edtJumlahKeluarga.getText().toString());
+
+        int selectedIdSosialisasiBpjs = rGroupSosialisasiBpjs.getCheckedRadioButtonId();
+        rButtonSosialisasiBpjs = findViewById(selectedIdSosialisasiBpjs);
+        String valueSosial = rButtonSosialisasiBpjs.getText().toString();
+        if (valueSosial.equals("Ya")) {
+            badanUsaha.setSosialisasiBPJS("1");
+        } else {
+            badanUsaha.setSosialisasiBPJS("0");
+        }
+
+        int selectedIdJknKis = rGroupJknKis.getCheckedRadioButtonId();
+        rButtonJknKis = findViewById(selectedIdJknKis);
+        String valuePesertaJKN = rButtonJknKis.getText().toString();
+        if (valuePesertaJKN.equals("Ya")) {
+            badanUsaha.setPesertaJKNOrKIS("1");
+        } else {
+            badanUsaha.setPesertaJKNOrKIS("0");
+        }
+
+        badanUsaha.setJumlahKaryawanTerdaftar(edtJumlahKaryawanTerdaftar.getText().toString());
+        badanUsaha.setJumlahKeluargaTerdaftar(edtJumlahKeluargaTerdaftar.getText().toString());
+
+        int selectedIdAsKes = rGroupAskes.getCheckedRadioButtonId();
+        rButtonAsKes = findViewById(selectedIdAsKes);
+        String valueAsuransi = rButtonAsKes.getText().toString();
+        if (valueAsuransi.equals("Ya")) {
+            badanUsaha.setAsuransiKesehatan("1");
+        } else {
+            badanUsaha.setAsuransiKesehatan("0");
+        }
+        badanUsaha.setKeterangan(edtTambahan.getText().toString());
+        badanUsaha.setTtdImage(BitMapToString(mSignaturePad.getSignatureBitmap()));
+
+        contactBadanUsaha.setName(edtPsNama.getText().toString());
+        contactBadanUsaha.setJabatan(edtPsJabatan.getText().toString());
+        contactBadanUsaha.setUnitKerja(edtPsUnitKerja.getText().toString());
+        contactBadanUsaha.setPhone(edtPsPhone.getText().toString());
+        return data;
+    }
+
+    void savePost(final Data data) {
+        String token = sharedPrefManager.getSpToken();
+        Service service = Client.getClient().create(Service.class);
+        Call<PostResponse> call = service.saveKunjungan("Bearer " + token, data);
+        call.enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+                Log.d("test", data.toString());
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+                Log.d("test2", data.toString());
+            }
+        });
+    }
 
 
     void saveNewData() {

@@ -24,9 +24,8 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.saami.app.projects.form.model.badanusaha.BadanUsahaGetResponse;
-import com.saami.app.projects.form.model.badanusaha.DataItem;
+import com.saami.app.projects.form.model.kunjungan.DataItem;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
-import com.saami.app.projects.form.model.kunjunganrelation.KunjunganResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 import com.saami.app.projects.form.sqlite.FormData;
 import com.saami.app.projects.form.ui.FixViewModel;
@@ -55,7 +54,6 @@ public class ListView_BPJS extends AppCompatActivity {
     private ImageView cari, filter;
     private ImageView refresh;
     final Calendar myCalendar = Calendar.getInstance();
-    private List<DataItem> getBU = new ArrayList<>();
     private List<com.saami.app.projects.form.model.kunjungan.DataItem> getKunjungan = new ArrayList<>();
     private FixViewModel fixViewModel;
     private SearchViewModel searchViewModel;
@@ -125,7 +123,6 @@ public class ListView_BPJS extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getData();
-                onBackPressed();
             }
         });
 
@@ -180,32 +177,32 @@ public class ListView_BPJS extends AppCompatActivity {
             long total = 0;
             dataList = new ArrayList<>();
 //                    final ArrayList<DataParkir> data = datasource.getAllDataParkirBySpecificDate(dates);
-            if (arraylistform.size() > 0) {
+            if (getKunjungan.size() > 0) {
 
-                for (int im = 0; im < arraylistform.toArray().length; im++) {
-                    final ProviderFormList items = arraylistform.get(im);
+                for (int im = 0; im < getKunjungan.toArray().length; im++) {
+                    final DataItem items = getKunjungan.get(im);
                     String ikutsosialisasi, jknkis, askes, sediadaftar;
-                    if (items.getF_MENGIKUTI_SOSIALISASI_BPJS_KES().toLowerCase().equals("sudah")) {
+                    if (items.getBadanUsaha().isSosialisasiBPJS()) {
                         ikutsosialisasi = "Sudah";
                     } else {
                         ikutsosialisasi = "Belum";
                     }
-                    if (items.getF_JKN_KIS().toLowerCase().equals("sudah")) {
+                    if (items.getBadanUsaha().isPesertaJKNOrKIS()) {
                         jknkis = "Sudah";
                     } else {
                         jknkis = "Belum";
                     }
-                    if (items.getF_ASURANSIKES().toLowerCase().equals("sudah")) {
+                    if (items.getBadanUsaha().isAsuransiKesehatan()) {
                         askes = "Sudah";
                     } else {
                         askes = "Belum";
                     }
-                    if (items.getF_HC_BERSEDIA_MENDAFTAR().toLowerCase().equals("ya")) {
+                    if (items.isStatus()) {
                         sediadaftar = "Ya";
                     } else {
                         sediadaftar = "Tidak";
                     }
-                    dataList.add(items.getF_TGL_KUNJUNGAN() + "|" + items.getF_TGL_KESEDIAAN_PENDAFTARAN() + "|" + items.getF_TGL_PERINGATAN_PENDAFTARAN() + "|" + items.getF_TGL_PENDAFTARAN_BU() + "|" + items.getF_TGL_PENYERAHAN_DATA() + "|" + items.getF_BDN_USH() + "|" + items.getF_ALAMAT() + "|" + items.getF_PHONE() + "|" + items.getF_EMAIL() + "|" + items.getF_BIDANG_USH() + "|" + items.getF_JUMLAHKAR() + "|" + items.getF_JUMLAHKEL() + "|" + ikutsosialisasi + "|" + jknkis + "|" + items.getF_JUMLAHTERDAFTARKAR() + "|" + items.getF_JUMLAHTERDAFTARKEL() + "|" + askes + "|" + items.getF_TAMBAHAN() + "|" + items.getF_KP_NAMA() + "|" + items.getF_KP_JABATAN() + "|" + items.getF_KP_UNIT_KERJA() + "|" + items.getF_KP_PHONE() + "|" + sediadaftar + "|" + items.getF_HC_ALASAN() + "|" + items.getF_HC_TINDAK_LANJUT() + "|" + items.getF_HC_KENDALA() + "`");
+                    dataList.add(items.getCreatedAt() + "|" + items.getTPSKP() + "|" + items.getTPP() + "|" + items.getTMPBU() + "|" + items.getTPD() + "|" + items.getBadanUsaha().getName() + "|" + items.getBadanUsaha().getAddress() + "|" + items.getBadanUsaha().getPhone() + "|" + items.getBadanUsaha().getEmail() + "|" + items.getBadanUsaha().getBidangUsaha() + "|" + items.getBadanUsaha().getJumlahKaryawan() + "|" + items.getBadanUsaha().getJumlahKeluarga() + "|" + ikutsosialisasi + "|" + jknkis + "|" + items.getBadanUsaha().getJumlahKaryawanTerdaftar() + "|" + items.getBadanUsaha().getJumlahKeluargaTerdaftar() + "|" + askes + "|" + items.getBadanUsaha().getKeterangan() + "|" + items.getContactBadanUsaha().getName() + "|" + items.getContactBadanUsaha().getJabatan() + "|" + items.getContactBadanUsaha().getUnitKerja() + "|" + items.getContactBadanUsaha().getPhone() + "|" + sediadaftar + "|" + items.getAlasan() + "|" + items.getTindakLanjut() + "|" + items.getKendala() + "`");
                 }
                 createCSV();
 

@@ -1,10 +1,11 @@
 package com.saami.app.projects.form.model.kunjungan;
 
-import com.google.gson.annotations.SerializedName;
-import com.saami.app.projects.form.model.kunjunganrelation.BadanUsaha;
-import com.saami.app.projects.form.model.kunjunganrelation.ContactBadanUsaha;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class DataItem{
+import com.google.gson.annotations.SerializedName;
+
+public class DataItem implements Parcelable {
 
 	@SerializedName("ttdImage")
 	private TtdImage ttdImage;
@@ -66,6 +67,41 @@ public class DataItem{
 	@SerializedName("contactBadanUsaha")
 	private ContactBadanUsaha contactBadanUsaha;
 
+
+	protected DataItem(Parcel in) {
+		ttdImage = in.readParcelable(TtdImage.class.getClassLoader());
+		note = in.readString();
+		tMPBU = in.readString();
+		reminder = in.readByte() != 0;
+		tPD = in.readString();
+		alasan = in.readString();
+		createdAt = in.readString();
+		tPP = in.readString();
+		createdBy = in.readInt();
+		kendala = in.readString();
+		targetKunjungan = in.readInt();
+		tindakLanjut = in.readString();
+		targetRecruitment = in.readInt();
+		tPSKP = in.readString();
+		badanUsahaId = in.readInt();
+		id = in.readInt();
+		totalRecruitment = in.readInt();
+		status = in.readByte() != 0;
+		badanUsaha = in.readParcelable(BadanUsaha.class.getClassLoader());
+		contactBadanUsaha = in.readParcelable(ContactBadanUsaha.class.getClassLoader());
+	}
+
+	public static final Creator<DataItem> CREATOR = new Creator<DataItem>() {
+		@Override
+		public DataItem createFromParcel(Parcel in) {
+			return new DataItem(in);
+		}
+
+		@Override
+		public DataItem[] newArray(int size) {
+			return new DataItem[size];
+		}
+	};
 
 	public BadanUsaha getBadanUsaha() {
 		return badanUsaha;
@@ -251,4 +287,33 @@ public class DataItem{
 			",status = '" + status + '\'' + 
 			"}";
 		}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int i) {
+		parcel.writeParcelable(ttdImage, i);
+		parcel.writeString(note);
+		parcel.writeString(tMPBU);
+		parcel.writeByte((byte) (reminder ? 1 : 0));
+		parcel.writeString(tPD);
+		parcel.writeString(alasan);
+		parcel.writeString(createdAt);
+		parcel.writeString(tPP);
+		parcel.writeInt(createdBy);
+		parcel.writeString(kendala);
+		parcel.writeInt(targetKunjungan);
+		parcel.writeString(tindakLanjut);
+		parcel.writeInt(targetRecruitment);
+		parcel.writeString(tPSKP);
+		parcel.writeInt(badanUsahaId);
+		parcel.writeInt(id);
+		parcel.writeInt(totalRecruitment);
+		parcel.writeByte((byte) (status ? 1 : 0));
+		parcel.writeParcelable(badanUsaha, i);
+		parcel.writeParcelable(contactBadanUsaha, i);
+	}
 }
