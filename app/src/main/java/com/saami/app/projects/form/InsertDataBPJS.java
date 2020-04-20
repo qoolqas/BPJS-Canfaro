@@ -31,6 +31,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.mindorks.paracamera.Camera;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
+import com.saami.app.projects.form.model.image.ImageResponse;
 import com.saami.app.projects.form.model.kunjungan.DataItem;
 import com.saami.app.projects.form.model.post.BadanUsaha;
 import com.saami.app.projects.form.model.post.ContactBadanUsaha;
@@ -47,8 +48,13 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,6 +86,8 @@ public class InsertDataBPJS extends AppCompatActivity {
     private Button save_media;
     SharedPrefManager sharedPrefManager;
     DataItem dataItem;
+    Uri fileUri;
+    String filePath = "";
 
 
 //    BitMapToString(bitmapImage1)
@@ -273,7 +281,7 @@ public class InsertDataBPJS extends AppCompatActivity {
             save_form.setText("Simpan Pembaruan");
             setEditData();
         }
-        if (edit.equals("2")){
+        if (edit.equals("2")) {
             save_form.setText("Simpan Pembaruan");
             setEditApi();
         }
@@ -283,7 +291,7 @@ public class InsertDataBPJS extends AppCompatActivity {
                 savedraft = "0";
                 if (mSignaturePad.isEmpty() | mSignaturePad2.isEmpty()) {
                     Toast.makeText(InsertDataBPJS.this, "Silahkan Tanda Tangan Terlebih Dahulu", Toast.LENGTH_LONG).show();
-
+                    uploadTtd();
                 } else {
                     if (edit.equals("1")) {
                         new AlertDialog.Builder(InsertDataBPJS.this)
@@ -306,10 +314,9 @@ public class InsertDataBPJS extends AppCompatActivity {
                                 .create()
                                 .show();
 
-                    } else if(edit.equals("2")){
+                    } else if (edit.equals("2")) {
 
-                    }
-                    else {
+                    } else {
                         new AlertDialog.Builder(InsertDataBPJS.this)
                                 .setMessage("Simpan Data, Apakah data sudah benar ?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -390,7 +397,7 @@ public class InsertDataBPJS extends AppCompatActivity {
             public void onClick(View v) {
                 photo.setDrawingCacheEnabled(true);
                 Bitmap bitmapPhotos = photo.getDrawingCache();
-                saveMediaPhotoTtd(bitmapPhotos, mSignaturePad.getSignatureBitmap());
+                saveMediaPhotoTtd(bitmapPhotos, mSignaturePad.getSignatureBitmap(), mSignaturePad2.getSignatureBitmap());
             }
         });
 
@@ -467,6 +474,9 @@ public class InsertDataBPJS extends AppCompatActivity {
                             .apply(myOptions)
                             .load(selectedImage)
                             .into(photo);
+                    fileUri = Uri.parse(String.valueOf(selectedImage));
+                    Log.d("selected", String.valueOf(selectedImage));
+
                 }
                 break;
         }
@@ -559,7 +569,8 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
 
     }
-    void setEditApi(){
+
+    void setEditApi() {
         draft_form.setVisibility(View.GONE);
 
         tgl_wkt_knj.setText(dataItem.getCreatedAt());
@@ -731,66 +742,63 @@ public class InsertDataBPJS extends AppCompatActivity {
 
     void setViewApi() {
 
-            Log.d("note", String.valueOf(dataItem));
-            tgl_wkt_knj.setText(dataItem.getCreatedAt());
-            tgl_pnd.setText(dataItem.getTPSKP());
-            tgl_peringatan_daftar.setText(dataItem.getTPP());
-            tgl_max_bu.setText(dataItem.getTMPBU());
-            tgl_serah_data.setText(dataItem.getTPD());
-            mSignaturePad2.setSignatureBitmap(StringToBitMap(dataItem.getTtdImage().getUrl()));
-            edtNotes.setText(dataItem.getNote());
-            if (dataItem.isReminder()) {
-                rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
-            } else {
-                rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
-            }
-            edtalasan.setText(dataItem.getAlasan());
-            edttindaklanjut.setText(dataItem.getTindakLanjut());
-            edtkendala.setText(dataItem.getKendala());
-            edtJumlahRekrutmen.setText(String.valueOf(dataItem.getTotalRecruitment()));
+        Log.d("note", String.valueOf(dataItem));
+        tgl_wkt_knj.setText(dataItem.getCreatedAt());
+        tgl_pnd.setText(dataItem.getTPSKP());
+        tgl_peringatan_daftar.setText(dataItem.getTPP());
+        tgl_max_bu.setText(dataItem.getTMPBU());
+        tgl_serah_data.setText(dataItem.getTPD());
+        mSignaturePad2.setSignatureBitmap(StringToBitMap(dataItem.getTtdImage().getUrl()));
+        edtNotes.setText(dataItem.getNote());
+        if (dataItem.isReminder()) {
+            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
+        } else {
+            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
+        }
+        edtalasan.setText(dataItem.getAlasan());
+        edttindaklanjut.setText(dataItem.getTindakLanjut());
+        edtkendala.setText(dataItem.getKendala());
+        edtJumlahRekrutmen.setText(String.valueOf(dataItem.getTotalRecruitment()));
 
-            if (dataItem.isStatus()) {
-                rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_ya);
-            } else {
-                rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_tidak);
-            }
+        if (dataItem.isStatus()) {
+            rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_ya);
+        } else {
+            rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_tidak);
+        }
 
-            Log.d("namab", dataItem.getBadanUsaha().getName());
-            Log.d("namabd", dataItem.getBadanUsaha().getName());
-            edtNamaBadanUsaha.setText(dataItem.getBadanUsaha().getName());
-            edtAlamat.setText(dataItem.getBadanUsaha().getAddress());
-            edtTelp.setText(dataItem.getBadanUsaha().getPhone());
-            edtEmail.setText(dataItem.getBadanUsaha().getEmail());
-            edtBidangUsaha.setText(dataItem.getBadanUsaha().getBidangUsaha());
-            edtJumlahKaryawan.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKaryawan()));
-            edtJumlahKeluarga.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKeluarga()));
-            if (dataItem.getBadanUsaha().isSosialisasiBPJS()) {
-                rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
-            } else {
-                rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
-            }
-            if (dataItem.getBadanUsaha().isPesertaJKNOrKIS()) {
-                rGroupJknKis.check(R.id.rd_jknkis_sudah);
-            } else {
-                rGroupJknKis.check(R.id.rd_jknkis_belum);
-            }
+        edtNamaBadanUsaha.setText(dataItem.getBadanUsaha().getName());
+        edtAlamat.setText(dataItem.getBadanUsaha().getAddress());
+        edtTelp.setText(dataItem.getBadanUsaha().getPhone());
+        edtEmail.setText(dataItem.getBadanUsaha().getEmail());
+        edtBidangUsaha.setText(dataItem.getBadanUsaha().getBidangUsaha());
+        edtJumlahKaryawan.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKaryawan()));
+        edtJumlahKeluarga.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKeluarga()));
+        if (dataItem.getBadanUsaha().isSosialisasiBPJS()) {
+            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
+        } else {
+            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
+        }
+        if (dataItem.getBadanUsaha().isPesertaJKNOrKIS()) {
+            rGroupJknKis.check(R.id.rd_jknkis_sudah);
+        } else {
+            rGroupJknKis.check(R.id.rd_jknkis_belum);
+        }
 
-            edtJumlahKaryawanTerdaftar.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKaryawanTerdaftar()));
-            edtJumlahKeluargaTerdaftar.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKeluargaTerdaftar()));
-            if (dataItem.getBadanUsaha().isAsuransiKesehatan()) {
-                rGroupAskes.check(R.id.rd_asurankes_sudah);
-            } else {
-                rGroupAskes.check(R.id.rd_asurankes_belum);
-            }
+        edtJumlahKaryawanTerdaftar.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKaryawanTerdaftar()));
+        edtJumlahKeluargaTerdaftar.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKeluargaTerdaftar()));
+        if (dataItem.getBadanUsaha().isAsuransiKesehatan()) {
+            rGroupAskes.check(R.id.rd_asurankes_sudah);
+        } else {
+            rGroupAskes.check(R.id.rd_asurankes_belum);
+        }
 
-            edtTambahan.setText(dataItem.getBadanUsaha().getKeterangan());
-            mSignaturePad.setSignatureBitmap(StringToBitMap(dataItem.getBadanUsaha().getTtdImage().getUrl()));
+        edtTambahan.setText(dataItem.getBadanUsaha().getKeterangan());
+        mSignaturePad.setSignatureBitmap(StringToBitMap(dataItem.getBadanUsaha().getTtdImage().getUrl()));
 
-            edtPsNama.setText(dataItem.getContactBadanUsaha().getName());
-            edtPsJabatan.setText(dataItem.getContactBadanUsaha().getJabatan());
-            edtPsUnitKerja.setText(dataItem.getContactBadanUsaha().getUnitKerja());
-            edtPsPhone.setText(dataItem.getContactBadanUsaha().getPhone());
-
+        edtPsNama.setText(dataItem.getContactBadanUsaha().getName());
+        edtPsJabatan.setText(dataItem.getContactBadanUsaha().getJabatan());
+        edtPsUnitKerja.setText(dataItem.getContactBadanUsaha().getUnitKerja());
+        edtPsPhone.setText(dataItem.getContactBadanUsaha().getPhone());
 
 
         btnCamera.setVisibility(View.GONE);
@@ -1125,7 +1133,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
     }
 
-    private void saveMediaPhotoTtd(Bitmap bitmapPhoto, Bitmap ttdBitmap) {
+    private void saveMediaPhotoTtd(Bitmap bitmapPhoto, Bitmap ttdBitmap, Bitmap ttd2Bitmap) {
         File myDirPhotos = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Photo");
         myDirPhotos.mkdirs();
         String photoname = edtPsNama.getText().toString() + "_" + kodeForm + "_.png";
@@ -1155,6 +1163,20 @@ public class InsertDataBPJS extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        File myDirTtd2 = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Tanda Tangan BadanUsaha");
+        myDirTtd2.mkdirs();
+        String ttdname2 = edtPsNama.getText().toString() + "_" + kodeForm + "_.png";
+        File files2 = new File(myDirTtd, ttdname2);
+        if (files2.exists()) files2.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(files2);
+            ttd2Bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         ToatsMessage();
     }
@@ -1170,6 +1192,26 @@ public class InsertDataBPJS extends AppCompatActivity {
                 })
                 .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
                 .show();
+    }
+
+    private void uploadTtd() {
+        String token = sharedPrefManager.getSpToken();
+        File file = new File(filePath);
+        Map<String, RequestBody> map = new HashMap<>();
+        RequestBody requestBody = RequestBody.create(MediaType.parse(" "), file);
+        map.put("file\"; filename=\"" + file + "\"", requestBody);
+        Call<ImageResponse> imageCall = Client.getClient().create(Service.class).uploadImage("Bearer " + token, "Ttd", map);
+        imageCall.enqueue(new Callback<ImageResponse>() {
+            @Override
+            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ImageResponse> call, Throwable t) {
+
+            }
+        });
     }
 
 }
