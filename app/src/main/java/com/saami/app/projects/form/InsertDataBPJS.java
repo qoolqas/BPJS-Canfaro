@@ -1,8 +1,10 @@
 package com.saami.app.projects.form;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -76,6 +78,7 @@ public class InsertDataBPJS extends AppCompatActivity {
     String home = "0";
     String edit = "0";
     String view = "0";
+    String dataPhoto = "";
     String kodeForm = "";
     String idKunjungan = "";
     private Camera camera;
@@ -291,7 +294,8 @@ public class InsertDataBPJS extends AppCompatActivity {
                 savedraft = "0";
                 if (mSignaturePad.isEmpty() | mSignaturePad2.isEmpty()) {
                     Toast.makeText(InsertDataBPJS.this, "Silahkan Tanda Tangan Terlebih Dahulu", Toast.LENGTH_LONG).show();
-                    uploadTtd();
+                    uploadPhoto();
+                    Log.d("dataPhoto", dataPhoto);
                 } else {
                     if (edit.equals("1")) {
                         new AlertDialog.Builder(InsertDataBPJS.this)
@@ -441,6 +445,19 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
 
     }
+    private static File createTemporaryFile(Context context) {
+        try {
+            File folder = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "prof_pic");
+            if (!folder.exists()) {
+                folder.mkdirs();
+                Log.d("anji", String.valueOf(folder.mkdirs()));
+            }
+            return File.createTempFile("" + System.currentTimeMillis(), ".jpg", folder);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
@@ -474,8 +491,15 @@ public class InsertDataBPJS extends AppCompatActivity {
                             .apply(myOptions)
                             .load(selectedImage)
                             .into(photo);
-                    fileUri = Uri.parse(String.valueOf(selectedImage));
-                    Log.d("selected", String.valueOf(selectedImage));
+                    String[] filePathColumn = {android.provider.MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                    assert cursor != null;
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String mediaPath = cursor.getString(columnIndex);
+                    // Set the Image in ImageView for Previewing the Media
+                    cursor.close();
+                    fileUri = Uri.parse(mediaPath);
 
                 }
                 break;
@@ -1194,16 +1218,19 @@ public class InsertDataBPJS extends AppCompatActivity {
                 .show();
     }
 
-    private void uploadTtd() {
+    private void uploadPhoto() {
         String token = sharedPrefManager.getSpToken();
-        File file = new File(filePath);
+        File file = new File(String.valueOf(fileUri));
         Map<String, RequestBody> map = new HashMap<>();
         RequestBody requestBody = RequestBody.create(MediaType.parse(" "), file);
         map.put("file\"; filename=\"" + file + "\"", requestBody);
-        Call<ImageResponse> imageCall = Client.getClient().create(Service.class).uploadImage("Bearer " + token, "Ttd", map);
+        Call<ImageResponse> imageCall = Client.getClient().create(Service.class).uploadImage("Bearer " + token, "user", map);
         imageCall.enqueue(new Callback<ImageResponse>() {
             @Override
             public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                assert response.body() != null;
+                Log.d("berhasil" , String.valueOf(response.body().getData()));
+                dataPhoto = String.valueOf(response.body().getData());
 
             }
 
