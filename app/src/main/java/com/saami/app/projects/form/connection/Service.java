@@ -79,6 +79,11 @@ public interface Service {
     Call<PostResponse> saveKunjungan(@Header("Authorization") String authorization,
                                      @Body Data data);
 
+    @POST("kunjungan/{id}")
+    Call<PostResponse> saveEditKunjungan(@Header("Authorization") String authorization,
+                                         @Path("id") int id,
+                                         @Body Data data);
+
     @Multipart
     @POST("image/upload/{type}")
     Call<ImageResponse> uploadImage(@Header("Authorization") String authorization,

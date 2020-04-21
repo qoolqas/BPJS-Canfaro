@@ -10,6 +10,17 @@ public class DataItem implements Parcelable {
 	@SerializedName("ttdImage")
 	private TtdImage ttdImage;
 
+	@SerializedName("image")
+	private String image;
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@SerializedName("note")
 	private String note;
 
@@ -67,41 +78,6 @@ public class DataItem implements Parcelable {
 	@SerializedName("contactBadanUsaha")
 	private ContactBadanUsaha contactBadanUsaha;
 
-
-	protected DataItem(Parcel in) {
-		ttdImage = in.readParcelable(TtdImage.class.getClassLoader());
-		note = in.readString();
-		tMPBU = in.readString();
-		reminder = in.readByte() != 0;
-		tPD = in.readString();
-		alasan = in.readString();
-		createdAt = in.readString();
-		tPP = in.readString();
-		createdBy = in.readInt();
-		kendala = in.readString();
-		targetKunjungan = in.readInt();
-		tindakLanjut = in.readString();
-		targetRecruitment = in.readInt();
-		tPSKP = in.readString();
-		badanUsahaId = in.readInt();
-		id = in.readInt();
-		totalRecruitment = in.readInt();
-		status = in.readByte() != 0;
-		badanUsaha = in.readParcelable(BadanUsaha.class.getClassLoader());
-		contactBadanUsaha = in.readParcelable(ContactBadanUsaha.class.getClassLoader());
-	}
-
-	public static final Creator<DataItem> CREATOR = new Creator<DataItem>() {
-		@Override
-		public DataItem createFromParcel(Parcel in) {
-			return new DataItem(in);
-		}
-
-		@Override
-		public DataItem[] newArray(int size) {
-			return new DataItem[size];
-		}
-	};
 
 	public BadanUsaha getBadanUsaha() {
 		return badanUsaha;
@@ -294,26 +270,66 @@ public class DataItem implements Parcelable {
 	}
 
 	@Override
-	public void writeToParcel(Parcel parcel, int i) {
-		parcel.writeParcelable(ttdImage, i);
-		parcel.writeString(note);
-		parcel.writeString(tMPBU);
-		parcel.writeByte((byte) (reminder ? 1 : 0));
-		parcel.writeString(tPD);
-		parcel.writeString(alasan);
-		parcel.writeString(createdAt);
-		parcel.writeString(tPP);
-		parcel.writeInt(createdBy);
-		parcel.writeString(kendala);
-		parcel.writeInt(targetKunjungan);
-		parcel.writeString(tindakLanjut);
-		parcel.writeInt(targetRecruitment);
-		parcel.writeString(tPSKP);
-		parcel.writeInt(badanUsahaId);
-		parcel.writeInt(id);
-		parcel.writeInt(totalRecruitment);
-		parcel.writeByte((byte) (status ? 1 : 0));
-		parcel.writeParcelable(badanUsaha, i);
-		parcel.writeParcelable(contactBadanUsaha, i);
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeParcelable(this.ttdImage, flags);
+		dest.writeString(this.image);
+		dest.writeString(this.note);
+		dest.writeString(this.tMPBU);
+		dest.writeByte(this.reminder ? (byte) 1 : (byte) 0);
+		dest.writeString(this.tPD);
+		dest.writeString(this.alasan);
+		dest.writeString(this.createdAt);
+		dest.writeString(this.tPP);
+		dest.writeInt(this.createdBy);
+		dest.writeString(this.kendala);
+		dest.writeInt(this.targetKunjungan);
+		dest.writeString(this.tindakLanjut);
+		dest.writeInt(this.targetRecruitment);
+		dest.writeString(this.tPSKP);
+		dest.writeInt(this.badanUsahaId);
+		dest.writeInt(this.id);
+		dest.writeInt(this.totalRecruitment);
+		dest.writeByte(this.status ? (byte) 1 : (byte) 0);
+		dest.writeParcelable(this.badanUsaha, flags);
+		dest.writeParcelable(this.contactBadanUsaha, flags);
 	}
+
+	public DataItem() {
+	}
+
+	protected DataItem(Parcel in) {
+		this.ttdImage = in.readParcelable(TtdImage.class.getClassLoader());
+		this.image = in.readString();
+		this.note = in.readString();
+		this.tMPBU = in.readString();
+		this.reminder = in.readByte() != 0;
+		this.tPD = in.readString();
+		this.alasan = in.readString();
+		this.createdAt = in.readString();
+		this.tPP = in.readString();
+		this.createdBy = in.readInt();
+		this.kendala = in.readString();
+		this.targetKunjungan = in.readInt();
+		this.tindakLanjut = in.readString();
+		this.targetRecruitment = in.readInt();
+		this.tPSKP = in.readString();
+		this.badanUsahaId = in.readInt();
+		this.id = in.readInt();
+		this.totalRecruitment = in.readInt();
+		this.status = in.readByte() != 0;
+		this.badanUsaha = in.readParcelable(BadanUsaha.class.getClassLoader());
+		this.contactBadanUsaha = in.readParcelable(ContactBadanUsaha.class.getClassLoader());
+	}
+
+	public static final Creator<DataItem> CREATOR = new Creator<DataItem>() {
+		@Override
+		public DataItem createFromParcel(Parcel source) {
+			return new DataItem(source);
+		}
+
+		@Override
+		public DataItem[] newArray(int size) {
+			return new DataItem[size];
+		}
+	};
 }

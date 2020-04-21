@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -24,12 +25,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 import com.mindorks.paracamera.Camera;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
@@ -53,6 +56,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -79,6 +83,8 @@ public class InsertDataBPJS extends AppCompatActivity {
     String edit = "0";
     String view = "0";
     String dataPhoto = "";
+    String dataTtd = "";
+    String dataTtdBu = "";
     String kodeForm = "";
     String idKunjungan = "";
     private Camera camera;
@@ -90,10 +96,9 @@ public class InsertDataBPJS extends AppCompatActivity {
     SharedPrefManager sharedPrefManager;
     DataItem dataItem;
     Uri fileUri;
+    Uri ttdUri;
+    Uri ttdUri2;
     String filePath = "";
-
-
-//    BitMapToString(bitmapImage1)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +159,8 @@ public class InsertDataBPJS extends AppCompatActivity {
                         .build(InsertDataBPJS.this);
 
                 try {
+                    captureImage();
+                    Log.d("camera", String.valueOf(fileUri));
                     camera.takePicture();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -286,6 +293,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
         if (edit.equals("2")) {
             save_form.setText("Simpan Pembaruan");
+            draft_form.setVisibility(View.GONE);
             setEditApi();
         }
         save_form.setOnClickListener(new View.OnClickListener() {
@@ -295,7 +303,9 @@ public class InsertDataBPJS extends AppCompatActivity {
                 if (mSignaturePad.isEmpty() | mSignaturePad2.isEmpty()) {
                     Toast.makeText(InsertDataBPJS.this, "Silahkan Tanda Tangan Terlebih Dahulu", Toast.LENGTH_LONG).show();
                     uploadPhoto();
-                    Log.d("dataPhoto", dataPhoto);
+                    uploadTtd();
+                    Log.d("stringitu", dataPhoto);
+
                 } else {
                     if (edit.equals("1")) {
                         new AlertDialog.Builder(InsertDataBPJS.this)
@@ -327,7 +337,7 @@ public class InsertDataBPJS extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int arg1) {
                                         dialog.dismiss();
-                                        savePost(constructData());
+                                        uploadPhoto();
 //                                        saveNewData();
 //                                        saveFile();
                                     }
@@ -445,6 +455,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
 
     }
+
     private static File createTemporaryFile(Context context) {
         try {
             File folder = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "prof_pic");
@@ -459,12 +470,29 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
     }
 
+    private void captureImage() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File photo;
+        try {
+            photo = createTemporaryFile(this);
+            fileUri = FileProvider.getUriForFile(Objects.requireNonNull(this),
+                    BuildConfig.APPLICATION_ID + ".provider",
+                    Objects.requireNonNull(photo));
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+            startActivityForResult(intent, 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         RequestOptions myOptions = new RequestOptions()
                 .centerCrop()
                 .override(300, 300);
+        Log.d("dataPhoto", dataPhoto);
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK) {
@@ -475,6 +503,8 @@ public class InsertDataBPJS extends AppCompatActivity {
                                 .apply(myOptions)
                                 .load(bitmap)
                                 .into(photo);
+                        fileUri = getImageUri(getApplicationContext(), bitmap);
+                        Log.d("fileuricam", String.valueOf(fileUri));
                     } else {
                         Toast.makeText(this.getApplicationContext(), "Picture not taken!", Toast.LENGTH_SHORT).show();
                     }
@@ -504,6 +534,27 @@ public class InsertDataBPJS extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        String path = "";
+        if (getContentResolver() != null) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                path = cursor.getString(idx);
+                cursor.close();
+            }
+        }
+        return path;
     }
 
 
@@ -886,12 +937,16 @@ public class InsertDataBPJS extends AppCompatActivity {
         data.setKunjungan(kunjungan);
         data.setBadanUsaha(badanUsaha);
         data.setContactBadanUsaha(contactBadanUsaha);
+        Log.d("datafoto", dataPhoto);
 
         kunjungan.setTPSKP(tgl_pnd.getText().toString());
         kunjungan.setTPP(tgl_peringatan_daftar.getText().toString());
         kunjungan.setTMPBU(tgl_max_bu.getText().toString());
         kunjungan.setTPD(tgl_serah_data.getText().toString());
-        kunjungan.setTtdImage(BitMapToString(mSignaturePad2.getSignatureBitmap()));
+//        kunjungan.setTtdImage(BitMapToString(mSignaturePad2.getSignatureBitmap()));
+        kunjungan.setTtdImage(dataTtd);
+        kunjungan.setImage(dataPhoto);
+        Log.d("dataphoto3", dataPhoto);
         kunjungan.setNote(edtNotes.getText().toString());
         int selectedIdNotifikasi = rGroupNotifikasi.getCheckedRadioButtonId();
         rButtonNotifikasi = findViewById(selectedIdNotifikasi);
@@ -954,7 +1009,7 @@ public class InsertDataBPJS extends AppCompatActivity {
             badanUsaha.setAsuransiKesehatan("0");
         }
         badanUsaha.setKeterangan(edtTambahan.getText().toString());
-        badanUsaha.setTtdImage(BitMapToString(mSignaturePad.getSignatureBitmap()));
+        badanUsaha.setTtdImage(dataTtdBu);
 
         contactBadanUsaha.setName(edtPsNama.getText().toString());
         contactBadanUsaha.setJabatan(edtPsJabatan.getText().toString());
@@ -976,6 +1031,20 @@ public class InsertDataBPJS extends AppCompatActivity {
             @Override
             public void onFailure(Call<PostResponse> call, Throwable t) {
                 Log.d("test2", data.toString());
+            }
+        });
+    }
+    void saveEditPost(Data data){
+        String token = sharedPrefManager.getSpToken();
+        Service service = Client.getClient().create(Service.class);
+        Call<PostResponse> call = service.saveEditKunjungan("Bearer " + token, Integer.parseInt(idKunjungan), data);
+        call.enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
             }
         });
     }
@@ -1219,18 +1288,56 @@ public class InsertDataBPJS extends AppCompatActivity {
     }
 
     private void uploadPhoto() {
+        if (fileUri == null || fileUri.equals("")) {
+            savePost(constructData());
+        } else {
+            String token = sharedPrefManager.getSpToken();
+            File file = new File(String.valueOf(fileUri));
+            Map<String, RequestBody> map = new HashMap<>();
+            final RequestBody requestBody = RequestBody.create(MediaType.parse(" "), file);
+            map.put("file\"; filename=\"" + file + "\"", requestBody);
+            Call<ImageResponse> imageCall = Client.getClient().create(Service.class).uploadImage("Bearer " + token, "user", map);
+            imageCall.enqueue(new Callback<ImageResponse>() {
+                @Override
+                public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                    assert response.body() != null;
+                    Log.d("berhasil", new Gson().toJson(response.body().getData().getFilename()));
+                    dataPhoto = response.body().getData().getFilename();
+                    if (edit.equals("2")){
+                        saveEditPost(constructData());
+                    }else {
+                        uploadTtd();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ImageResponse> call, Throwable t) {
+
+                }
+            });
+        }
+
+    }
+
+    private void uploadTtd() {
         String token = sharedPrefManager.getSpToken();
         File file = new File(String.valueOf(fileUri));
+//        ttdUri = getImageUri(getApplicationContext(), mSignaturePad.getSignatureBitmap());
+//        File file = new File(String.valueOf(ttdUri));
+        Log.d("tesfile", String.valueOf(file));
         Map<String, RequestBody> map = new HashMap<>();
-        RequestBody requestBody = RequestBody.create(MediaType.parse(" "), file);
+        final RequestBody requestBody = RequestBody.create(MediaType.parse(" "), file);
         map.put("file\"; filename=\"" + file + "\"", requestBody);
-        Call<ImageResponse> imageCall = Client.getClient().create(Service.class).uploadImage("Bearer " + token, "user", map);
+
+        Call<ImageResponse> imageCall = Client.getClient().create(Service.class).uploadImage("Bearer " + token, "ttd", map);
         imageCall.enqueue(new Callback<ImageResponse>() {
             @Override
             public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
                 assert response.body() != null;
-                Log.d("berhasil" , String.valueOf(response.body().getData()));
-                dataPhoto = String.valueOf(response.body().getData());
+                Log.d("berhasil", new Gson().toJson(response.body().getData().getFilename()));
+                dataTtd= response.body().getData().getFilename();
+                uploadTtdBu();
+
 
             }
 
@@ -1239,6 +1346,34 @@ public class InsertDataBPJS extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void uploadTtdBu() {
+
+        String token = sharedPrefManager.getSpToken();
+        File file = new File(String.valueOf(fileUri));
+        Map<String, RequestBody> map = new HashMap<>();
+        final RequestBody requestBody = RequestBody.create(MediaType.parse(" "), file);
+        map.put("file\"; filename=\"" + file + "\"", requestBody);
+        Call<ImageResponse> imageCall = Client.getClient().create(Service.class).uploadImage("Bearer " + token, "badan_usaha", map);
+        imageCall.enqueue(new Callback<ImageResponse>() {
+            @Override
+            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                assert response.body() != null;
+                Log.d("berhasil", new Gson().toJson(response.body().getData().getFilename()));
+                dataTtdBu = response.body().getData().getFilename();
+                savePost(constructData());
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ImageResponse> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
 }
