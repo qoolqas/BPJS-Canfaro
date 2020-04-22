@@ -153,13 +153,13 @@ public class Kunjungan{
 				"Kunjungan{" +
 						"ttdImage = '" + ttdImage + '\'' +
 						",note = '" + note + '\'' +
-						",tMP_BU = '" + tMPBU + '\'' +
+						",TMP_BU = '" + tMPBU + '\'' +
 						",reminder = '" + reminder + '\'' +
-						",tPP = '" + tPP + '\'' +
+						",TPP = '" + tPP + '\'' +
 						",kendala = '" + kendala + '\'' +
 						",tindakLanjut = '" + tindakLanjut + '\'' +
-						",tPSKP = '" + tPSKP + '\'' +
-						",tPD = '" + tPD + '\'' +
+						",TPSKP = '" + tPSKP + '\'' +
+						",TPD = '" + tPD + '\'' +
 						",totalRecruitment = '" + totalRecruitment + '\'' +
 						",alasan = '" + alasan + '\'' +
 						",status = '" + status + '\'' +

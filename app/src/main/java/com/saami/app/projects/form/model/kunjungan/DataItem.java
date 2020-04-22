@@ -11,13 +11,13 @@ public class DataItem implements Parcelable {
 	private TtdImage ttdImage;
 
 	@SerializedName("image")
-	private String image;
+	private Image image;
 
-	public String getImage() {
+	public Image getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(Image image) {
 		this.image = image;
 	}
 
@@ -264,6 +264,9 @@ public class DataItem implements Parcelable {
 			"}";
 		}
 
+	public DataItem() {
+	}
+
 	@Override
 	public int describeContents() {
 		return 0;
@@ -272,7 +275,7 @@ public class DataItem implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeParcelable(this.ttdImage, flags);
-		dest.writeString(this.image);
+		dest.writeParcelable(this.image, flags);
 		dest.writeString(this.note);
 		dest.writeString(this.tMPBU);
 		dest.writeByte(this.reminder ? (byte) 1 : (byte) 0);
@@ -294,12 +297,9 @@ public class DataItem implements Parcelable {
 		dest.writeParcelable(this.contactBadanUsaha, flags);
 	}
 
-	public DataItem() {
-	}
-
 	protected DataItem(Parcel in) {
 		this.ttdImage = in.readParcelable(TtdImage.class.getClassLoader());
-		this.image = in.readString();
+		this.image = in.readParcelable(Image.class.getClassLoader());
 		this.note = in.readString();
 		this.tMPBU = in.readString();
 		this.reminder = in.readByte() != 0;

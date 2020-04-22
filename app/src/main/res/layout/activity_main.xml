@@ -754,42 +754,46 @@
                             android:textColor="@drawable/text_disabled_with_normal_color"
                             android:textColorHint="@android:color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center|left"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="0dp"
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="Reminder" />
-                    <RadioGroup
-                        android:id="@+id/rg_notifikasi"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center|left"
                         android:orientation="horizontal">
 
-                        <RadioButton
-                            android:id="@+id/rd_notifikasi_ya"
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="Ya" />
+                            android:text="Reminder" />
 
-                        <RadioButton
-                            android:id="@+id/rd_notifikasi_tidak"
+                        <RadioGroup
+                            android:id="@+id/rg_notifikasi"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:checked="true"
-                            android:text="Tidak" />
-                    </RadioGroup>
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rd_notifikasi_ya"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Ya" />
+
+                            <RadioButton
+                                android:id="@+id/rd_notifikasi_tidak"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:checked="true"
+                                android:text="Tidak" />
+                        </RadioGroup>
 
 
-                </LinearLayout>
+                    </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/linearRekrutmen"
                         android:layout_width="match_parent"
@@ -817,8 +821,6 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
-
-
 
 
                 </LinearLayout>
@@ -873,8 +875,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="2dp"
                 android:layout_marginTop="32dp"
+                app:cardCornerRadius="2dp"
                 app:cardElevation="2dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true">
@@ -909,6 +911,67 @@
                         android:gravity="center"
                         android:text="Ulangi Tanda Tangan"
                         android:textColor="@android:color/white" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTtd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:visibility="gone"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Tanda Tangan"
+                        android:textColor="@color/colorSoftBlue" />
+
+                    <ImageView
+                        android:id="@+id/ttdImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTtdBu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:visibility="gone"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Tanda Tangan"
+                        android:textColor="@color/colorSoftBlue" />
+
+                    <ImageView
+                        android:id="@+id/ttdImageBu"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

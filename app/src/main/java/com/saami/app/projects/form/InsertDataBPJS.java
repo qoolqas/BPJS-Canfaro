@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
@@ -74,6 +75,7 @@ public class InsertDataBPJS extends AppCompatActivity {
             edtJumlahRekrutmen;
     RadioGroup rGroupSosialisasiBpjs, rGroupJknKis, rGroupAskes, rGroupBersediaMendaftar, rGroupNotifikasi;
     LinearLayout linearRekrutmen;
+    ImageView imageTtd, imageTtdBu;
 
     final Calendar myCalendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener date;
@@ -99,6 +101,7 @@ public class InsertDataBPJS extends AppCompatActivity {
     Uri ttdUri;
     Uri ttdUri2;
     String filePath = "";
+    CardView cardTtd, cardTtdbu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,6 +249,11 @@ public class InsertDataBPJS extends AppCompatActivity {
         edtJumlahRekrutmen = findViewById(R.id.edt_jumlah_rekrutmen);
         linearRekrutmen = findViewById(R.id.linearRekrutmen);
         rGroupNotifikasi = findViewById(R.id.rg_notifikasi);
+
+        cardTtd = findViewById(R.id.cardTtd);
+        cardTtdbu = findViewById(R.id.cardTtdBu);
+        imageTtd = findViewById(R.id.ttdImage);
+        imageTtdBu = findViewById(R.id.ttdImageBu);
 
         rGroupBersediaMendaftar.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -426,21 +434,29 @@ public class InsertDataBPJS extends AppCompatActivity {
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                String myFormat = "dd/MM/yyyy"; //In which you need put here
+                String myFormat = "dd-MM-yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
                 if (tgl == 1) {
-                    String myFormats = "dd/MM/yyyy hh:mm:ss"; //In which you need put here
+                    String myFormats = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"; //In which you need put here
                     SimpleDateFormat sdfc = new SimpleDateFormat(myFormats, Locale.US);
                     tgl_wkt_knj.setText(sdfc.format(myCalendar.getTime()));
                 } else if (tgl == 2) {
-                    tgl_pnd.setText(sdf.format(myCalendar.getTime()));
+                    String myFormats = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"; //In which you need put here
+                    SimpleDateFormat sdfc = new SimpleDateFormat(myFormats, Locale.US);
+                    tgl_pnd.setText(sdfc.format(myCalendar.getTime()));
                 } else if (tgl == 3) {
-                    tgl_peringatan_daftar.setText(sdf.format(myCalendar.getTime()));
+                    String myFormats = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"; //In which you need put here
+                    SimpleDateFormat sdfc = new SimpleDateFormat(myFormats, Locale.US);
+                    tgl_peringatan_daftar.setText(sdfc.format(myCalendar.getTime()));
                 } else if (tgl == 4) {
-                    tgl_max_bu.setText(sdf.format(myCalendar.getTime()));
+                    String myFormats = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"; //In which you need put here
+                    SimpleDateFormat sdfc = new SimpleDateFormat(myFormats, Locale.US);
+                    tgl_max_bu.setText(sdfc.format(myCalendar.getTime()));
                 } else if (tgl == 5) {
-                    tgl_serah_data.setText(sdf.format(myCalendar.getTime()));
+                    String myFormats = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"; //In which you need put here
+                    SimpleDateFormat sdfc = new SimpleDateFormat(myFormats, Locale.US);
+                    tgl_serah_data.setText(sdfc.format(myCalendar.getTime()));
                 }
 
             }
@@ -656,9 +672,9 @@ public class InsertDataBPJS extends AppCompatActivity {
 //            mSignaturePad2.setSignatureBitmap(StringToBitMap(dataItem.getTtdImage().getUrl()));
         edtNotes.setText(dataItem.getNote());
         if (dataItem.isReminder()) {
-            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
+            rGroupNotifikasi.check(R.id.rd_notifikasi_ya);
         } else {
-            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
+            rGroupNotifikasi.check(R.id.rd_notifikasi_tidak);
         }
         edtalasan.setText(dataItem.getAlasan());
         edttindaklanjut.setText(dataItem.getTindakLanjut());
@@ -706,6 +722,29 @@ public class InsertDataBPJS extends AppCompatActivity {
         edtPsJabatan.setText(dataItem.getContactBadanUsaha().getJabatan());
         edtPsUnitKerja.setText(dataItem.getContactBadanUsaha().getUnitKerja());
         edtPsPhone.setText(dataItem.getContactBadanUsaha().getPhone());
+
+
+        mSignaturePad.setVisibility(View.GONE);
+        mSignaturePad2.setVisibility(View.GONE);
+
+        cardTtd.setVisibility(View.VISIBLE);
+        cardTtdbu.setVisibility(View.VISIBLE);
+
+        Glide.with(InsertDataBPJS.this)
+                .asBitmap()
+                .load(dataItem.getImage().getUrl())
+                .into(photo);
+        Glide.with(InsertDataBPJS.this)
+                .asBitmap()
+                .load(dataItem.getTtdImage().getUrl())
+                .into(imageTtd);
+        Glide.with(InsertDataBPJS.this)
+                .asBitmap()
+                .load(dataItem.getBadanUsaha().getTtdImage().getUrl())
+                .into(imageTtdBu);
+
+        clearSignature.setVisibility(View.GONE);
+        clearsignature2.setVisibility(View.GONE);
 
     }
 
@@ -808,6 +847,9 @@ public class InsertDataBPJS extends AppCompatActivity {
         mSignaturePad.setEnabled(false);
         clearSignature.setVisibility(View.GONE);
 
+        mSignaturePad2.setEnabled(false);
+        clearsignature2.setVisibility(View.GONE);
+
         save_form.setVisibility(View.GONE);
         draft_form.setVisibility(View.GONE);
 
@@ -818,17 +860,29 @@ public class InsertDataBPJS extends AppCompatActivity {
     void setViewApi() {
 
         Log.d("note", String.valueOf(dataItem));
+        Glide.with(InsertDataBPJS.this)
+                .asBitmap()
+                .load(dataItem.getImage().getUrl())
+                .into(photo);
+        Glide.with(InsertDataBPJS.this)
+                .asBitmap()
+                .load(dataItem.getTtdImage().getUrl())
+                .into(imageTtd);
+        Glide.with(InsertDataBPJS.this)
+                .asBitmap()
+                .load(dataItem.getBadanUsaha().getTtdImage().getUrl())
+                .into(imageTtdBu);
         tgl_wkt_knj.setText(dataItem.getCreatedAt());
         tgl_pnd.setText(dataItem.getTPSKP());
         tgl_peringatan_daftar.setText(dataItem.getTPP());
         tgl_max_bu.setText(dataItem.getTMPBU());
         tgl_serah_data.setText(dataItem.getTPD());
-        mSignaturePad2.setSignatureBitmap(StringToBitMap(dataItem.getTtdImage().getUrl()));
+        //mSignaturePad2.setSignatureBitmap(StringToBitMap(dataItem.getTtdImage().getUrl()));
         edtNotes.setText(dataItem.getNote());
         if (dataItem.isReminder()) {
-            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
+            rGroupNotifikasi.check(R.id.rd_notifikasi_ya);
         } else {
-            rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_belum);
+            rGroupNotifikasi.check(R.id.rd_notifikasi_tidak);
         }
         edtalasan.setText(dataItem.getAlasan());
         edttindaklanjut.setText(dataItem.getTindakLanjut());
@@ -848,6 +902,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         edtBidangUsaha.setText(dataItem.getBadanUsaha().getBidangUsaha());
         edtJumlahKaryawan.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKaryawan()));
         edtJumlahKeluarga.setText(String.valueOf(dataItem.getBadanUsaha().getJumlahKeluarga()));
+
         if (dataItem.getBadanUsaha().isSosialisasiBPJS()) {
             rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
         } else {
@@ -868,7 +923,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
 
         edtTambahan.setText(dataItem.getBadanUsaha().getKeterangan());
-        mSignaturePad.setSignatureBitmap(StringToBitMap(dataItem.getBadanUsaha().getTtdImage().getUrl()));
+        //mSignaturePad.setSignatureBitmap(StringToBitMap(dataItem.getBadanUsaha().getTtdImage().getUrl()));
 
         edtPsNama.setText(dataItem.getContactBadanUsaha().getName());
         edtPsJabatan.setText(dataItem.getContactBadanUsaha().getJabatan());
@@ -906,6 +961,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         edtalasan.setEnabled(false);
         edttindaklanjut.setEnabled(false);
         edtkendala.setEnabled(false);
+        edtJumlahRekrutmen.setEnabled(false);
 
         rGroupSosialisasiBpjs.setEnabled(false);
         rGroupBersediaMendaftar.setEnabled(false);
@@ -915,11 +971,14 @@ public class InsertDataBPJS extends AppCompatActivity {
         rGroupNotifikasi.setEnabled(false);
         edtJumlahRekrutmen.setEnabled(false);
 
-        mSignaturePad.setEnabled(false);
+        mSignaturePad.setVisibility(View.GONE);
         clearSignature.setVisibility(View.GONE);
 
-        mSignaturePad2.setEnabled(false);
+        mSignaturePad2.setVisibility(View.GONE);
         clearsignature2.setVisibility(View.GONE);
+
+        cardTtd.setVisibility(View.VISIBLE);
+        cardTtdbu.setVisibility(View.VISIBLE);
 
         save_form.setVisibility(View.GONE);
         draft_form.setVisibility(View.GONE);
@@ -937,7 +996,6 @@ public class InsertDataBPJS extends AppCompatActivity {
         data.setKunjungan(kunjungan);
         data.setBadanUsaha(badanUsaha);
         data.setContactBadanUsaha(contactBadanUsaha);
-        Log.d("datafoto", dataPhoto);
 
         kunjungan.setTPSKP(tgl_pnd.getText().toString());
         kunjungan.setTPP(tgl_peringatan_daftar.getText().toString());
@@ -946,7 +1004,6 @@ public class InsertDataBPJS extends AppCompatActivity {
 //        kunjungan.setTtdImage(BitMapToString(mSignaturePad2.getSignatureBitmap()));
         kunjungan.setTtdImage(dataTtd);
         kunjungan.setImage(dataPhoto);
-        Log.d("dataphoto3", dataPhoto);
         kunjungan.setNote(edtNotes.getText().toString());
         int selectedIdNotifikasi = rGroupNotifikasi.getCheckedRadioButtonId();
         rButtonNotifikasi = findViewById(selectedIdNotifikasi);
