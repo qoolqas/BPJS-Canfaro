@@ -1,12 +1,11 @@
 package com.saami.app.projects.form;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -14,10 +13,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
-import com.saami.app.projects.form.sqlite.FormData;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity
 {
     ImageView newdoc, posteddoc, draftdoc,laporandoc;
+    String state = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,6 +39,16 @@ public class HomeActivity extends AppCompatActivity
                 // do your task.
             }
         });
+        try {
+            state = getIntent().getExtras().getString("state");
+            if (state.equals("6")){
+                startActivity(new Intent(HomeActivity.this, ListView_BPJS.class));
+            }
+        }catch (Exception e){
+            state = "0";
+            Log.d("state fail", " not good ");
+        }
+
 
 
         view();

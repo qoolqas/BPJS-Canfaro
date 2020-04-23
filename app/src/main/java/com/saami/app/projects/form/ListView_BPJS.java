@@ -121,7 +121,11 @@ public class ListView_BPJS extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getData();
+//                pb.setVisibility(View.VISIBLE);
+//                getData();
+                Intent intent = new Intent(ListView_BPJS.this, HomeActivity.class);
+                intent.putExtra("state", "6");
+                startActivity(intent);
             }
         });
 

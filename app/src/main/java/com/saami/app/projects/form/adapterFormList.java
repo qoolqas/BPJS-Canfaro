@@ -138,6 +138,7 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
                                             Toast.makeText(mActivity.getApplicationContext(), v.getContext().getString(R.string.msg_success), Toast.LENGTH_SHORT).show();
                                             kunjungan.remove(kunjungan.get(position));
                                             notifyDataSetChanged();
+
                                         }else {
                                             Toast.makeText(mActivity.getApplicationContext(), v.getContext().getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
                                         }
