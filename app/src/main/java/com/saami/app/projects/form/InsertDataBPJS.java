@@ -1077,7 +1077,11 @@ public class InsertDataBPJS extends AppCompatActivity {
         kunjungan.setAlasan(edtalasan.getText().toString());
         kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());
         kunjungan.setKendala(edtkendala.getText().toString());
-        kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
+        if (edtJumlahRekrutmen.getText().toString().equals("")){
+            kunjungan.setTotalRecruitment("0");
+        }else {
+            kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
+        }
 
         int selectedIdStatus = rGroupBersediaMendaftar.getCheckedRadioButtonId();
         rButtonBersediaMendaftar = findViewById(selectedIdStatus);
@@ -1166,7 +1170,12 @@ public class InsertDataBPJS extends AppCompatActivity {
         kunjungan.setAlasan(edtalasan.getText().toString());
         kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());
         kunjungan.setKendala(edtkendala.getText().toString());
-        kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
+        if (edtJumlahRekrutmen.getText().toString().equals("")){
+            kunjungan.setTotalRecruitment("0");
+        }else {
+            kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
+        }
+
 
         int selectedIdStatus = rGroupBersediaMendaftar.getCheckedRadioButtonId();
         rButtonBersediaMendaftar = findViewById(selectedIdStatus);
@@ -1245,6 +1254,11 @@ public class InsertDataBPJS extends AppCompatActivity {
         kunjungan.setImage(dataPhoto);
         kunjungan.setNote(edtNotes.getText().toString());
         int selectedIdNotifikasi = rGroupNotifikasi.getCheckedRadioButtonId();
+        if (edtJumlahRekrutmen.getText().toString().equals("")){
+            kunjungan.setTotalRecruitment("0");
+        }else {
+            kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
+        }
         rButtonNotifikasi = findViewById(selectedIdNotifikasi);
         String valueNotif = rButtonNotifikasi.getText().toString();
         if (valueNotif.equals("3 Hari")) {
@@ -1255,7 +1269,6 @@ public class InsertDataBPJS extends AppCompatActivity {
         kunjungan.setAlasan(edtalasan.getText().toString());
         kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());
         kunjungan.setKendala(edtkendala.getText().toString());
-        kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
 
         int selectedIdStatus = rGroupBersediaMendaftar.getCheckedRadioButtonId();
         rButtonBersediaMendaftar = findViewById(selectedIdStatus);
