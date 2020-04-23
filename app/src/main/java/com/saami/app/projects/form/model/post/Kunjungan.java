@@ -7,6 +7,17 @@ public class Kunjungan{
 	@SerializedName("ttdImage")
 	private String ttdImage;
 
+	@SerializedName("image")
+	private String image;
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@SerializedName("note")
 	private String note;
 
@@ -142,13 +153,13 @@ public class Kunjungan{
 				"Kunjungan{" +
 						"ttdImage = '" + ttdImage + '\'' +
 						",note = '" + note + '\'' +
-						",tMP_BU = '" + tMPBU + '\'' +
+						",TMP_BU = '" + tMPBU + '\'' +
 						",reminder = '" + reminder + '\'' +
-						",tPP = '" + tPP + '\'' +
+						",TPP = '" + tPP + '\'' +
 						",kendala = '" + kendala + '\'' +
 						",tindakLanjut = '" + tindakLanjut + '\'' +
-						",tPSKP = '" + tPSKP + '\'' +
-						",tPD = '" + tPD + '\'' +
+						",TPSKP = '" + tPSKP + '\'' +
+						",TPD = '" + tPD + '\'' +
 						",totalRecruitment = '" + totalRecruitment + '\'' +
 						",alasan = '" + alasan + '\'' +
 						",status = '" + status + '\'' +

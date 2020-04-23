@@ -1,7 +1,5 @@
 package com.saami.app.projects.form.connection;
 
-
-import com.saami.app.projects.form.model.badanusaha.BadanUsahaGetResponse;
 import com.saami.app.projects.form.model.image.ImageResponse;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.model.login.LoginResponse;
@@ -47,13 +45,8 @@ public interface Service {
             @Field("password") String password
     );
 
-    @GET("badan-usaha")
-    Call<BadanUsahaGetResponse> getBu(@Header("Authorization") String authorization,
-                                      @Query("q") String uid);
 
-    @GET("badan-usaha/{id}")
-    Call<BadanUsahaGetResponse> getBuId(@Header("Authorization") String authorization,
-                                        @Path("id") String id);
+
 
     @GET("kunjungan")
     Call<KunjunganGetResponse> getKunjungan(@Header("Authorization") String authorization,
@@ -78,6 +71,11 @@ public interface Service {
     @POST("kunjungan")
     Call<PostResponse> saveKunjungan(@Header("Authorization") String authorization,
                                      @Body Data data);
+
+    @POST("kunjungan/{id}")
+    Call<PostResponse> saveEditKunjungan(@Header("Authorization") String authorization,
+                                         @Path("id") int id,
+                                         @Body Data data);
 
     @Multipart
     @POST("image/upload/{type}")

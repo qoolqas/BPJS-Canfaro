@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.saami.app.projects.form.model.badanusaha.DataItem;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 
 import java.text.DecimalFormat;
@@ -119,7 +118,7 @@ public class AdapterDraft extends RecyclerView.Adapter<AdapterDraft.ViewHolder> 
 
                                     dialog.dismiss();
                                     if (item.getF_SAVE_DRAFT().equals("0")) {
-                                        ((ListView_BPJS) mContext).getformData();
+                                        ((ListView_BPJS_Draft) mContext).getformData();
                                     } else {
                                         ((ListView_BPJS_Draft) mContext).getformData();
                                     }

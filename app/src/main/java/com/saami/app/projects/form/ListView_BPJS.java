@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.saami.app.projects.form.model.badanusaha.BadanUsahaGetResponse;
 import com.saami.app.projects.form.model.kunjungan.DataItem;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
@@ -253,43 +252,6 @@ public class ListView_BPJS extends AppCompatActivity {
                 .show();
     }
 
-    public void getformData() {
-        arraylistform.clear();
-        ArrayList<FormData> forms = dataSource.getAllformposted();
-        if (forms.size() > 0) {
-            for (int i = 0; i < forms.toArray().length; i++) {
-                final FormData cv = forms.get(i);
-                System.out.println("kode :" + cv.getF_KODE());
-                provform = new ProviderFormList(cv.getF_KODE(), cv.getF_TGL_KUNJUNGAN(), cv.getF_TGL_PENYERAHAN_DATA(), cv.getF_TGL_PERINGATAN_PENDAFTARAN(), cv.getF_TGL_PENDAFTARAN_BU(), cv.getF_TGL_PENYERAHAN_DATA(), cv.getF_BDN_USH(), cv.getF_ALAMAT(), cv.getF_PHONE(), cv.getF_EMAIL(), cv.getF_BIDANG_USH(), cv.getF_JUMLAHKAR(), cv.getF_JUMLAHKEL(), cv.getF_MENGIKUTI_SOSIALISASI_BPJS_KES(), cv.getF_JKN_KIS(), cv.getF_JUMLAHTERDAFTARKAR(), cv.getF_JUMLAHTERDAFTARKEL(), cv.getF_ASURANSIKES(), cv.getF_TAMBAHAN(), cv.getF_KP_NAMA(), cv.getF_KP_JABATAN(), cv.getF_KP_UNIT_KERJA(), cv.getF_KP_PHONE(), cv.getF_HC_BERSEDIA_MENDAFTAR(), cv.getF_HC_ALASAN(), cv.getF_HC_TINDAK_LANJUT(), cv.getF_HC_KENDALA(), cv.getF_SAVE_DRAFT());
-                arraylistform.add(provform);
-            }
-            adapter.notifyDataSetChanged();
-
-        } else {
-            Toast.makeText(ListView_BPJS.this, "Tidak ada data", Toast.LENGTH_LONG).show();
-            arraylistform.clear();
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    void getformDataByNama() {
-        arraylistform.clear();
-        ArrayList<FormData> forms = dataSource.getAllformpostedbynama(edtCarinama.getText().toString());
-        if (forms.size() > 0) {
-            for (int i = 0; i < forms.toArray().length; i++) {
-                final FormData cv = forms.get(i);
-                System.out.println("kode :" + cv.getF_KODE());
-                provform = new ProviderFormList(cv.getF_KODE(), cv.getF_TGL_KUNJUNGAN(), cv.getF_TGL_PENYERAHAN_DATA(), cv.getF_TGL_PERINGATAN_PENDAFTARAN(), cv.getF_TGL_PENDAFTARAN_BU(), cv.getF_TGL_PENYERAHAN_DATA(), cv.getF_BDN_USH(), cv.getF_ALAMAT(), cv.getF_PHONE(), cv.getF_EMAIL(), cv.getF_BIDANG_USH(), cv.getF_JUMLAHKAR(), cv.getF_JUMLAHKEL(), cv.getF_MENGIKUTI_SOSIALISASI_BPJS_KES(), cv.getF_JKN_KIS(), cv.getF_JUMLAHTERDAFTARKAR(), cv.getF_JUMLAHTERDAFTARKEL(), cv.getF_ASURANSIKES(), cv.getF_TAMBAHAN(), cv.getF_KP_NAMA(), cv.getF_KP_JABATAN(), cv.getF_KP_UNIT_KERJA(), cv.getF_KP_PHONE(), cv.getF_HC_BERSEDIA_MENDAFTAR(), cv.getF_HC_ALASAN(), cv.getF_HC_TINDAK_LANJUT(), cv.getF_HC_KENDALA(), cv.getF_SAVE_DRAFT());
-                arraylistform.add(provform);
-            }
-            adapter.notifyDataSetChanged();
-
-        } else {
-            Toast.makeText(ListView_BPJS.this, edtCarinama.getText().toString() + " Tidak ditemukan", Toast.LENGTH_LONG).show();
-            arraylistform.clear();
-            adapter.notifyDataSetChanged();
-        }
-    }
 
     private void getData() {
 
