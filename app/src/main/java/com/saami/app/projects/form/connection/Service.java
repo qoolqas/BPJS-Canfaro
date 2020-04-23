@@ -20,6 +20,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
@@ -46,8 +47,6 @@ public interface Service {
     );
 
 
-
-
     @GET("kunjungan")
     Call<KunjunganGetResponse> getKunjungan(@Header("Authorization") String authorization,
                                             @Query("userId") String uid,
@@ -55,7 +54,8 @@ public interface Service {
 
     @GET("kunjungan/{id}")
     Call<KunjunganGetResponse> getKunjunganId(@Header("Authorization") String authorization,
-                                              @Path("id") int id);
+                                              @Path("id") int id
+    );
 
     @GET("kunjungan")
     Call<KunjunganGetResponse> getKunjunganSearch(@Header("Authorization") String authorization,
@@ -72,7 +72,7 @@ public interface Service {
     Call<PostResponse> saveKunjungan(@Header("Authorization") String authorization,
                                      @Body Data data);
 
-    @POST("kunjungan/{id}")
+    @PUT("kunjungan/{id}")
     Call<PostResponse> saveEditKunjungan(@Header("Authorization") String authorization,
                                          @Path("id") int id,
                                          @Body Data data);
