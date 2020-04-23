@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -310,8 +311,9 @@ public class InsertDataBPJS extends AppCompatActivity {
                 savedraft = "0";
                 if (mSignaturePad.isEmpty() | mSignaturePad2.isEmpty()) {
                     Toast.makeText(InsertDataBPJS.this, "Silahkan Tanda Tangan Terlebih Dahulu", Toast.LENGTH_LONG).show();
-                    uploadPhoto();
-                    uploadTtd();
+//                    uploadPhoto();
+//                    tempTtd();
+//                    uploadTtd();
                     Log.d("stringitu", dataPhoto);
 
                 } else {
@@ -345,7 +347,8 @@ public class InsertDataBPJS extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int arg1) {
                                         dialog.dismiss();
-                                        uploadPhoto();
+//                                        uploadPhoto();
+                                        tempTtd();
 //                                        saveNewData();
 //                                        saveFile();
                                     }
@@ -417,9 +420,21 @@ public class InsertDataBPJS extends AppCompatActivity {
         save_media.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (view.equals("2")) {
+                    BitmapDrawable fotoD = (BitmapDrawable) photo.getDrawable();
+                    Bitmap foto =  fotoD.getBitmap();
+                    BitmapDrawable ttdD = (BitmapDrawable) imageTtd.getDrawable();
+                    Bitmap ttd = ttdD.getBitmap();
+                    BitmapDrawable ttdBuD = (BitmapDrawable) imageTtdBu.getDrawable();
+                    Bitmap ttdBu = ttdBuD.getBitmap();
+                    saveMediaPhotoTtd(foto, ttd, ttdBu);
+                }else {
+
+
                 photo.setDrawingCacheEnabled(true);
                 Bitmap bitmapPhotos = photo.getDrawingCache();
                 saveMediaPhotoTtd(bitmapPhotos, mSignaturePad.getSignatureBitmap(), mSignaturePad2.getSignatureBitmap());
+                }
             }
         });
 
@@ -501,7 +516,47 @@ public class InsertDataBPJS extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    private void tempTtd(){
+        saveMediaPhotoTtdTemp(mSignaturePad.getSignatureBitmap(), mSignaturePad2.getSignatureBitmap());
+        uploadPhoto();
+        Log.d("ttduri3", String.valueOf(ttdUri));
+    }
+    private void saveMediaPhotoTtdTemp( Bitmap ttdBitmap, Bitmap ttd2Bitmap) {
 
+        File myDirTtd = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Temp");
+        myDirTtd.mkdirs();
+        String ttdname = edtPsNama.getText().toString() + "ttd"+"_"  + "_.png";
+        File files = new File(myDirTtd, ttdname);
+        String pathttd = files.toString();
+        if (files.exists()) files.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(files);
+            ttdBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        File myDirTtd2 = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Temp");
+
+        myDirTtd2.mkdirs();
+        String ttdname2 = edtPsNama.getText().toString() + "ttdbu"+"_" + "_.png";
+        File files2 = new File(myDirTtd2, ttdname2);
+        String pathttd2 = files2.toString();
+        if (files2.exists()) files2.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(files2);
+            ttd2Bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ttdUri = Uri.parse(pathttd);
+        ttdUri2 = Uri.parse(pathttd2);
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
@@ -531,6 +586,7 @@ public class InsertDataBPJS extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
 
                     Uri selectedImage = imageReturnedIntent.getData();
+                    Log.d("selected", String.valueOf(selectedImage));
 
                     Glide.with(InsertDataBPJS.this)
                             .asBitmap()
@@ -1286,7 +1342,7 @@ public class InsertDataBPJS extends AppCompatActivity {
     private void saveMediaPhotoTtd(Bitmap bitmapPhoto, Bitmap ttdBitmap, Bitmap ttd2Bitmap) {
         File myDirPhotos = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Photo");
         myDirPhotos.mkdirs();
-        String photoname = edtPsNama.getText().toString() + "_" + kodeForm + "_.png";
+        String photoname = edtPsNama.getText().toString() + "_"  + "_.png";
         File file = new File(myDirPhotos, photoname);
         if (file.exists()) file.delete();
         try {
@@ -1301,7 +1357,7 @@ public class InsertDataBPJS extends AppCompatActivity {
 
         File myDirTtd = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Tanda Tangan");
         myDirTtd.mkdirs();
-        String ttdname = edtPsNama.getText().toString() + "_" + kodeForm + "_.png";
+        String ttdname = edtPsNama.getText().toString() + "_"  + "_.png";
         File files = new File(myDirTtd, ttdname);
         if (files.exists()) files.delete();
         try {
@@ -1315,8 +1371,8 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
         File myDirTtd2 = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Tanda Tangan BadanUsaha");
         myDirTtd2.mkdirs();
-        String ttdname2 = edtPsNama.getText().toString() + "_" + kodeForm + "_.png";
-        File files2 = new File(myDirTtd, ttdname2);
+        String ttdname2 = edtPsNama.getText().toString() + "_" + "_.png";
+        File files2 = new File(myDirTtd2, ttdname2);
         if (files2.exists()) files2.delete();
         try {
             FileOutputStream out = new FileOutputStream(files2);
@@ -1351,6 +1407,7 @@ public class InsertDataBPJS extends AppCompatActivity {
             String token = sharedPrefManager.getSpToken();
             File file = new File(String.valueOf(fileUri));
             Map<String, RequestBody> map = new HashMap<>();
+            Log.d("tesfile2", String.valueOf(file));
             final RequestBody requestBody = RequestBody.create(MediaType.parse(" "), file);
             map.put("file\"; filename=\"" + file + "\"", requestBody);
             Call<ImageResponse> imageCall = Client.getClient().create(Service.class).uploadImage("Bearer " + token, "user", map);
@@ -1378,9 +1435,7 @@ public class InsertDataBPJS extends AppCompatActivity {
 
     private void uploadTtd() {
         String token = sharedPrefManager.getSpToken();
-        File file = new File(String.valueOf(fileUri));
-//        ttdUri = getImageUri(getApplicationContext(), mSignaturePad.getSignatureBitmap());
-//        File file = new File(String.valueOf(ttdUri));
+        File file = new File(String.valueOf(ttdUri));
         Log.d("tesfile", String.valueOf(file));
         Map<String, RequestBody> map = new HashMap<>();
         final RequestBody requestBody = RequestBody.create(MediaType.parse(" "), file);
@@ -1408,7 +1463,7 @@ public class InsertDataBPJS extends AppCompatActivity {
     private void uploadTtdBu() {
 
         String token = sharedPrefManager.getSpToken();
-        File file = new File(String.valueOf(fileUri));
+        File file = new File(String.valueOf(ttdUri2));
         Map<String, RequestBody> map = new HashMap<>();
         final RequestBody requestBody = RequestBody.create(MediaType.parse(" "), file);
         map.put("file\"; filename=\"" + file + "\"", requestBody);
