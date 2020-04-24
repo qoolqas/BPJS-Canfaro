@@ -18,18 +18,19 @@ import com.saami.app.projects.form.model.alamat.DataItem;
 
 import java.util.List;
 
-public class AlamatAdapter extends RecyclerView.Adapter<AlamatAdapter.ViewHolder>  {
+public class AlamatAdapter extends RecyclerView.Adapter<AlamatAdapter.ViewHolder> {
     private List<DataItem> alamat;
     private Activity activity;
     private Context context;
     LayoutInflater mInflater;
 
-    public AlamatAdapter( List<DataItem> data,Activity act ,Context ctx) {
+    public AlamatAdapter(List<DataItem> data, Activity act, Context ctx) {
         this.alamat = data;
         this.activity = act;
         this.context = ctx;
         mInflater = LayoutInflater.from(context);
     }
+
     @NonNull
     @Override
     public AlamatAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,23 +42,30 @@ public class AlamatAdapter extends RecyclerView.Adapter<AlamatAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull AlamatAdapter.ViewHolder holder, int position) {
-
+        holder.namaBu.setText(alamat.get(position).getNamaBadanUsaha());
+        holder.provinsi.setText(alamat.get(position).getProvinsi());
+        holder.kota.setText(alamat.get(position).getKota());
+        holder.kecamatan.setText(alamat.get(position).getKecamatan());
+        holder.alamat.setText(alamat.get(position).getAlamat());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return alamat.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView namaBu, provinsi, kota,kecamatan, alamat;
+        TextView namaBu, provinsi, kota, kecamatan, alamat;
         ImageView show, edit, delete;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             namaBu = itemView.findViewById(R.id.nama_badan_usaha);
             provinsi = itemView.findViewById(R.id.provinsi);
-
+            kota = itemView.findViewById(R.id.kota);
+            kecamatan = itemView.findViewById(R.id.kecamatan);
+            alamat = itemView.findViewById(R.id.alamat);
         }
     }
 }
