@@ -43,9 +43,10 @@ public class DBDataSource
                     DBHelper.F_HC_ALASAN ,
                     DBHelper.F_HC_TINDAK_LANJUT,
                     DBHelper.F_HC_KENDALA,
-                    DBHelper.F_FLAG_SAVE_DRAFT,
                     DBHelper.F_TOTAL_REKRUITMEN,
-                    DBHelper.F_CATATAN
+                    DBHelper.F_CATATAN,
+                    DBHelper.F_FLAG_SAVE_DRAFT
+
             };
 
     private String[] formfile = new String[]
@@ -102,9 +103,10 @@ public class DBDataSource
         values.put( DBHelper.F_HC_ALASAN ,data.getF_HC_ALASAN());
         values.put(DBHelper.F_HC_TINDAK_LANJUT,data.getF_HC_TINDAK_LANJUT());
         values.put(DBHelper.F_HC_KENDALA,data.getF_HC_KENDALA());
-        values.put(DBHelper.F_FLAG_SAVE_DRAFT, data.getF_SAVE_DRAFT());
         values.put(DBHelper.F_TOTAL_REKRUITMEN, data.getF_TOTALREKRUITMEN());
         values.put(DBHelper.F_CATATAN, data.getF_CATATAN());
+        values.put(DBHelper.F_FLAG_SAVE_DRAFT, data.getF_SAVE_DRAFT());
+
         long insertId = database.insert(DBHelper.TABLE_FORM, null,values);
         close();
         return insertId;
@@ -140,9 +142,10 @@ public class DBDataSource
         data.setF_HC_ALASAN(cursor.getString(24));
         data.setF_HC_TINDAK_LANJUT(cursor.getString(25));
         data.setF_HC_KENDALA(cursor.getString(26));
-        data.setF_SAVE_DRAFT(cursor.getString(27));
-        data.setF_TOTALREKRUITMEN(cursor.getString(28));
-        data.setF_CATATAN(cursor.getString(29));
+        data.setF_TOTALREKRUITMEN(cursor.getString(27));
+        data.setF_CATATAN(cursor.getString(28));
+        data.setF_SAVE_DRAFT(cursor.getString(29));
+
         close();
         return data;
     }
@@ -256,9 +259,10 @@ public class DBDataSource
         values.put( DBHelper.F_HC_ALASAN ,data.getF_HC_ALASAN());
         values.put(DBHelper.F_HC_TINDAK_LANJUT,data.getF_HC_TINDAK_LANJUT());
         values.put(DBHelper.F_HC_KENDALA,data.getF_HC_KENDALA());
-        values.put(DBHelper.F_FLAG_SAVE_DRAFT,data.getF_SAVE_DRAFT());
         values.put(DBHelper.F_TOTAL_REKRUITMEN,data.getF_TOTALREKRUITMEN());
         values.put(DBHelper.F_CATATAN,data.getF_CATATAN());
+        values.put(DBHelper.F_FLAG_SAVE_DRAFT,data.getF_SAVE_DRAFT());
+
         long updateId = database.update(DBHelper.TABLE_FORM, values, DBHelper.F_KODE+"='"+data.getF_KODE()+"'", null);
         close();
 
