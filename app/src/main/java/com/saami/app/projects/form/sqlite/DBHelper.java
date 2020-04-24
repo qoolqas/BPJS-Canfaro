@@ -41,7 +41,7 @@ public class DBHelper extends SQLiteOpenHelper
     public static final String F_HC_KENDALA = "hc_kendala";
     public static final String F_FLAG_SAVE_DRAFT = "save_draft";
     public static final String F_TOTAL_REKRUITMEN = "total_rekruitmen";
-
+    public static final String F_CATATAN = "catatan";
     public static final String TABLE_FILE = "table_file";
     public static final String FILE_ID = "id";
     public static final String FILE_KODE = "kode";
@@ -82,7 +82,8 @@ public class DBHelper extends SQLiteOpenHelper
             +F_HC_TINDAK_LANJUT+" text,"
             +F_HC_KENDALA+ " text,"
             +F_FLAG_SAVE_DRAFT+" INTEGER default 0,"
-            +F_TOTAL_REKRUITMEN+"text);";
+            +F_TOTAL_REKRUITMEN+"text,"
+            +F_CATATAN+"text);";
 
     private static final String db_file = "create table "
             +TABLE_FILE+"("
@@ -90,7 +91,7 @@ public class DBHelper extends SQLiteOpenHelper
             +FILE_KODE+" text,"
             +FILE_IMAGE+" text,"
             +FILE_TTD+" text,"
-            +FILE_TTD2+"text)";
+            +FILE_TTD2+"text);";
 
     public DBHelper(Context context, String nama , SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DB_NAME, factory, DB_VERSION);
