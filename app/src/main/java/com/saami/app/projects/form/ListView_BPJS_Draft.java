@@ -264,7 +264,7 @@ public class ListView_BPJS_Draft extends AppCompatActivity
             {
                 final FormData cv = forms.get(i);
                 System.out.println("kode :"+cv.getF_KODE());
-                provform = new ProviderFormList(cv.getF_KODE(),cv.getF_TGL_KUNJUNGAN(),cv.getF_TGL_PENYERAHAN_DATA(),cv.getF_TGL_PERINGATAN_PENDAFTARAN(),cv.getF_TGL_PENDAFTARAN_BU(),cv.getF_TGL_PENYERAHAN_DATA(),cv.getF_BDN_USH(),cv.getF_ALAMAT(),cv.getF_PHONE(),cv.getF_EMAIL(),cv.getF_BIDANG_USH(),cv.getF_JUMLAHKAR(),cv.getF_JUMLAHKEL(), cv.getF_MENGIKUTI_SOSIALISASI_BPJS_KES(),cv.getF_JKN_KIS(),cv.getF_JUMLAHTERDAFTARKAR(),cv.getF_JUMLAHTERDAFTARKEL(),cv.getF_ASURANSIKES(),cv.getF_TAMBAHAN(),cv.getF_KP_NAMA(),cv.getF_KP_JABATAN(),cv.getF_KP_UNIT_KERJA(),cv.getF_KP_PHONE(),cv.getF_HC_BERSEDIA_MENDAFTAR(),cv.getF_HC_ALASAN(),cv.getF_HC_TINDAK_LANJUT(),cv.getF_HC_KENDALA(),cv.getF_SAVE_DRAFT());
+                provform = new ProviderFormList(cv.getF_KODE(),cv.getF_TGL_KUNJUNGAN(),cv.getF_TGL_PENYERAHAN_DATA(),cv.getF_TGL_PERINGATAN_PENDAFTARAN(),cv.getF_TGL_PENDAFTARAN_BU(),cv.getF_TGL_PENYERAHAN_DATA(),cv.getF_BDN_USH(),cv.getF_ALAMAT(),cv.getF_PHONE(),cv.getF_EMAIL(),cv.getF_BIDANG_USH(),cv.getF_JUMLAHKAR(),cv.getF_JUMLAHKEL(), cv.getF_MENGIKUTI_SOSIALISASI_BPJS_KES(),cv.getF_JKN_KIS(),cv.getF_JUMLAHTERDAFTARKAR(),cv.getF_JUMLAHTERDAFTARKEL(),cv.getF_ASURANSIKES(),cv.getF_TAMBAHAN(),cv.getF_KP_NAMA(),cv.getF_KP_JABATAN(),cv.getF_KP_UNIT_KERJA(),cv.getF_KP_PHONE(),cv.getF_HC_BERSEDIA_MENDAFTAR(),cv.getF_HC_ALASAN(),cv.getF_HC_TINDAK_LANJUT(),cv.getF_HC_KENDALA(),cv.getF_TOTALREKRUITMEN(),cv.getF_CATATAN(),cv.getF_SAVE_DRAFT());
                 arraylistform.add(provform);
             }
             adapter.notifyDataSetChanged();
@@ -286,7 +286,7 @@ public class ListView_BPJS_Draft extends AppCompatActivity
             {
                 final FormData cv = forms.get(i);
                 System.out.println("kode :"+cv.getF_KODE());
-                provform = new ProviderFormList(cv.getF_KODE(),cv.getF_TGL_KUNJUNGAN(),cv.getF_TGL_PENYERAHAN_DATA(),cv.getF_TGL_PERINGATAN_PENDAFTARAN(),cv.getF_TGL_PENDAFTARAN_BU(),cv.getF_TGL_PENYERAHAN_DATA(),cv.getF_BDN_USH(),cv.getF_ALAMAT(),cv.getF_PHONE(),cv.getF_EMAIL(),cv.getF_BIDANG_USH(),cv.getF_JUMLAHKAR(),cv.getF_JUMLAHKEL(), cv.getF_MENGIKUTI_SOSIALISASI_BPJS_KES(),cv.getF_JKN_KIS(),cv.getF_JUMLAHTERDAFTARKAR(),cv.getF_JUMLAHTERDAFTARKEL(),cv.getF_ASURANSIKES(),cv.getF_TAMBAHAN(),cv.getF_KP_NAMA(),cv.getF_KP_JABATAN(),cv.getF_KP_UNIT_KERJA(),cv.getF_KP_PHONE(),cv.getF_HC_BERSEDIA_MENDAFTAR(),cv.getF_HC_ALASAN(),cv.getF_HC_TINDAK_LANJUT(),cv.getF_HC_KENDALA(),cv.getF_SAVE_DRAFT());
+                provform = new ProviderFormList(cv.getF_KODE(),cv.getF_TGL_KUNJUNGAN(),cv.getF_TGL_PENYERAHAN_DATA(),cv.getF_TGL_PERINGATAN_PENDAFTARAN(),cv.getF_TGL_PENDAFTARAN_BU(),cv.getF_TGL_PENYERAHAN_DATA(),cv.getF_BDN_USH(),cv.getF_ALAMAT(),cv.getF_PHONE(),cv.getF_EMAIL(),cv.getF_BIDANG_USH(),cv.getF_JUMLAHKAR(),cv.getF_JUMLAHKEL(), cv.getF_MENGIKUTI_SOSIALISASI_BPJS_KES(),cv.getF_JKN_KIS(),cv.getF_JUMLAHTERDAFTARKAR(),cv.getF_JUMLAHTERDAFTARKEL(),cv.getF_ASURANSIKES(),cv.getF_TAMBAHAN(),cv.getF_KP_NAMA(),cv.getF_KP_JABATAN(),cv.getF_KP_UNIT_KERJA(),cv.getF_KP_PHONE(),cv.getF_HC_BERSEDIA_MENDAFTAR(),cv.getF_HC_ALASAN(),cv.getF_HC_TINDAK_LANJUT(),cv.getF_HC_KENDALA(),cv.getF_SAVE_DRAFT(), cv.getF_CATATAN(), cv.getF_TOTALREKRUITMEN());
                 arraylistform.add(provform);
             }
             adapter.notifyDataSetChanged();

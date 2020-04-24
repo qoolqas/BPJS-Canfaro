@@ -5,10 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-public class DBHelper extends SQLiteOpenHelper
-{
-    public static final String DB_NAME = "form.db";
-    public static final int DB_VERSION = 1;
+public class DBHelper extends SQLiteOpenHelper {
+    public static final String DB_NAME = "form.dbb";
+    public static final int DB_VERSION = 2;
 
     public static final String TABLE_FORM = "tableform";
     public static final String F_ID = "id";
@@ -47,67 +46,66 @@ public class DBHelper extends SQLiteOpenHelper
     public static final String FILE_KODE = "kode";
     public static final String FILE_IMAGE = "imgbase64";
     public static final String FILE_TTD = "ttdbase64";
-    public static final String FILE_TTD2 = "ttdbase264";
+    public static final String FILE_TTD2 = "ttdbubase64";
 
     // SQLITE
 
     private static final String db_form = "create table "
-            +TABLE_FORM+"("
-            +F_ID +" INTEGER primary key autoincrement not null,"
-            +F_KODE+" text,"
-            +F_TGL_KUNJUNGAN+" text,"
-            +F_TGL_KESEDIAAN_PENDAFTARAN+ " text,"
-            +F_TGL_PERINGATAN_PENDAFTARAN+ " text,"
-            +F_TGL_PENDAFTARAN_BU+" text,"
-            +F_TGL_PENYERAHAN_DATA+" text,"
-            +F_BDN_USH+ " text,"
-            +F_ALAMAT+ " text,"
-            +F_PHONE+" text,"
-            +F_EMAIL+ " text,"
-            +F_BIDANG_USH+ " text,"
-            +F_JUMLAHKAR+" text,"
-            +F_JUMLAHKEL+ " text,"
-            +F_MENGIKUTI_SOSIALISASI_BPJS_KES+ " text,"
-            +F_JKN_KIS+" text,"
-            +F_JUMLAHTERDAFTARKAR+ " text,"
-            +F_JUMLAHTERDAFTARKEL+ " text,"
-            +F_ASURANSIKES+" text,"
-            +F_TAMBAHAN+ " text,"
-            +F_KP_NAMA+ " text,"
-            +F_KP_JABATAN+" text,"
-            +F_KP_UNIT_KERJA+ " text,"
-            +F_KP_PHONE+ " text,"
-            +F_HC_BERSEDIA_MENDAFTAR+" text,"
-            +F_HC_ALASAN+ " text,"
-            +F_HC_TINDAK_LANJUT+" text,"
-            +F_HC_KENDALA+ " text,"
-            +F_FLAG_SAVE_DRAFT+" INTEGER default 0,"
-            +F_TOTAL_REKRUITMEN+"text,"
-            +F_CATATAN+"text);";
+            + TABLE_FORM + "("
+            + F_ID + " INTEGER primary key autoincrement not null,"
+            + F_KODE + " text,"
+            + F_TGL_KUNJUNGAN + " text,"
+            + F_TGL_KESEDIAAN_PENDAFTARAN + " text,"
+            + F_TGL_PERINGATAN_PENDAFTARAN + " text,"
+            + F_TGL_PENDAFTARAN_BU + " text,"
+            + F_TGL_PENYERAHAN_DATA + " text,"
+            + F_BDN_USH + " text,"
+            + F_ALAMAT + " text,"
+            + F_PHONE + " text,"
+            + F_EMAIL + " text,"
+            + F_BIDANG_USH + " text,"
+            + F_JUMLAHKAR + " text,"
+            + F_JUMLAHKEL + " text,"
+            + F_MENGIKUTI_SOSIALISASI_BPJS_KES + " text,"
+            + F_JKN_KIS + " text,"
+            + F_JUMLAHTERDAFTARKAR + " text,"
+            + F_JUMLAHTERDAFTARKEL + " text,"
+            + F_ASURANSIKES + " text,"
+            + F_TAMBAHAN + " text,"
+            + F_KP_NAMA + " text,"
+            + F_KP_JABATAN + " text,"
+            + F_KP_UNIT_KERJA + " text,"
+            + F_KP_PHONE + " text,"
+            + F_HC_BERSEDIA_MENDAFTAR + " text,"
+            + F_HC_ALASAN + " text,"
+            + F_HC_TINDAK_LANJUT + " text,"
+            + F_HC_KENDALA + " text,"
+            + F_TOTAL_REKRUITMEN + " text,"
+            + F_CATATAN + " text,"
+            + F_FLAG_SAVE_DRAFT + " INTEGER default 0);";
+
 
     private static final String db_file = "create table "
-            +TABLE_FILE+"("
-            +FILE_ID +" INTEGER primary key autoincrement not null,"
-            +FILE_KODE+" text,"
-            +FILE_IMAGE+" text,"
-            +FILE_TTD+" text,"
-            +FILE_TTD2+"text);";
+            + TABLE_FILE + "("
+            + FILE_ID + " INTEGER primary key autoincrement not null,"
+            + FILE_KODE + " text,"
+            + FILE_IMAGE + " text,"
+            + FILE_TTD + " text,"
+            + FILE_TTD2 + " text);";
 
-    public DBHelper(Context context, String nama , SQLiteDatabase.CursorFactory factory, int version) {
+    public DBHelper(Context context, String nama, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DB_NAME, factory, DB_VERSION);
         // Auto generated
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db)
-    {
+    public void onCreate(SQLiteDatabase db) {
         db.execSQL(db_form);
         db.execSQL(db_file);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-    {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
 }
