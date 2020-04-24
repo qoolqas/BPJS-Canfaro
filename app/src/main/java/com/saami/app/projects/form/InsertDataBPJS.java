@@ -89,7 +89,7 @@ public class InsertDataBPJS extends AppCompatActivity {
     String dataTtd = "";
     String dataTtdBu = "";
     String kodeForm = "";
-    String idKunjungan = "";
+    String idKunjungan;
     private Camera camera;
     private Bitmap bitmapPhoto;
     private SignaturePad mSignaturePad, mSignaturePad2;
@@ -102,7 +102,7 @@ public class InsertDataBPJS extends AppCompatActivity {
     Uri ttdUri;
     Uri ttdUri2;
     String filePath = "";
-    CardView cardTtd, cardTtdbu;
+    CardView cardTtd, cardTtdbu, cardSignature1, cardSignature2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +131,6 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
         try {
             edit = getIntent().getExtras().getString("edit");
-            idKunjungan = getIntent().getExtras().getString("id");
         } catch (Exception e) {
             edit = "0";
         }
@@ -163,8 +162,6 @@ public class InsertDataBPJS extends AppCompatActivity {
                         .build(InsertDataBPJS.this);
 
                 try {
-                    captureImage();
-                    Log.d("camera", String.valueOf(fileUri));
                     camera.takePicture();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -255,6 +252,8 @@ public class InsertDataBPJS extends AppCompatActivity {
         cardTtdbu = findViewById(R.id.cardTtdBu);
         imageTtd = findViewById(R.id.ttdImage);
         imageTtdBu = findViewById(R.id.ttdImageBu);
+        cardSignature1 = findViewById(R.id.cardSignature);
+        cardSignature2 = findViewById(R.id.cardSignature2);
 
         rGroupBersediaMendaftar.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -270,7 +269,7 @@ public class InsertDataBPJS extends AppCompatActivity {
                     linearRekrutmen.setVisibility(View.VISIBLE);
                 } else {
                     linearRekrutmen.setVisibility(View.GONE);
-                    edtJumlahRekrutmen.setText("");
+                    //edtJumlahRekrutmen.setText("");
                 }
             }
         });
@@ -302,6 +301,8 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
         if (edit.equals("2")) {
             save_form.setText("Simpan Pembaruan");
+            cardSignature1.setVisibility(View.GONE);
+            cardSignature2.setVisibility(View.GONE);
             draft_form.setVisibility(View.GONE);
             setEditApi();
         }
@@ -310,7 +311,29 @@ public class InsertDataBPJS extends AppCompatActivity {
             public void onClick(View view) {
                 savedraft = "0";
                 if (mSignaturePad.isEmpty() | mSignaturePad2.isEmpty()) {
-                    Toast.makeText(InsertDataBPJS.this, "Silahkan Tanda Tangan Terlebih Dahulu", Toast.LENGTH_LONG).show();
+                    if (edit.equals("2")) {
+                        new AlertDialog.Builder(InsertDataBPJS.this)
+                                .setMessage("Update Data, Apakah data sudah benar ?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int arg1) {
+                                        dialog.dismiss();
+                                        uploadPhoto();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+
+                                .create()
+                                .show();
+                    } else {
+                        Toast.makeText(InsertDataBPJS.this, "Silahkan Tanda Tangan Terlebih Dahulu", Toast.LENGTH_LONG).show();
+                    }
+
 //                    uploadPhoto();
 //                    tempTtd();
 //                    uploadTtd();
@@ -337,8 +360,6 @@ public class InsertDataBPJS extends AppCompatActivity {
 
                                 .create()
                                 .show();
-
-                    } else if (edit.equals("2")) {
 
                     } else {
                         new AlertDialog.Builder(InsertDataBPJS.this)
@@ -422,18 +443,18 @@ public class InsertDataBPJS extends AppCompatActivity {
             public void onClick(View v) {
                 if (view.equals("2")) {
                     BitmapDrawable fotoD = (BitmapDrawable) photo.getDrawable();
-                    Bitmap foto =  fotoD.getBitmap();
+                    Bitmap foto = fotoD.getBitmap();
                     BitmapDrawable ttdD = (BitmapDrawable) imageTtd.getDrawable();
                     Bitmap ttd = ttdD.getBitmap();
                     BitmapDrawable ttdBuD = (BitmapDrawable) imageTtdBu.getDrawable();
                     Bitmap ttdBu = ttdBuD.getBitmap();
                     saveMediaPhotoTtd(foto, ttd, ttdBu);
-                }else {
+                } else {
 
 
-                photo.setDrawingCacheEnabled(true);
-                Bitmap bitmapPhotos = photo.getDrawingCache();
-                saveMediaPhotoTtd(bitmapPhotos, mSignaturePad.getSignatureBitmap(), mSignaturePad2.getSignatureBitmap());
+                    photo.setDrawingCacheEnabled(true);
+                    Bitmap bitmapPhotos = photo.getDrawingCache();
+                    saveMediaPhotoTtd(bitmapPhotos, mSignaturePad.getSignatureBitmap(), mSignaturePad2.getSignatureBitmap());
                 }
             }
         });
@@ -487,45 +508,34 @@ public class InsertDataBPJS extends AppCompatActivity {
 
     }
 
-    private static File createTemporaryFile(Context context) {
-        try {
-            File folder = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "prof_pic");
-            if (!folder.exists()) {
-                folder.mkdirs();
-                Log.d("anji", String.valueOf(folder.mkdirs()));
-            }
-            return File.createTempFile("" + System.currentTimeMillis(), ".jpg", folder);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
-    private void captureImage() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File photo;
-        try {
-            photo = createTemporaryFile(this);
-            fileUri = FileProvider.getUriForFile(Objects.requireNonNull(this),
-                    BuildConfig.APPLICATION_ID + ".provider",
-                    Objects.requireNonNull(photo));
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            startActivityForResult(intent, 1);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    private void tempTtd(){
-        saveMediaPhotoTtdTemp(mSignaturePad.getSignatureBitmap(), mSignaturePad2.getSignatureBitmap());
+    private void tempTtd() {
+        BitmapDrawable fotoD = (BitmapDrawable) photo.getDrawable();
+        Bitmap foto = fotoD.getBitmap();
+        saveMediaPhotoTtdTemp(foto, mSignaturePad.getSignatureBitmap(), mSignaturePad2.getSignatureBitmap());
         uploadPhoto();
-        Log.d("ttduri3", String.valueOf(ttdUri));
     }
-    private void saveMediaPhotoTtdTemp( Bitmap ttdBitmap, Bitmap ttd2Bitmap) {
+
+    private void saveMediaPhotoTtdTemp(Bitmap photo, Bitmap ttdBitmap, Bitmap ttd2Bitmap) {
+        File myDirPhotos = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Temp");
+        myDirPhotos.mkdirs();
+        String photoname = edtPsNama.getText().toString() + "photo" + "_" + "_.png";
+        File file = new File(myDirPhotos, photoname);
+        String pathPhoto = file.toString();
+        if (file.exists()) file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            photo.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         File myDirTtd = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Temp");
         myDirTtd.mkdirs();
-        String ttdname = edtPsNama.getText().toString() + "ttd"+"_"  + "_.png";
+        String ttdname = edtPsNama.getText().toString() + "ttd" + "_" + "_.png";
         File files = new File(myDirTtd, ttdname);
         String pathttd = files.toString();
         if (files.exists()) files.delete();
@@ -541,7 +551,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         File myDirTtd2 = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Temp");
 
         myDirTtd2.mkdirs();
-        String ttdname2 = edtPsNama.getText().toString() + "ttdbu"+"_" + "_.png";
+        String ttdname2 = edtPsNama.getText().toString() + "ttdbu" + "_" + "_.png";
         File files2 = new File(myDirTtd2, ttdname2);
         String pathttd2 = files2.toString();
         if (files2.exists()) files2.delete();
@@ -554,6 +564,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        fileUri = Uri.parse(pathPhoto);
         ttdUri = Uri.parse(pathttd);
         ttdUri2 = Uri.parse(pathttd2);
     }
@@ -574,8 +585,6 @@ public class InsertDataBPJS extends AppCompatActivity {
                                 .apply(myOptions)
                                 .load(bitmap)
                                 .into(photo);
-                        fileUri = getImageUri(getApplicationContext(), bitmap);
-                        Log.d("fileuricam", String.valueOf(fileUri));
                     } else {
                         Toast.makeText(this.getApplicationContext(), "Picture not taken!", Toast.LENGTH_SHORT).show();
                     }
@@ -593,15 +602,14 @@ public class InsertDataBPJS extends AppCompatActivity {
                             .apply(myOptions)
                             .load(selectedImage)
                             .into(photo);
-                    String[] filePathColumn = {android.provider.MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    assert cursor != null;
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String mediaPath = cursor.getString(columnIndex);
-                    // Set the Image in ImageView for Previewing the Media
-                    cursor.close();
-                    fileUri = Uri.parse(mediaPath);
+//                    String[] filePathColumn = {android.provider.MediaStore.Images.Media.DATA};
+//                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+//                    assert cursor != null;
+//                    cursor.moveToFirst();
+//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                    String mediaPath = cursor.getString(columnIndex);
+//                    cursor.close();
+//                    fileUri = Uri.parse(mediaPath);
 
                 }
                 break;
@@ -666,6 +674,8 @@ public class InsertDataBPJS extends AppCompatActivity {
             edtBidangUsaha.setText(data.getF_BIDANG_USH());
             edtJumlahKaryawan.setText(data.getF_JUMLAHKAR());
             edtJumlahKeluarga.setText(data.getF_JUMLAHKEL());
+            edtJumlahRekrutmen.setText(data.getF_TOTALREKRUITMEN());
+            edtNotes.setText(data.getF_CATATAN());
             if (data.getF_MENGIKUTI_SOSIALISASI_BPJS_KES().toLowerCase().equals("sudah")) {
                 rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
             } else {
@@ -709,6 +719,7 @@ public class InsertDataBPJS extends AppCompatActivity {
                 Log.d("imgs", files.getFile_image());
                 photo.setImageBitmap(StringToBitMap(files.getFile_image()));
                 mSignaturePad.setSignatureBitmap(StringToBitMap(files.getFile_ttd()));
+                mSignaturePad2.setSignatureBitmap(StringToBitMap(files.getFile_ttd2()));
             }
 
         } else {
@@ -742,9 +753,6 @@ public class InsertDataBPJS extends AppCompatActivity {
         } else {
             rGroupBersediaMendaftar.check(R.id.rd_bersediadaftar_tidak);
         }
-
-        Log.d("namab", dataItem.getBadanUsaha().getName());
-        Log.d("namabd", dataItem.getBadanUsaha().getName());
         edtNamaBadanUsaha.setText(dataItem.getBadanUsaha().getName());
         edtAlamat.setText(dataItem.getBadanUsaha().getAddress());
         edtTelp.setText(dataItem.getBadanUsaha().getPhone());
@@ -821,6 +829,8 @@ public class InsertDataBPJS extends AppCompatActivity {
             edtBidangUsaha.setText(data.getF_BIDANG_USH());
             edtJumlahKaryawan.setText(data.getF_JUMLAHKAR());
             edtJumlahKeluarga.setText(data.getF_JUMLAHKEL());
+            edtJumlahRekrutmen.setText(data.getF_TOTALREKRUITMEN());
+            edtNotes.setText(data.getF_CATATAN());
             if (data.getF_MENGIKUTI_SOSIALISASI_BPJS_KES().toLowerCase().equals("sudah")) {
                 rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
             } else {
@@ -858,6 +868,7 @@ public class InsertDataBPJS extends AppCompatActivity {
                 final FormFile files = file.get(0);
                 photo.setImageBitmap(StringToBitMap(files.getFile_image()));
                 mSignaturePad.setSignatureBitmap(StringToBitMap(files.getFile_ttd()));
+                mSignaturePad2.setSignatureBitmap(StringToBitMap(files.getFile_ttd2()));
             }
 
         } else {
@@ -1064,7 +1075,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         int selectedIdNotifikasi = rGroupNotifikasi.getCheckedRadioButtonId();
         rButtonNotifikasi = findViewById(selectedIdNotifikasi);
         String valueNotif = rButtonNotifikasi.getText().toString();
-        if (valueNotif.equals("Ya")) {
+        if (valueNotif.equals("3 Hari")) {
             kunjungan.setReminder(1);
         } else {
             kunjungan.setReminder(0);
@@ -1072,7 +1083,11 @@ public class InsertDataBPJS extends AppCompatActivity {
         kunjungan.setAlasan(edtalasan.getText().toString());
         kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());
         kunjungan.setKendala(edtkendala.getText().toString());
-        kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
+        if (edtJumlahRekrutmen.getText().toString().equals("")){
+            kunjungan.setTotalRecruitment("0");
+        }else {
+            kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
+        }
 
         int selectedIdStatus = rGroupBersediaMendaftar.getCheckedRadioButtonId();
         rButtonBersediaMendaftar = findViewById(selectedIdStatus);
@@ -1095,7 +1110,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         int selectedIdSosialisasiBpjs = rGroupSosialisasiBpjs.getCheckedRadioButtonId();
         rButtonSosialisasiBpjs = findViewById(selectedIdSosialisasiBpjs);
         String valueSosial = rButtonSosialisasiBpjs.getText().toString();
-        if (valueSosial.equals("Ya")) {
+        if (valueSosial.equals("Sudah")) {
             badanUsaha.setSosialisasiBPJS("1");
         } else {
             badanUsaha.setSosialisasiBPJS("0");
@@ -1104,7 +1119,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         int selectedIdJknKis = rGroupJknKis.getCheckedRadioButtonId();
         rButtonJknKis = findViewById(selectedIdJknKis);
         String valuePesertaJKN = rButtonJknKis.getText().toString();
-        if (valuePesertaJKN.equals("Ya")) {
+        if (valuePesertaJKN.equals("Sudah")) {
             badanUsaha.setPesertaJKNOrKIS("1");
         } else {
             badanUsaha.setPesertaJKNOrKIS("0");
@@ -1116,7 +1131,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         int selectedIdAsKes = rGroupAskes.getCheckedRadioButtonId();
         rButtonAsKes = findViewById(selectedIdAsKes);
         String valueAsuransi = rButtonAsKes.getText().toString();
-        if (valueAsuransi.equals("Ya")) {
+        if (valueAsuransi.equals("Sudah")) {
             badanUsaha.setAsuransiKesehatan("1");
         } else {
             badanUsaha.setAsuransiKesehatan("0");
@@ -1131,35 +1146,190 @@ public class InsertDataBPJS extends AppCompatActivity {
         return data;
     }
 
-    void savePost(final Data data) {
-        String token = sharedPrefManager.getSpToken();
-        Service service = Client.getClient().create(Service.class);
-        Call<PostResponse> call = service.saveKunjungan("Bearer " + token, data);
-        call.enqueue(new Callback<PostResponse>() {
-            @Override
-            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
-                Log.d("test", data.toString());
-            }
+    Data constructDataEdit() {
 
-            @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
-                Log.d("test2", data.toString());
-            }
-        });
+        RadioButton rButtonSosialisasiBpjs, rButtonJknKis, rButtonAsKes, rButtonBersediaMendaftar, rButtonNotifikasi;
+        Kunjungan kunjungan = new Kunjungan();
+        BadanUsaha badanUsaha = new BadanUsaha();
+        ContactBadanUsaha contactBadanUsaha = new ContactBadanUsaha();
+        Data data = new Data();
+        data.setKunjungan(kunjungan);
+        data.setBadanUsaha(badanUsaha);
+        data.setContactBadanUsaha(contactBadanUsaha);
+
+        kunjungan.setTtdImage(dataItem.getTtdImage().getRaw());
+        badanUsaha.setTtdImage(dataItem.getBadanUsaha().getTtdImage().getRaw());
+        kunjungan.setImage(dataItem.getImage().getRaw());
+        kunjungan.setTPSKP(tgl_pnd.getText().toString());
+        kunjungan.setTPP(tgl_peringatan_daftar.getText().toString());
+        kunjungan.setTMPBU(tgl_max_bu.getText().toString());
+        kunjungan.setTPD(tgl_serah_data.getText().toString());
+        kunjungan.setNote(edtNotes.getText().toString());
+        int selectedIdNotifikasi = rGroupNotifikasi.getCheckedRadioButtonId();
+        rButtonNotifikasi = findViewById(selectedIdNotifikasi);
+        String valueNotif = rButtonNotifikasi.getText().toString();
+        if (valueNotif.equals("3 Hari")) {
+            kunjungan.setReminder(1);
+        } else {
+            kunjungan.setReminder(0);
+        }
+        kunjungan.setAlasan(edtalasan.getText().toString());
+        kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());
+        kunjungan.setKendala(edtkendala.getText().toString());
+        if (edtJumlahRekrutmen.getText().toString().equals("")){
+            kunjungan.setTotalRecruitment("0");
+        }else {
+            kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
+        }
+
+
+        int selectedIdStatus = rGroupBersediaMendaftar.getCheckedRadioButtonId();
+        rButtonBersediaMendaftar = findViewById(selectedIdStatus);
+        String valueStatus = rButtonBersediaMendaftar.getText().toString();
+        if (valueStatus.equals("Ya")) {
+            kunjungan.setStatus("1");
+        } else {
+            kunjungan.setStatus("0");
+        }
+
+
+        badanUsaha.setName(edtNamaBadanUsaha.getText().toString());
+        badanUsaha.setAddress(edtAlamat.getText().toString());
+        badanUsaha.setPhone(edtTelp.getText().toString());
+        badanUsaha.setEmail(edtEmail.getText().toString());
+        badanUsaha.setBidangUsaha(edtBidangUsaha.getText().toString());
+        badanUsaha.setJumlahKaryawan(edtJumlahKaryawan.getText().toString());
+        badanUsaha.setJumlahKeluarga(edtJumlahKeluarga.getText().toString());
+
+        int selectedIdSosialisasiBpjs = rGroupSosialisasiBpjs.getCheckedRadioButtonId();
+        rButtonSosialisasiBpjs = findViewById(selectedIdSosialisasiBpjs);
+        String valueSosial = rButtonSosialisasiBpjs.getText().toString();
+        if (valueSosial.equals("Sudah")) {
+            badanUsaha.setSosialisasiBPJS("1");
+        } else {
+            badanUsaha.setSosialisasiBPJS("0");
+        }
+
+        int selectedIdJknKis = rGroupJknKis.getCheckedRadioButtonId();
+        rButtonJknKis = findViewById(selectedIdJknKis);
+        String valuePesertaJKN = rButtonJknKis.getText().toString();
+        if (valuePesertaJKN.equals("Sudah")) {
+            badanUsaha.setPesertaJKNOrKIS("1");
+        } else {
+            badanUsaha.setPesertaJKNOrKIS("0");
+        }
+
+        badanUsaha.setJumlahKaryawanTerdaftar(edtJumlahKaryawanTerdaftar.getText().toString());
+        badanUsaha.setJumlahKeluargaTerdaftar(edtJumlahKeluargaTerdaftar.getText().toString());
+
+        int selectedIdAsKes = rGroupAskes.getCheckedRadioButtonId();
+        rButtonAsKes = findViewById(selectedIdAsKes);
+        String valueAsuransi = rButtonAsKes.getText().toString();
+        if (valueAsuransi.equals("Sudah")) {
+            badanUsaha.setAsuransiKesehatan("1");
+        } else {
+            badanUsaha.setAsuransiKesehatan("0");
+        }
+        badanUsaha.setKeterangan(edtTambahan.getText().toString());
+
+        contactBadanUsaha.setName(edtPsNama.getText().toString());
+        contactBadanUsaha.setJabatan(edtPsJabatan.getText().toString());
+        contactBadanUsaha.setUnitKerja(edtPsUnitKerja.getText().toString());
+        contactBadanUsaha.setPhone(edtPsPhone.getText().toString());
+        return data;
     }
-    void saveEditPost(Data data){
-        String token = sharedPrefManager.getSpToken();
-        Service service = Client.getClient().create(Service.class);
-        Call<PostResponse> call = service.saveEditKunjungan("Bearer " + token, Integer.parseInt(idKunjungan), data);
-        call.enqueue(new Callback<PostResponse>() {
-            @Override
-            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
-            }
 
-            @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
-            }
-        });
+    Data constructDataEditImgChange() {
+
+        RadioButton rButtonSosialisasiBpjs, rButtonJknKis, rButtonAsKes, rButtonBersediaMendaftar, rButtonNotifikasi;
+        Kunjungan kunjungan = new Kunjungan();
+        BadanUsaha badanUsaha = new BadanUsaha();
+        ContactBadanUsaha contactBadanUsaha = new ContactBadanUsaha();
+        Data data = new Data();
+        data.setKunjungan(kunjungan);
+        data.setBadanUsaha(badanUsaha);
+        data.setContactBadanUsaha(contactBadanUsaha);
+
+        kunjungan.setTtdImage(dataItem.getTtdImage().getRaw());
+        badanUsaha.setTtdImage(dataItem.getBadanUsaha().getTtdImage().getRaw());
+        kunjungan.setImage(dataPhoto);
+        kunjungan.setTPSKP(tgl_pnd.getText().toString());
+        kunjungan.setTPP(tgl_peringatan_daftar.getText().toString());
+        kunjungan.setTMPBU(tgl_max_bu.getText().toString());
+        kunjungan.setTPD(tgl_serah_data.getText().toString());
+        kunjungan.setImage(dataPhoto);
+        kunjungan.setNote(edtNotes.getText().toString());
+        int selectedIdNotifikasi = rGroupNotifikasi.getCheckedRadioButtonId();
+        if (edtJumlahRekrutmen.getText().toString().equals("")){
+            kunjungan.setTotalRecruitment("0");
+        }else {
+            kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
+        }
+        rButtonNotifikasi = findViewById(selectedIdNotifikasi);
+        String valueNotif = rButtonNotifikasi.getText().toString();
+        if (valueNotif.equals("3 Hari")) {
+            kunjungan.setReminder(1);
+        } else {
+            kunjungan.setReminder(0);
+        }
+        kunjungan.setAlasan(edtalasan.getText().toString());
+        kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());
+        kunjungan.setKendala(edtkendala.getText().toString());
+
+        int selectedIdStatus = rGroupBersediaMendaftar.getCheckedRadioButtonId();
+        rButtonBersediaMendaftar = findViewById(selectedIdStatus);
+        String valueStatus = rButtonBersediaMendaftar.getText().toString();
+        if (valueStatus.equals("Ya")) {
+            kunjungan.setStatus("1");
+        } else {
+            kunjungan.setStatus("0");
+        }
+
+
+        badanUsaha.setName(edtNamaBadanUsaha.getText().toString());
+        badanUsaha.setAddress(edtAlamat.getText().toString());
+        badanUsaha.setPhone(edtTelp.getText().toString());
+        badanUsaha.setEmail(edtEmail.getText().toString());
+        badanUsaha.setBidangUsaha(edtBidangUsaha.getText().toString());
+        badanUsaha.setJumlahKaryawan(edtJumlahKaryawan.getText().toString());
+        badanUsaha.setJumlahKeluarga(edtJumlahKeluarga.getText().toString());
+
+        int selectedIdSosialisasiBpjs = rGroupSosialisasiBpjs.getCheckedRadioButtonId();
+        rButtonSosialisasiBpjs = findViewById(selectedIdSosialisasiBpjs);
+        String valueSosial = rButtonSosialisasiBpjs.getText().toString();
+        if (valueSosial.equals("Sudah")) {
+            badanUsaha.setSosialisasiBPJS("1");
+        } else {
+            badanUsaha.setSosialisasiBPJS("0");
+        }
+
+        int selectedIdJknKis = rGroupJknKis.getCheckedRadioButtonId();
+        rButtonJknKis = findViewById(selectedIdJknKis);
+        String valuePesertaJKN = rButtonJknKis.getText().toString();
+        if (valuePesertaJKN.equals("Sudah")) {
+            badanUsaha.setPesertaJKNOrKIS("1");
+        } else {
+            badanUsaha.setPesertaJKNOrKIS("0");
+        }
+
+        badanUsaha.setJumlahKaryawanTerdaftar(edtJumlahKaryawanTerdaftar.getText().toString());
+        badanUsaha.setJumlahKeluargaTerdaftar(edtJumlahKeluargaTerdaftar.getText().toString());
+
+        int selectedIdAsKes = rGroupAskes.getCheckedRadioButtonId();
+        rButtonAsKes = findViewById(selectedIdAsKes);
+        String valueAsuransi = rButtonAsKes.getText().toString();
+        if (valueAsuransi.equals("Sudah")) {
+            badanUsaha.setAsuransiKesehatan("1");
+        } else {
+            badanUsaha.setAsuransiKesehatan("0");
+        }
+        badanUsaha.setKeterangan(edtTambahan.getText().toString());
+
+        contactBadanUsaha.setName(edtPsNama.getText().toString());
+        contactBadanUsaha.setJabatan(edtPsJabatan.getText().toString());
+        contactBadanUsaha.setUnitKerja(edtPsUnitKerja.getText().toString());
+        contactBadanUsaha.setPhone(edtPsPhone.getText().toString());
+        return data;
     }
 
 
@@ -1204,6 +1374,8 @@ public class InsertDataBPJS extends AppCompatActivity {
         data.setF_HC_TINDAK_LANJUT(edttindaklanjut.getText().toString());
         data.setF_HC_KENDALA(edtkendala.getText().toString());
         data.setF_SAVE_DRAFT(savedraft);
+        data.setF_TOTALREKRUITMEN(edtJumlahRekrutmen.getText().toString());
+        data.setF_CATATAN(edtNotes.getText().toString());
         long result = dataSource.createForm(data);
 //                Toast.makeText(MainActivity.this,String.valueOf(result),Toast.LENGTH_LONG).show();
         if (result > 0) {
@@ -1264,6 +1436,8 @@ public class InsertDataBPJS extends AppCompatActivity {
         data.setF_HC_ALASAN(edtalasan.getText().toString());
         data.setF_HC_TINDAK_LANJUT(edttindaklanjut.getText().toString());
         data.setF_HC_KENDALA(edtkendala.getText().toString());
+        data.setF_CATATAN(edtNotes.getText().toString());
+        data.setF_TOTALREKRUITMEN(edtJumlahRekrutmen.getText().toString());
         data.setF_SAVE_DRAFT(savedraft);
         long result = dataSource.updateform(data);
 //                Toast.makeText(MainActivity.this,String.valueOf(result),Toast.LENGTH_LONG).show();
@@ -1288,6 +1462,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         file.setFile_kode(tgl_wkt_knj.getText().toString().replaceAll("/", "").replace(" ", "").replaceAll(":", ""));
         file.setFile_image(BitMapToString(bitmapPhoto));
         file.setFile_ttd(BitMapToString(mSignaturePad.getSignatureBitmap()));
+        file.setFile_ttd2(BitMapToString(mSignaturePad2.getSignatureBitmap()));
         Log.d("ttd", String.valueOf(mSignaturePad.getSignatureBitmap()));
         dataSource.createFile(file);
     }
@@ -1298,6 +1473,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         file.setFile_kode(kodeForm);
         file.setFile_image(BitMapToString(bitmapPhoto));
         file.setFile_ttd(BitMapToString(mSignaturePad.getSignatureBitmap()));
+        file.setFile_ttd2(BitMapToString(mSignaturePad2.getSignatureBitmap()));
         dataSource.updatefile(file);
     }
 
@@ -1342,7 +1518,7 @@ public class InsertDataBPJS extends AppCompatActivity {
     private void saveMediaPhotoTtd(Bitmap bitmapPhoto, Bitmap ttdBitmap, Bitmap ttd2Bitmap) {
         File myDirPhotos = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Photo");
         myDirPhotos.mkdirs();
-        String photoname = edtPsNama.getText().toString() + "_"  + "_.png";
+        String photoname = edtPsNama.getText().toString() + "_" + "_.png";
         File file = new File(myDirPhotos, photoname);
         if (file.exists()) file.delete();
         try {
@@ -1357,7 +1533,7 @@ public class InsertDataBPJS extends AppCompatActivity {
 
         File myDirTtd = new File(Environment.getExternalStorageDirectory() + File.separator + "Canfaro/Tanda Tangan");
         myDirTtd.mkdirs();
-        String ttdname = edtPsNama.getText().toString() + "_"  + "_.png";
+        String ttdname = edtPsNama.getText().toString() + "_" + "_.png";
         File files = new File(myDirTtd, ttdname);
         if (files.exists()) files.delete();
         try {
@@ -1402,7 +1578,7 @@ public class InsertDataBPJS extends AppCompatActivity {
 
     private void uploadPhoto() {
         if (fileUri == null || fileUri.equals("")) {
-            savePost(constructData());
+            saveEditPost(constructDataEdit());
         } else {
             String token = sharedPrefManager.getSpToken();
             File file = new File(String.valueOf(fileUri));
@@ -1417,9 +1593,9 @@ public class InsertDataBPJS extends AppCompatActivity {
                     assert response.body() != null;
                     Log.d("berhasil", new Gson().toJson(response.body().getData().getFilename()));
                     dataPhoto = response.body().getData().getFilename();
-                    if (edit.equals("2")){
-                        saveEditPost(constructData());
-                    }else {
+                    if (edit.equals("2")) {
+                        saveEditPost(constructDataEditImgChange());
+                    } else {
                         uploadTtd();
                     }
                 }
@@ -1447,7 +1623,7 @@ public class InsertDataBPJS extends AppCompatActivity {
             public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
                 assert response.body() != null;
                 Log.d("berhasil", new Gson().toJson(response.body().getData().getFilename()));
-                dataTtd= response.body().getData().getFilename();
+                dataTtd = response.body().getData().getFilename();
                 uploadTtdBu();
 
 
@@ -1486,6 +1662,47 @@ public class InsertDataBPJS extends AppCompatActivity {
         });
 
 
+    }
+
+    void savePost(final Data data) {
+        String token = sharedPrefManager.getSpToken();
+        Service service = Client.getClient().create(Service.class);
+        Call<PostResponse> call = service.saveKunjungan("Bearer " + token, data);
+        call.enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+                assert response.body() != null;
+                if (response.isSuccessful()){
+                    Intent intent = new Intent(InsertDataBPJS.this, ListView_BPJS.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+                Log.d("test2", data.toString());
+            }
+        });
+    }
+
+    void saveEditPost(Data data) {
+        String token = sharedPrefManager.getSpToken();
+        Service service = Client.getClient().create(Service.class);
+        Call<PostResponse> call = service.saveEditKunjungan("Bearer " + token, dataItem.getId(), data);
+        call.enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+                Intent intent = new Intent(InsertDataBPJS.this, ListView_BPJS.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+            }
+        });
     }
 
 }

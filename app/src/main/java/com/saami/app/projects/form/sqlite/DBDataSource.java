@@ -43,18 +43,21 @@ public class DBDataSource
                     DBHelper.F_HC_ALASAN ,
                     DBHelper.F_HC_TINDAK_LANJUT,
                     DBHelper.F_HC_KENDALA,
-                    DBHelper.F_FLAG_SAVE_DRAFT
+                    DBHelper.F_FLAG_SAVE_DRAFT,
+                    DBHelper.F_TOTAL_REKRUITMEN,
+                    DBHelper.F_CATATAN
             };
 
     private String[] formfile = new String[]
             {
                     DBHelper.FILE_KODE,
                     DBHelper.FILE_IMAGE,
-                    DBHelper.FILE_TTD
+                    DBHelper.FILE_TTD,
+                    DBHelper.FILE_TTD2
             };
 
     public DBDataSource(Context context) {
-        dbHelper = new DBHelper(context, dbHelper.DB_NAME , null, dbHelper.DB_VERSION);
+        dbHelper = new DBHelper(context, DBHelper.DB_NAME, null, DBHelper.DB_VERSION);
     }
 
     public void open() throws SQLException
@@ -100,6 +103,8 @@ public class DBDataSource
         values.put(DBHelper.F_HC_TINDAK_LANJUT,data.getF_HC_TINDAK_LANJUT());
         values.put(DBHelper.F_HC_KENDALA,data.getF_HC_KENDALA());
         values.put(DBHelper.F_FLAG_SAVE_DRAFT, data.getF_SAVE_DRAFT());
+        values.put(DBHelper.F_TOTAL_REKRUITMEN, data.getF_TOTALREKRUITMEN());
+        values.put(DBHelper.F_CATATAN, data.getF_CATATAN());
         long insertId = database.insert(DBHelper.TABLE_FORM, null,values);
         close();
         return insertId;
@@ -136,6 +141,8 @@ public class DBDataSource
         data.setF_HC_TINDAK_LANJUT(cursor.getString(25));
         data.setF_HC_KENDALA(cursor.getString(26));
         data.setF_SAVE_DRAFT(cursor.getString(27));
+        data.setF_TOTALREKRUITMEN(cursor.getString(28));
+        data.setF_CATATAN(cursor.getString(29));
         close();
         return data;
     }
@@ -250,6 +257,8 @@ public class DBDataSource
         values.put(DBHelper.F_HC_TINDAK_LANJUT,data.getF_HC_TINDAK_LANJUT());
         values.put(DBHelper.F_HC_KENDALA,data.getF_HC_KENDALA());
         values.put(DBHelper.F_FLAG_SAVE_DRAFT,data.getF_SAVE_DRAFT());
+        values.put(DBHelper.F_TOTAL_REKRUITMEN,data.getF_TOTALREKRUITMEN());
+        values.put(DBHelper.F_CATATAN,data.getF_CATATAN());
         long updateId = database.update(DBHelper.TABLE_FORM, values, DBHelper.F_KODE+"='"+data.getF_KODE()+"'", null);
         close();
 
@@ -263,6 +272,7 @@ public class DBDataSource
         values.put(DBHelper.FILE_KODE,data.getFile_kode());
         values.put(DBHelper.FILE_IMAGE ,data.getFile_image());
         values.put(DBHelper.FILE_TTD,data.getFile_ttd());
+        values.put(DBHelper.FILE_TTD2,data.getFile_ttd2());
         long insertId = database.insert(DBHelper.TABLE_FILE, null,values);
         close();
         return insertId;
@@ -274,6 +284,7 @@ public class DBDataSource
         data.setFile_kode(cursor.getString(0));
         data.setFile_image(cursor.getString(1));
         data.setFile_ttd(cursor.getString(2));
+        data.setFile_ttd2(cursor.getString(3));
         close();
         return data;
     }
@@ -326,6 +337,7 @@ public class DBDataSource
         ContentValues values = new ContentValues();
         values.put(DBHelper.FILE_IMAGE ,data.getFile_image());
         values.put(DBHelper.FILE_TTD,data.getFile_ttd());
+        values.put(DBHelper.FILE_TTD2,data.getFile_ttd2());
         long updateId = database.update(DBHelper.TABLE_FILE, values, DBHelper.FILE_KODE+"='"+data.getFile_kode()+"'", null);
         close();
 
