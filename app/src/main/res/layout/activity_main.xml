@@ -771,6 +771,42 @@
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="4dp"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_notes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Catatan"
+                            android:lines="3"
+                            android:textColor="@drawable/text_disabled_with_normal_color"
+                            android:textColorHint="@android:color/white" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardSignature"
@@ -928,43 +964,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
+                android:padding="4dp"
                 app:cardCornerRadius="2dp"
                 app:cardElevation="2dp"
                 app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true"
-                android:padding="4dp">
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="TAMBAHAN"
-                        android:textColor="@color/colorSoftBlue"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
+                    android:orientation="vertical"
+                    android:padding="4dp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edt_notes"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Catatan"
-                            android:lines="3"
-                            android:textColor="@drawable/text_disabled_with_normal_color"
-                            android:textColorHint="@android:color/white" />
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

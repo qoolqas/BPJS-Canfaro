@@ -123,7 +123,8 @@ public class ListView_BPJS extends AppCompatActivity {
             public void onClick(View v) {
 //                pb.setVisibility(View.VISIBLE);
 //                getData();
-                Intent intent = new Intent(ListView_BPJS.this, HomeActivity.class);
+                Intent intent = new Intent(ListView_BPJS.this, HomeActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("state", "6");
                 startActivity(intent);
             }
