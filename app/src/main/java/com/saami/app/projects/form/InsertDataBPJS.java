@@ -674,6 +674,8 @@ public class InsertDataBPJS extends AppCompatActivity {
             edtBidangUsaha.setText(data.getF_BIDANG_USH());
             edtJumlahKaryawan.setText(data.getF_JUMLAHKAR());
             edtJumlahKeluarga.setText(data.getF_JUMLAHKEL());
+            edtJumlahRekrutmen.setText(data.getF_TOTALREKRUITMEN());
+            edtNotes.setText(data.getF_CATATAN());
             if (data.getF_MENGIKUTI_SOSIALISASI_BPJS_KES().toLowerCase().equals("sudah")) {
                 rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
             } else {
@@ -717,6 +719,7 @@ public class InsertDataBPJS extends AppCompatActivity {
                 Log.d("imgs", files.getFile_image());
                 photo.setImageBitmap(StringToBitMap(files.getFile_image()));
                 mSignaturePad.setSignatureBitmap(StringToBitMap(files.getFile_ttd()));
+                mSignaturePad2.setSignatureBitmap(StringToBitMap(files.getFile_ttd2()));
             }
 
         } else {
@@ -826,6 +829,8 @@ public class InsertDataBPJS extends AppCompatActivity {
             edtBidangUsaha.setText(data.getF_BIDANG_USH());
             edtJumlahKaryawan.setText(data.getF_JUMLAHKAR());
             edtJumlahKeluarga.setText(data.getF_JUMLAHKEL());
+            edtJumlahRekrutmen.setText(data.getF_TOTALREKRUITMEN());
+            edtNotes.setText(data.getF_CATATAN());
             if (data.getF_MENGIKUTI_SOSIALISASI_BPJS_KES().toLowerCase().equals("sudah")) {
                 rGroupSosialisasiBpjs.check(R.id.rd_sosialisasi_bpjs_sudah);
             } else {
@@ -863,6 +868,7 @@ public class InsertDataBPJS extends AppCompatActivity {
                 final FormFile files = file.get(0);
                 photo.setImageBitmap(StringToBitMap(files.getFile_image()));
                 mSignaturePad.setSignatureBitmap(StringToBitMap(files.getFile_ttd()));
+                mSignaturePad2.setSignatureBitmap(StringToBitMap(files.getFile_ttd2()));
             }
 
         } else {
@@ -1368,6 +1374,8 @@ public class InsertDataBPJS extends AppCompatActivity {
         data.setF_HC_TINDAK_LANJUT(edttindaklanjut.getText().toString());
         data.setF_HC_KENDALA(edtkendala.getText().toString());
         data.setF_SAVE_DRAFT(savedraft);
+        data.setF_TOTALREKRUITMEN(edtJumlahRekrutmen.getText().toString());
+        data.setF_CATATAN(edtNotes.getText().toString());
         long result = dataSource.createForm(data);
 //                Toast.makeText(MainActivity.this,String.valueOf(result),Toast.LENGTH_LONG).show();
         if (result > 0) {
@@ -1428,6 +1436,8 @@ public class InsertDataBPJS extends AppCompatActivity {
         data.setF_HC_ALASAN(edtalasan.getText().toString());
         data.setF_HC_TINDAK_LANJUT(edttindaklanjut.getText().toString());
         data.setF_HC_KENDALA(edtkendala.getText().toString());
+        data.setF_CATATAN(edtNotes.getText().toString());
+        data.setF_TOTALREKRUITMEN(edtJumlahRekrutmen.getText().toString());
         data.setF_SAVE_DRAFT(savedraft);
         long result = dataSource.updateform(data);
 //                Toast.makeText(MainActivity.this,String.valueOf(result),Toast.LENGTH_LONG).show();
@@ -1452,6 +1462,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         file.setFile_kode(tgl_wkt_knj.getText().toString().replaceAll("/", "").replace(" ", "").replaceAll(":", ""));
         file.setFile_image(BitMapToString(bitmapPhoto));
         file.setFile_ttd(BitMapToString(mSignaturePad.getSignatureBitmap()));
+        file.setFile_ttd2(BitMapToString(mSignaturePad2.getSignatureBitmap()));
         Log.d("ttd", String.valueOf(mSignaturePad.getSignatureBitmap()));
         dataSource.createFile(file);
     }
@@ -1462,6 +1473,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         file.setFile_kode(kodeForm);
         file.setFile_image(BitMapToString(bitmapPhoto));
         file.setFile_ttd(BitMapToString(mSignaturePad.getSignatureBitmap()));
+        file.setFile_ttd2(BitMapToString(mSignaturePad2.getSignatureBitmap()));
         dataSource.updatefile(file);
     }
 
