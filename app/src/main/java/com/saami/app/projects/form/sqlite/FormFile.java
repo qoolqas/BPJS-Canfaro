@@ -2,7 +2,20 @@ package com.saami.app.projects.form.sqlite;
 
 public class FormFile
 {
-    String file_kode,file_image,file_ttd;
+    String file_kode;
+    String file_image;
+    String file_ttd;
+    String file_ttd2;
+
+    public String getFile_ttd2() {
+        return file_ttd2;
+    }
+
+    public void setFile_ttd2(String file_ttd2) {
+        this.file_ttd2 = file_ttd2;
+    }
+
+
 
     public String getFile_kode()
     {
