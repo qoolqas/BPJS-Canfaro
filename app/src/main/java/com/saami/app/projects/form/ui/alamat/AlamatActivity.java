@@ -1,4 +1,4 @@
-package com.saami.app.projects.form.ui;
+package com.saami.app.projects.form.ui.alamat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,5 +12,7 @@ public class AlamatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alamat);
+
+
     }
 }

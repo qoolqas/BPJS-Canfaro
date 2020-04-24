@@ -36,9 +36,6 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
     Context mContext;
     Activity mActivity;
     LayoutInflater mInflater;
-    private DecimalFormat kursIndonesia;
-    private DBDataSource datasource;
-    private String header, harga, check;
     private List<DataItem> kunjungan;
     SharedPrefManager sharedPrefManager;
 
