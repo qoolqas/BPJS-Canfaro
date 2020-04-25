@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +16,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.saami.app.projects.form.InsertDataBPJS;
-import com.saami.app.projects.form.ProviderFormList;
 import com.saami.app.projects.form.R;
 import com.saami.app.projects.form.SharedPrefManager;
-import com.saami.app.projects.form.adapterFormList;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
-import com.saami.app.projects.form.model.alamat.AlamatResponse;
-import com.saami.app.projects.form.model.alamat.DataItem;
+import com.saami.app.projects.form.model.alamat.get.DataItem;
 import com.saami.app.projects.form.model.alamat.delete.AlamatDeleteResponse;
-import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 
 import java.util.List;
 

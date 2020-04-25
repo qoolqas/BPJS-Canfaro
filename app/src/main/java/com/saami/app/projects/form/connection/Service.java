@@ -1,6 +1,6 @@
 package com.saami.app.projects.form.connection;
 
-import com.saami.app.projects.form.model.alamat.AlamatResponse;
+import com.saami.app.projects.form.model.alamat.get.AlamatResponse;
 import com.saami.app.projects.form.model.alamat.delete.AlamatDeleteResponse;
 import com.saami.app.projects.form.model.alamat.post.AlamatPostResponse;
 import com.saami.app.projects.form.model.image.ImageResponse;
@@ -12,7 +12,6 @@ import com.saami.app.projects.form.model.register.RegisterResponse;
 
 import java.util.Map;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,7 +23,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -101,7 +99,7 @@ public interface Service {
 
     @FormUrlEncoded
     @PUT("alamat")
-    Call<AlamatPostResponse> editAlamat(@Header("Authorization") String authorization,
+    Call<AlamatDeleteResponse> editAlamat(@Header("Authorization") String authorization,
                                         @Path("id") int id,
                                         @Field("provinsi") String prov,
                                         @Field("kota") String kota,

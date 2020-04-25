@@ -1,4 +1,4 @@
-package com.saami.app.projects.form.model.alamat;
+package com.saami.app.projects.form.model.alamat.get;
 
 import com.google.gson.annotations.SerializedName;
 

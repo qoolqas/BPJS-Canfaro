@@ -14,12 +14,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.saami.app.projects.form.ListView_BPJS;
 import com.saami.app.projects.form.R;
-import com.saami.app.projects.form.adapterFormList;
-import com.saami.app.projects.form.model.alamat.AlamatResponse;
-import com.saami.app.projects.form.model.alamat.DataItem;
-import com.saami.app.projects.form.ui.SearchViewModel;
+import com.saami.app.projects.form.model.alamat.get.AlamatResponse;
+import com.saami.app.projects.form.model.alamat.get.DataItem;
 
 import java.util.ArrayList;
 import java.util.List;

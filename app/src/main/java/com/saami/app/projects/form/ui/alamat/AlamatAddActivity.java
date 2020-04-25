@@ -4,23 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.saami.app.projects.form.HomeActivity;
-import com.saami.app.projects.form.InsertDataBPJS;
-import com.saami.app.projects.form.ListView_BPJS;
 import com.saami.app.projects.form.R;
 import com.saami.app.projects.form.SharedPrefManager;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
-import com.saami.app.projects.form.model.alamat.AlamatResponse;
 import com.saami.app.projects.form.model.alamat.post.AlamatPostResponse;
-import com.saami.app.projects.form.model.post.PostResponse;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.ArrayList;

@@ -11,8 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.saami.app.projects.form.SharedPrefManager;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
-import com.saami.app.projects.form.model.alamat.AlamatResponse;
-import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
+import com.saami.app.projects.form.model.alamat.get.AlamatResponse;
 
 import org.jetbrains.annotations.NotNull;
 
