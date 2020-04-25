@@ -67,6 +67,7 @@ public class AlamatAdapter extends RecyclerView.Adapter<AlamatAdapter.ViewHolder
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent i = new Intent(context, AlamatAddActivity.class);
+                                i.putExtra("view", "0");
                                 i.putExtra("edit", "1");
                                 i.putExtra("data", alamat.get(position));
                                 context.startActivity(i);
@@ -82,8 +83,9 @@ public class AlamatAdapter extends RecyclerView.Adapter<AlamatAdapter.ViewHolder
      holder.show.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View view) {
-             Intent i = new Intent(activity, InsertDataBPJS.class);
+             Intent i = new Intent(activity, AlamatAddActivity.class);
              i.putExtra("view", "1");
+             i.putExtra("edit", "0");
              i.putExtra("data", alamat.get(position));
              activity.startActivity(i);
          }
