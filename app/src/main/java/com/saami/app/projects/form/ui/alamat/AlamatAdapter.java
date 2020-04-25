@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
 import com.saami.app.projects.form.model.alamat.AlamatResponse;
 import com.saami.app.projects.form.model.alamat.DataItem;
+import com.saami.app.projects.form.model.alamat.delete.AlamatDeleteResponse;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 
 import java.util.List;
@@ -101,10 +103,10 @@ public class AlamatAdapter extends RecyclerView.Adapter<AlamatAdapter.ViewHolder
                                 sharedPrefManager = new SharedPrefManager(v.getContext());
                                 String token = sharedPrefManager.getSpToken();
                                 Service service = Client.getClient().create(Service.class);
-                                Call<AlamatResponse> delete = service.deleteAlamat("Bearer " + token, alamat.get(position).getId());
-                                delete.enqueue(new Callback<AlamatResponse>() {
+                                Call<AlamatDeleteResponse> delete = service.deleteAlamat("Bearer " + token, alamat.get(position).getId());
+                                delete.enqueue(new Callback<AlamatDeleteResponse>() {
                                     @Override
-                                    public void onResponse(Call<AlamatResponse> call, Response<AlamatResponse> response) {
+                                    public void onResponse(Call<AlamatDeleteResponse> call, Response<AlamatDeleteResponse> response) {
                                         if (response.isSuccessful()) {
                                             Toast.makeText(activity.getApplicationContext(), v.getContext().getString(R.string.msg_success), Toast.LENGTH_SHORT).show();
                                             alamat.remove(alamat.get(position));
@@ -116,7 +118,8 @@ public class AlamatAdapter extends RecyclerView.Adapter<AlamatAdapter.ViewHolder
                                     }
 
                                     @Override
-                                    public void onFailure(Call<AlamatResponse> call, Throwable t) {
+                                    public void onFailure(Call<AlamatDeleteResponse> call, Throwable t) {
+                                        Toast.makeText(activity.getApplicationContext(), v.getContext().getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
 
                                     }
                                 });

@@ -1,6 +1,7 @@
 package com.saami.app.projects.form.connection;
 
 import com.saami.app.projects.form.model.alamat.AlamatResponse;
+import com.saami.app.projects.form.model.alamat.delete.AlamatDeleteResponse;
 import com.saami.app.projects.form.model.alamat.post.AlamatPostResponse;
 import com.saami.app.projects.form.model.image.ImageResponse;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
@@ -109,8 +110,8 @@ public interface Service {
                                         @Field("alamat") String alamat);
 
     @DELETE("alamat/{id}")
-    Call<AlamatResponse> deleteAlamat(@Header("Authorization") String authorization,
-                                      @Path("id") int id);
+    Call<AlamatDeleteResponse> deleteAlamat(@Header("Authorization") String authorization,
+                                            @Path("id") int id);
 
 
 }
