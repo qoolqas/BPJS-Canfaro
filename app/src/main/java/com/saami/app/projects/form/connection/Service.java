@@ -1,5 +1,6 @@
 package com.saami.app.projects.form.connection;
 
+import com.saami.app.projects.form.model.alamat.edit.AlamatEditResponse;
 import com.saami.app.projects.form.model.alamat.get.AlamatResponse;
 import com.saami.app.projects.form.model.alamat.delete.AlamatDeleteResponse;
 import com.saami.app.projects.form.model.alamat.post.AlamatPostResponse;
@@ -98,8 +99,8 @@ public interface Service {
                                        @Field("alamat") String alamat);
 
     @FormUrlEncoded
-    @PUT("alamat")
-    Call<AlamatDeleteResponse> editAlamat(@Header("Authorization") String authorization,
+    @PUT("alamat/{id}")
+    Call<AlamatEditResponse> editAlamat(@Header("Authorization") String authorization,
                                         @Path("id") int id,
                                         @Field("provinsi") String prov,
                                         @Field("kota") String kota,
