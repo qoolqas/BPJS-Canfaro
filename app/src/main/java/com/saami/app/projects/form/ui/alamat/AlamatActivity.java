@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.saami.app.projects.form.ListView_BPJS;
 import com.saami.app.projects.form.R;
 import com.saami.app.projects.form.adapterFormList;
@@ -28,6 +30,7 @@ public class AlamatActivity extends AppCompatActivity {
     AlamatViewModel alamatViewModel;
     List<DataItem> alamat = new ArrayList<>();
     ProgressBar pb;
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,14 @@ public class AlamatActivity extends AppCompatActivity {
 
 
     private void view() {
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AlamatActivity.this, AlamatAddActivity.class);
+                startActivity(intent);
+            }
+        });
         pb = findViewById(R.id.pb);
         rv = findViewById(R.id.rv);
         pb.setVisibility(View.VISIBLE);
