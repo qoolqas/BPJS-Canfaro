@@ -1,6 +1,7 @@
 package com.saami.app.projects.form.connection;
 
 import com.saami.app.projects.form.model.alamat.AlamatResponse;
+import com.saami.app.projects.form.model.alamat.post.AlamatPostResponse;
 import com.saami.app.projects.form.model.image.ImageResponse;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.model.login.LoginResponse;
@@ -83,9 +84,33 @@ public interface Service {
     Call<ImageResponse> uploadImage(@Header("Authorization") String authorization,
                                     @Path("type") String type,
                                     @PartMap Map<String, RequestBody> map);
+
     @GET("alamat")
     Call<AlamatResponse> getAlamat(@Header("Authorization") String authorization,
                                    @Query("relationship") int relation);
+
+    @FormUrlEncoded
+    @POST("alamat")
+    Call<AlamatPostResponse> addAlamat(@Header("Authorization") String authorization,
+                                       @Field("provinsi") String prov,
+                                       @Field("kota") String kota,
+                                       @Field("kecamatan") String kecamatan,
+                                       @Field("namaBadanUsaha") String namaBU,
+                                       @Field("alamat") String alamat);
+
+    @FormUrlEncoded
+    @PUT("alamat")
+    Call<AlamatPostResponse> editAlamat(@Header("Authorization") String authorization,
+                                        @Path("id") int id,
+                                        @Field("provinsi") String prov,
+                                        @Field("kota") String kota,
+                                        @Field("kecamatan") String kecamatan,
+                                        @Field("namaBadanUsaha") String namaBU,
+                                        @Field("alamat") String alamat);
+
+    @DELETE("alamat/{id}")
+    Call<AlamatResponse> deleteAlamat(@Header("Authorization") String authorization,
+                                      @Path("id") int id);
 
 
 }
