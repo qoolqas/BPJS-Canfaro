@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
+import com.saami.app.projects.form.ui.alamat.AlamatActivity;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity
 {
-    ImageView newdoc, posteddoc, draftdoc,laporandoc;
+    ImageView newdoc, posteddoc, draftdoc,laporandoc, alamatdoc;
     String state = "0";
 
     @Override
@@ -92,6 +93,14 @@ public class HomeActivity extends AppCompatActivity
             {
                 Intent i = new Intent(HomeActivity.this,ListView_BPJS.class);
                 startActivity(i);
+            }
+        });
+        alamatdoc = findViewById(R.id.ico_alamat);
+        alamatdoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, AlamatActivity.class);
+                startActivity(intent);
             }
         });
 

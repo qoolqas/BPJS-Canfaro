@@ -31,7 +31,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.AlamatActivity"></activity>
+        <activity android:name=".ui.alamat.AlamatAddActivity"></activity>
+        <activity android:name=".ui.alamat.AlamatActivity" />
         <activity android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +43,7 @@
         <activity
             android:name=".Laporan"
             android:screenOrientation="landscape" />
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".HomeActivity" />
         <activity android:name=".ListView_BPJS" />
         <activity android:name=".ListView_BPJS_Draft" />
         <activity android:name=".InsertDataBPJS" />
