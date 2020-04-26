@@ -1683,6 +1683,7 @@ public class InsertDataBPJS extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<PostResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
                 Log.d("test2", data.toString());
             }
         });

@@ -15,6 +15,7 @@ import com.saami.app.projects.form.SharedPrefManager;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
 import com.saami.app.projects.form.model.alamat.delete.AlamatDeleteResponse;
+import com.saami.app.projects.form.model.alamat.edit.AlamatEditResponse;
 import com.saami.app.projects.form.model.alamat.get.DataItem;
 import com.saami.app.projects.form.model.alamat.post.AlamatPostResponse;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
@@ -55,7 +56,7 @@ public class AlamatAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (edit.equals("1")){
-
+                    editAlamat();
                 }else {
                     addAlamat();
                 }
@@ -85,14 +86,17 @@ public class AlamatAddActivity extends AppCompatActivity {
             int selection = adaptercab.getPosition(getAlamat.getKota());
             spnKota.setSelection(selection);
             alamat.setText(getAlamat.getAlamat());
+            namaBu.setText(getAlamat.getNamaBadanUsaha());
         }
         if (view.equals("1")) {
             int selection = adaptercab.getPosition(getAlamat.getKota());
             spnKota.setSelection(selection);
             alamat.setText(getAlamat.getAlamat());
+            namaBu.setText(getAlamat.getNamaBadanUsaha());
 
             spnKota.setEnabled(false);
             alamat.setEnabled(false);
+            namaBu.setEnabled(false);
             submit.setVisibility(View.GONE);
         }
     }
@@ -111,9 +115,9 @@ public class AlamatAddActivity extends AppCompatActivity {
             public void onResponse(Call<AlamatPostResponse> call, Response<AlamatPostResponse> response) {
                 assert response.body() != null;
                 finish();
-//                    Intent intent = new Intent(AlamatAddActivity.this, AlamatActivity.class)
-//                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
+                    Intent intent = new Intent(AlamatAddActivity.this, AlamatActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
             }
 
             @Override
@@ -129,10 +133,10 @@ public class AlamatAddActivity extends AppCompatActivity {
         String namaBU = namaBu.getText().toString();
         String alamatS = alamat.getText().toString();
         Service service = Client.getClient().create(Service.class);
-        Call<AlamatDeleteResponse> call = service.editAlamat("Bearer " + token, getAlamat.getId(), "Sumatra", kota, "Medan Kota", namaBU, alamatS);
-        call.enqueue(new Callback<AlamatDeleteResponse>() {
+        Call<AlamatEditResponse> call = service.editAlamat("Bearer " + token, getAlamat.getId(), "Sumatra", kota, "Medan Kota", namaBU, alamatS);
+        call.enqueue(new Callback<AlamatEditResponse>() {
             @Override
-            public void onResponse(Call<AlamatDeleteResponse> call, Response<AlamatDeleteResponse> response) {
+            public void onResponse(Call<AlamatEditResponse> call, Response<AlamatEditResponse> response) {
                 assert response.body() != null;
                 Intent intent = new Intent(AlamatAddActivity.this, AlamatActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -140,7 +144,7 @@ public class AlamatAddActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<AlamatDeleteResponse> call, Throwable t) {
+            public void onFailure(Call<AlamatEditResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
             }
         });
