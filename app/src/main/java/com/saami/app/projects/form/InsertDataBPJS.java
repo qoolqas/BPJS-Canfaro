@@ -40,6 +40,8 @@ import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
 import com.saami.app.projects.form.model.image.ImageResponse;
 import com.saami.app.projects.form.model.kunjungan.DataItem;
+import com.saami.app.projects.form.model.kunjungan.edit.KunjunganEditResponse;
+
 import com.saami.app.projects.form.model.post.BadanUsaha;
 import com.saami.app.projects.form.model.post.ContactBadanUsaha;
 import com.saami.app.projects.form.model.post.Data;
@@ -1672,19 +1674,28 @@ public class InsertDataBPJS extends AppCompatActivity {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
                 assert response.body() != null;
-                if (response.isSuccessful()){
-                    Intent intent = new Intent(InsertDataBPJS.this, ListView_BPJS.class);
-                    startActivity(intent);
-                }else{
+                try {
+                    if (response.code() == 200){
+                        Intent intent = new Intent(InsertDataBPJS.this, ListView_BPJS.class);
+                        startActivity(intent);
+                    }else if (response.code() == 422){
+                        Toast.makeText(getApplicationContext(), getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
+                        Log.d("422", "422");
+                    }
+                }catch (Exception e){
                     Toast.makeText(getApplicationContext(), getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
+                    Log.d("423", "423");
                 }
+
 
             }
 
             @Override
             public void onFailure(Call<PostResponse> call, Throwable t) {
+                Response<PostResponse> response = null;
+                onResponse(call, response);
                 Toast.makeText(getApplicationContext(), getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
-                Log.d("test2", data.toString());
+                Log.d("failure", "fail");
             }
         });
     }

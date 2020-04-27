@@ -20,6 +20,7 @@ import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
 import com.saami.app.projects.form.model.kunjungan.DataItem;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
+import com.saami.app.projects.form.model.kunjungan.delete.KunjunganDeleteResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 
 import java.text.DecimalFormat;
@@ -127,10 +128,10 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
                                 sharedPrefManager = new SharedPrefManager(v.getContext());
                                 String token = sharedPrefManager.getSpToken();
                                 Service service = Client.getClient().create(Service.class);
-                                Call<KunjunganGetResponse> delete = service.deleteKunjungan("Bearer " + token, String.valueOf(kunjungan.get(position).getId()));
-                                delete.enqueue(new Callback<KunjunganGetResponse>() {
+                                Call<KunjunganDeleteResponse> delete = service.deleteKunjungan("Bearer " + token, String.valueOf(kunjungan.get(position).getId()));
+                                delete.enqueue(new Callback<KunjunganDeleteResponse>() {
                                     @Override
-                                    public void onResponse(Call<KunjunganGetResponse> call, Response<KunjunganGetResponse> response) {
+                                    public void onResponse(Call<KunjunganDeleteResponse> call, Response<KunjunganDeleteResponse> response) {
                                         if (response.isSuccessful()) {
                                             Toast.makeText(mActivity.getApplicationContext(), v.getContext().getString(R.string.msg_success), Toast.LENGTH_SHORT).show();
                                             kunjungan.remove(kunjungan.get(position));
@@ -142,7 +143,7 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
                                     }
 
                                     @Override
-                                    public void onFailure(Call<KunjunganGetResponse> call, Throwable t) {
+                                    public void onFailure(Call<KunjunganDeleteResponse> call, Throwable t) {
 
                                     }
                                 });

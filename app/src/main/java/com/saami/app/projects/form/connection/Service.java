@@ -6,6 +6,7 @@ import com.saami.app.projects.form.model.alamat.delete.AlamatDeleteResponse;
 import com.saami.app.projects.form.model.alamat.post.AlamatPostResponse;
 import com.saami.app.projects.form.model.image.ImageResponse;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
+import com.saami.app.projects.form.model.kunjungan.delete.KunjunganDeleteResponse;
 import com.saami.app.projects.form.model.login.LoginResponse;
 import com.saami.app.projects.form.model.post.Data;
 import com.saami.app.projects.form.model.post.PostResponse;
@@ -66,8 +67,8 @@ public interface Service {
                                                   @Query("relationship") int relation);
 
     @DELETE("kunjungan/{id}")
-    Call<KunjunganGetResponse> deleteKunjungan(@Header("Authorization") String authorization,
-                                               @Path("id") String id);
+    Call<KunjunganDeleteResponse> deleteKunjungan(@Header("Authorization") String authorization,
+                                                  @Path("id") String id);
 
 
     @POST("kunjungan")
