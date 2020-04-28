@@ -10,6 +10,8 @@ public class Meta{
 	@SerializedName("message")
 	private String message;
 
+
+
 	public void setSuccess(boolean success){
 		this.success = success;
 	}

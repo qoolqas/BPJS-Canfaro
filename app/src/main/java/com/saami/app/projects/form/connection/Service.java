@@ -7,6 +7,8 @@ import com.saami.app.projects.form.model.alamat.post.AlamatPostResponse;
 import com.saami.app.projects.form.model.image.ImageResponse;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.model.kunjungan.delete.KunjunganDeleteResponse;
+import com.saami.app.projects.form.model.kunjungan.edit.KunjunganEditResponse;
+import com.saami.app.projects.form.model.kunjungan.post.KunjunganPostResponse;
 import com.saami.app.projects.form.model.login.LoginResponse;
 import com.saami.app.projects.form.model.post.Data;
 import com.saami.app.projects.form.model.post.PostResponse;
@@ -72,13 +74,13 @@ public interface Service {
 
 
     @POST("kunjungan")
-    Call<PostResponse> saveKunjungan(@Header("Authorization") String authorization,
-                                     @Body Data data);
+    Call<KunjunganPostResponse> saveKunjungan(@Header("Authorization") String authorization,
+                                              @Body Data data);
 
     @PUT("kunjungan/{id}")
-    Call<PostResponse> saveEditKunjungan(@Header("Authorization") String authorization,
-                                         @Path("id") int id,
-                                         @Body Data data);
+    Call<KunjunganEditResponse> saveEditKunjungan(@Header("Authorization") String authorization,
+                                                  @Path("id") int id,
+                                                  @Body Data data);
 
     @Multipart
     @POST("image/upload/{type}")

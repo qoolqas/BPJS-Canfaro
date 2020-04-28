@@ -4,4 +4,5 @@
     <string name="petugas_r_o">Petugas R.O</string>
     <string name="msg_success">Successful</string>
     <string name="msg_gagal">Gagal</string>
+    <string name="msg_422">Mohon Masukan Data Dengan Benar</string>
 </resources>

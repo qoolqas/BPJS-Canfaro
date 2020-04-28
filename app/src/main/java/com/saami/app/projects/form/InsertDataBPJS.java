@@ -42,6 +42,7 @@ import com.saami.app.projects.form.model.image.ImageResponse;
 import com.saami.app.projects.form.model.kunjungan.DataItem;
 import com.saami.app.projects.form.model.kunjungan.edit.KunjunganEditResponse;
 
+import com.saami.app.projects.form.model.kunjungan.post.KunjunganPostResponse;
 import com.saami.app.projects.form.model.post.BadanUsaha;
 import com.saami.app.projects.form.model.post.ContactBadanUsaha;
 import com.saami.app.projects.form.model.post.Data;
@@ -1085,9 +1086,9 @@ public class InsertDataBPJS extends AppCompatActivity {
         kunjungan.setAlasan(edtalasan.getText().toString());
         kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());
         kunjungan.setKendala(edtkendala.getText().toString());
-        if (edtJumlahRekrutmen.getText().toString().equals("")){
+        if (edtJumlahRekrutmen.getText().toString().equals("")) {
             kunjungan.setTotalRecruitment("0");
-        }else {
+        } else {
             kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
         }
 
@@ -1178,9 +1179,9 @@ public class InsertDataBPJS extends AppCompatActivity {
         kunjungan.setAlasan(edtalasan.getText().toString());
         kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());
         kunjungan.setKendala(edtkendala.getText().toString());
-        if (edtJumlahRekrutmen.getText().toString().equals("")){
+        if (edtJumlahRekrutmen.getText().toString().equals("")) {
             kunjungan.setTotalRecruitment("0");
-        }else {
+        } else {
             kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
         }
 
@@ -1262,9 +1263,9 @@ public class InsertDataBPJS extends AppCompatActivity {
         kunjungan.setImage(dataPhoto);
         kunjungan.setNote(edtNotes.getText().toString());
         int selectedIdNotifikasi = rGroupNotifikasi.getCheckedRadioButtonId();
-        if (edtJumlahRekrutmen.getText().toString().equals("")){
+        if (edtJumlahRekrutmen.getText().toString().equals("")) {
             kunjungan.setTotalRecruitment("0");
-        }else {
+        } else {
             kunjungan.setTotalRecruitment(edtJumlahRekrutmen.getText().toString());
         }
         rButtonNotifikasi = findViewById(selectedIdNotifikasi);
@@ -1669,31 +1670,25 @@ public class InsertDataBPJS extends AppCompatActivity {
     void savePost(final Data data) {
         String token = sharedPrefManager.getSpToken();
         Service service = Client.getClient().create(Service.class);
-        Call<PostResponse> call = service.saveKunjungan("Bearer " + token, data);
-        call.enqueue(new Callback<PostResponse>() {
+        Call<KunjunganPostResponse> call = service.saveKunjungan("Bearer " + token, data);
+        call.enqueue(new Callback<KunjunganPostResponse>() {
             @Override
-            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+            public void onResponse(Call<KunjunganPostResponse> call, Response<KunjunganPostResponse> response) {
                 assert response.body() != null;
-                try {
-                    if (response.code() == 200){
-                        Intent intent = new Intent(InsertDataBPJS.this, ListView_BPJS.class);
-                        startActivity(intent);
-                    }else if (response.code() == 422){
-                        Toast.makeText(getApplicationContext(), getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
-                        Log.d("422", "422");
-                    }
-                }catch (Exception e){
-                    Toast.makeText(getApplicationContext(), getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
-                    Log.d("423", "423");
+                if (response.code() == 200) {
+                    Intent intent = new Intent(InsertDataBPJS.this, ListView_BPJS.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } else if (response.code() == 422) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.msg_422), Toast.LENGTH_SHORT).show();
+                    Log.d("422", "422");
                 }
 
 
             }
 
             @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
-                Response<PostResponse> response = null;
-                onResponse(call, response);
+            public void onFailure(Call<KunjunganPostResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), getString(R.string.msg_gagal), Toast.LENGTH_SHORT).show();
                 Log.d("failure", "fail");
             }
@@ -1703,16 +1698,24 @@ public class InsertDataBPJS extends AppCompatActivity {
     void saveEditPost(Data data) {
         String token = sharedPrefManager.getSpToken();
         Service service = Client.getClient().create(Service.class);
-        Call<PostResponse> call = service.saveEditKunjungan("Bearer " + token, dataItem.getId(), data);
-        call.enqueue(new Callback<PostResponse>() {
+        Call<KunjunganEditResponse> call = service.saveEditKunjungan("Bearer " + token, dataItem.getId(), data);
+        call.enqueue(new Callback<KunjunganEditResponse>() {
             @Override
-            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
-                Intent intent = new Intent(InsertDataBPJS.this, ListView_BPJS.class);
-                startActivity(intent);
+            public void onResponse(Call<KunjunganEditResponse> call, Response<KunjunganEditResponse> response) {
+                if (response.code() == 200){
+                    Intent intent = new Intent(InsertDataBPJS.this, ListView_BPJS.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }else if (response.code() == 422) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.msg_422), Toast.LENGTH_SHORT).show();
+                    Log.d("422", "422");
+                }
+
             }
 
             @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
+            public void onFailure(Call<KunjunganEditResponse> call, Throwable t) {
+                Log.d("failure", "fail");
             }
         });
     }
