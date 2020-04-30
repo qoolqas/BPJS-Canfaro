@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.saami.app.projects.form.HomeActivity;
+import com.saami.app.projects.form.ListView_BPJS;
 import com.saami.app.projects.form.R;
 import com.saami.app.projects.form.model.alamat.get.AlamatResponse;
 import com.saami.app.projects.form.model.alamat.get.DataItem;
@@ -69,8 +71,10 @@ public class AlamatActivity extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getData();
-                Log.d("refresh", "refresh");
+                Intent intent = new Intent(AlamatActivity.this, HomeActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("state", "7");
+                startActivity(intent);
             }
         });
         pb = findViewById(R.id.pb);

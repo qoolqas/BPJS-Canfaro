@@ -45,6 +45,9 @@ public class HomeActivity extends AppCompatActivity
             if (state.equals("6")){
                 startActivity(new Intent(HomeActivity.this, ListView_BPJS.class)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+            }else if (state.equals("7")){
+                startActivity(new Intent(HomeActivity.this, AlamatActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         }catch (Exception e){
             state = "0";

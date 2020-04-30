@@ -4,6 +4,7 @@ import com.saami.app.projects.form.model.alamat.edit.AlamatEditResponse;
 import com.saami.app.projects.form.model.alamat.get.AlamatResponse;
 import com.saami.app.projects.form.model.alamat.delete.AlamatDeleteResponse;
 import com.saami.app.projects.form.model.alamat.post.AlamatPostResponse;
+import com.saami.app.projects.form.model.badanusaha.BadanUsahaSearchResponse;
 import com.saami.app.projects.form.model.image.ImageResponse;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.model.kunjungan.delete.KunjunganDeleteResponse;
@@ -63,10 +64,10 @@ public interface Service {
     );
 
     @GET("kunjungan")
-    Call<KunjunganGetResponse> getKunjunganSearch(@Header("Authorization") String authorization,
-                                                  @Query("userId") String uid,
-                                                  @Query("field") String search,
-                                                  @Query("relationship") int relation);
+    Call<BadanUsahaSearchResponse> getKunjunganSearch(@Header("Authorization") String authorization,
+                                                      @Query("userId") String uid,
+                                                      @Query("q") String search,
+                                                      @Query("relationship") int relation);
 
     @DELETE("kunjungan/{id}")
     Call<KunjunganDeleteResponse> deleteKunjungan(@Header("Authorization") String authorization,

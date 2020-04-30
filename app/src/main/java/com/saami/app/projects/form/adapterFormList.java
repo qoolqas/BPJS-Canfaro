@@ -33,15 +33,13 @@ import retrofit2.Response;
 
 public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHolder> {
 
-    private List<ProviderFormList> assList;
     Context mContext;
     Activity mActivity;
     LayoutInflater mInflater;
     private List<DataItem> kunjungan;
     SharedPrefManager sharedPrefManager;
 
-    public adapterFormList(List<ProviderFormList> incom, Context ctx, Activity act, List<DataItem> kunjungan) {
-        this.assList = incom;
+    public adapterFormList( Context ctx, Activity act, List<DataItem> kunjungan) {
         this.mContext = ctx;
         this.mActivity = act;
         mInflater = LayoutInflater.from(mContext);
@@ -197,7 +195,5 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
         }
     }
 
-    public List<ProviderFormList> getOutgoingListSelected() {
-        return assList;
-    }
+
 }

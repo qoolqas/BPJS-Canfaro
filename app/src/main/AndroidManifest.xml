@@ -31,7 +31,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.alamat.AlamatSearch"></activity>
+        <activity android:name=".ui.kunjungan.KunjunganSearch"></activity>
+        <activity android:name=".ui.alamat.AlamatSearch" />
         <activity android:name=".ui.alamat.AlamatAddActivity" />
         <activity android:name=".ui.alamat.AlamatActivity" />
         <activity android:name=".ui.LoginActivity">
