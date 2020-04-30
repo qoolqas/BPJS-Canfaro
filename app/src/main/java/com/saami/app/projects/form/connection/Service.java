@@ -92,6 +92,11 @@ public interface Service {
     Call<AlamatResponse> getAlamat(@Header("Authorization") String authorization,
                                    @Query("relationship") int relation);
 
+    @GET("alamat")
+    Call<AlamatResponse> getAlamatSearch(@Header("Authorization") String authorization,
+                                         @Query("relationship") int relation,
+                                         @Query("q") String search);
+
     @FormUrlEncoded
     @POST("alamat")
     Call<AlamatPostResponse> addAlamat(@Header("Authorization") String authorization,

@@ -53,4 +53,30 @@ public class AlamatViewModel extends AndroidViewModel {
         }
         return getAlamat;
     }
+    void loadAlamatSearch(String search) {
+        String token = sharedPrefManager.getSpToken();
+        Service service = Client.getClient().create(Service.class);
+        Call<AlamatResponse> call = service.getAlamatSearch("Bearer " + token, 1, search);
+        call.enqueue(new Callback<AlamatResponse>() {
+
+            @Override
+            public void onResponse(@NotNull Call<AlamatResponse> call, @NotNull Response<AlamatResponse> response) {
+                getAlamat.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<AlamatResponse> call, @NotNull Throwable t) {
+                Log.e("failure", t.toString());
+
+            }
+        });
+    }
+
+    public LiveData<AlamatResponse> liveSearch(String search2) {
+        if (getAlamat == null) {
+            getAlamat = new MutableLiveData<>();
+            loadAlamatSearch(search2);
+        }
+        return getAlamat;
+    }
 }
