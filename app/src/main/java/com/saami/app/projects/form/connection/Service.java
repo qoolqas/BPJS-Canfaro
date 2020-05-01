@@ -63,9 +63,8 @@ public interface Service {
                                               @Path("id") int id
     );
 
-    @GET("kunjungan")
+    @GET("badan-usaha")
     Call<BadanUsahaSearchResponse> getKunjunganSearch(@Header("Authorization") String authorization,
-                                                      @Query("userId") String uid,
                                                       @Query("q") String search,
                                                       @Query("relationship") int relation);
 

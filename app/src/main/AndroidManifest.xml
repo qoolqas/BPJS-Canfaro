@@ -43,12 +43,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Laporan"
+            android:name=".ui.monitoring.Laporan"
             android:screenOrientation="landscape" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".ListView_BPJS" />
-        <activity android:name=".ListView_BPJS_Draft" />
-        <activity android:name=".InsertDataBPJS" />
+        <activity android:name=".ui.kunjungan.ListView_BPJS" />
+        <activity android:name=".ui.kunjungan.ListView_BPJS_Draft" />
+        <activity android:name=".ui.kunjungan.InsertDataBPJS" />
     </application>
 
 </manifest>

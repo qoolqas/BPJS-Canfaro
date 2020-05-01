@@ -1,4 +1,4 @@
-package com.saami.app.projects.form;
+package com.saami.app.projects.form.ui.kunjungan;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -23,11 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.saami.app.projects.form.HomeActivity;
+import com.saami.app.projects.form.R;
 import com.saami.app.projects.form.model.kunjungan.DataItem;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 import com.saami.app.projects.form.ui.FixViewModel;
-import com.saami.app.projects.form.ui.kunjungan.KunjunganSearch;
 
 import net.ozaydin.serkan.easy_csv.EasyCsv;
 import net.ozaydin.serkan.easy_csv.FileCallback;
@@ -256,7 +257,7 @@ public class ListView_BPJS extends AppCompatActivity {
     }
 
 
-    private void getData() {
+    public void getData() {
 
 
         fixViewModel.liveGet().observe(this, new Observer<KunjunganGetResponse>() {

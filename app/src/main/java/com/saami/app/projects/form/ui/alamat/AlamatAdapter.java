@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.saami.app.projects.form.InsertDataBPJS;
 import com.saami.app.projects.form.R;
 import com.saami.app.projects.form.SharedPrefManager;
 import com.saami.app.projects.form.connection.Client;

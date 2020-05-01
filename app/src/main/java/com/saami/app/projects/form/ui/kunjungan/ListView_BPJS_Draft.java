@@ -1,4 +1,4 @@
-package com.saami.app.projects.form;
+package com.saami.app.projects.form.ui.kunjungan;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.saami.app.projects.form.R;
 import com.saami.app.projects.form.sqlite.DBDataSource;
 import com.saami.app.projects.form.sqlite.FormData;
 
@@ -255,7 +256,7 @@ public class ListView_BPJS_Draft extends AppCompatActivity
                 .show();
     }
 
-    void getformData(){
+    public void getformData(){
         arraylistform.clear();
         ArrayList<FormData> forms = dataSource.getAllformdraft();
         if (forms.size() > 0)

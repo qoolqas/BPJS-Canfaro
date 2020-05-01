@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InsertDataBPJS">
+    tools:context=".ui.kunjungan.InsertDataBPJS">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -1003,7 +1003,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:text="3 Hari" />
+                                android:text="Surat Konfirmasi" />
 
                             <RadioButton
                                 android:id="@+id/rd_notifikasi_tidak"
@@ -1011,7 +1011,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
                                 android:checked="true"
-                                android:text="2 Hari" />
+                                android:text="Surat Peringatan" />
                         </RadioGroup>
 
 

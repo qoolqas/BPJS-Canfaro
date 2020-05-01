@@ -1,8 +1,11 @@
 package com.saami.app.projects.form.model.badanusaha;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class DataItem{
+public class DataItem implements Parcelable {
 
 	@SerializedName("ttdImage")
 	private TtdImage ttdImage;
@@ -238,4 +241,69 @@ public class DataItem{
 			",email = '" + email + '\'' + 
 			"}";
 		}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeParcelable(this.ttdImage, flags);
+		dest.writeString(this.keterangan);
+		dest.writeParcelable(this.kunjungan, flags);
+		dest.writeString(this.address);
+		dest.writeInt(this.jumlahKeluargaTerdaftar);
+		dest.writeByte(this.pesertaJKNOrKIS ? (byte) 1 : (byte) 0);
+		dest.writeInt(this.jumlahKaryawanTerdaftar);
+		dest.writeInt(this.jumlahKeluarga);
+		dest.writeString(this.createdAt);
+		dest.writeString(this.bidangUsaha);
+		dest.writeParcelable(this.contactBadanUsaha, flags);
+		dest.writeString(this.phone);
+		dest.writeInt(this.createdBy);
+		dest.writeByte(this.sosialisasiBPJS ? (byte) 1 : (byte) 0);
+		dest.writeString(this.name);
+		dest.writeInt(this.jumlahKaryawan);
+		dest.writeInt(this.id);
+		dest.writeByte(this.asuransiKesehatan ? (byte) 1 : (byte) 0);
+		dest.writeString(this.email);
+	}
+
+	public DataItem() {
+	}
+
+	protected DataItem(Parcel in) {
+		this.ttdImage = in.readParcelable(TtdImage.class.getClassLoader());
+		this.keterangan = in.readString();
+		this.kunjungan = in.readParcelable(Kunjungan.class.getClassLoader());
+		this.address = in.readString();
+		this.jumlahKeluargaTerdaftar = in.readInt();
+		this.pesertaJKNOrKIS = in.readByte() != 0;
+		this.jumlahKaryawanTerdaftar = in.readInt();
+		this.jumlahKeluarga = in.readInt();
+		this.createdAt = in.readString();
+		this.bidangUsaha = in.readString();
+		this.contactBadanUsaha = in.readParcelable(ContactBadanUsaha.class.getClassLoader());
+		this.phone = in.readString();
+		this.createdBy = in.readInt();
+		this.sosialisasiBPJS = in.readByte() != 0;
+		this.name = in.readString();
+		this.jumlahKaryawan = in.readInt();
+		this.id = in.readInt();
+		this.asuransiKesehatan = in.readByte() != 0;
+		this.email = in.readString();
+	}
+
+	public static final Parcelable.Creator<DataItem> CREATOR = new Parcelable.Creator<DataItem>() {
+		@Override
+		public DataItem createFromParcel(Parcel source) {
+			return new DataItem(source);
+		}
+
+		@Override
+		public DataItem[] newArray(int size) {
+			return new DataItem[size];
+		}
+	};
 }

@@ -5,7 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Laporan">
+    tools:context=".ui.monitoring.Laporan">
+    <TextView
+        android:id="@+id/txtPetugas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Petugas RO"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:layout_margin="8dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

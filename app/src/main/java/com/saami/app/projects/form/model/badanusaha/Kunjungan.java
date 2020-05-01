@@ -1,8 +1,11 @@
 package com.saami.app.projects.form.model.badanusaha;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Kunjungan{
+public class Kunjungan implements Parcelable {
 
 	@SerializedName("ttdImage")
 	private TtdImage ttdImage;
@@ -190,4 +193,61 @@ public class Kunjungan{
 			",totalRecruitment = '" + totalRecruitment + '\'' + 
 			"}";
 		}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeParcelable(this.ttdImage, flags);
+		dest.writeParcelable(this.image, flags);
+		dest.writeString(this.note);
+		dest.writeString(this.tMPBU);
+		dest.writeByte(this.reminder ? (byte) 1 : (byte) 0);
+		dest.writeString(this.tPD);
+		dest.writeString(this.alasan);
+		dest.writeString(this.tPP);
+		dest.writeInt(this.createdBy);
+		dest.writeString(this.kendala);
+		dest.writeString(this.tindakLanjut);
+		dest.writeString(this.tPSKP);
+		dest.writeInt(this.badanUsahaId);
+		dest.writeInt(this.id);
+		dest.writeInt(this.totalRecruitment);
+	}
+
+	public Kunjungan() {
+	}
+
+	protected Kunjungan(Parcel in) {
+		this.ttdImage = in.readParcelable(TtdImage.class.getClassLoader());
+		this.image = in.readParcelable(Image.class.getClassLoader());
+		this.note = in.readString();
+		this.tMPBU = in.readString();
+		this.reminder = in.readByte() != 0;
+		this.tPD = in.readString();
+		this.alasan = in.readString();
+		this.tPP = in.readString();
+		this.createdBy = in.readInt();
+		this.kendala = in.readString();
+		this.tindakLanjut = in.readString();
+		this.tPSKP = in.readString();
+		this.badanUsahaId = in.readInt();
+		this.id = in.readInt();
+		this.totalRecruitment = in.readInt();
+	}
+
+	public static final Parcelable.Creator<Kunjungan> CREATOR = new Parcelable.Creator<Kunjungan>() {
+		@Override
+		public Kunjungan createFromParcel(Parcel source) {
+			return new Kunjungan(source);
+		}
+
+		@Override
+		public Kunjungan[] newArray(int size) {
+			return new Kunjungan[size];
+		}
+	};
 }

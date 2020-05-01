@@ -59,9 +59,8 @@ public class FixViewModel extends AndroidViewModel {
     }
     void loadSearch(String query) {
         String token = sharedPrefManager.getSpToken();
-        String uid = sharedPrefManager.getSpUID();
         Service service = Client.getClient().create(Service.class);
-        Call<BadanUsahaSearchResponse> call = service.getKunjunganSearch("Bearer " + token, uid, query, 1);
+        Call<BadanUsahaSearchResponse> call = service.getKunjunganSearch("Bearer " + token,  query, 1);
         call.enqueue(new Callback<BadanUsahaSearchResponse>() {
 
             @Override

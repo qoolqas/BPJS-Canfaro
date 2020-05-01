@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.saami.app.projects.form.R;
-import com.saami.app.projects.form.adapterFormList;
 import com.saami.app.projects.form.model.badanusaha.BadanUsahaSearchResponse;
 import com.saami.app.projects.form.model.badanusaha.DataItem;
 import com.saami.app.projects.form.ui.FixViewModel;
@@ -24,7 +23,7 @@ import java.util.List;
 
 public class KunjunganSearch extends AppCompatActivity {
     String nameQuery;
-    private adapterFormList adapter;
+    private adapterFormSearch adapter;
     private List<DataItem> getBu = new ArrayList<>();
     private FixViewModel fixViewModel;
     RecyclerView listParkir;
@@ -43,7 +42,7 @@ public class KunjunganSearch extends AppCompatActivity {
         listParkir.setLayoutManager(mLayoutManager);
         listParkir.addItemDecoration(new DividerItemDecoration(this, 0));
         listParkir.setItemAnimator(new DefaultItemAnimator());
-        adapter = new adapterFormList(KunjunganSearch.this, KunjunganSearch.this, getBu);
+        adapter = new adapterFormSearch(KunjunganSearch.this, KunjunganSearch.this, getBu);
         listParkir.setAdapter(adapter);
         try {
             nameQuery = getIntent().getStringExtra("query");

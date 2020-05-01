@@ -1,10 +1,9 @@
-package com.saami.app.projects.form;
+package com.saami.app.projects.form.ui.kunjungan;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.saami.app.projects.form.R;
+import com.saami.app.projects.form.SharedPrefManager;
 import com.saami.app.projects.form.connection.Client;
 import com.saami.app.projects.form.connection.Service;
-import com.saami.app.projects.form.model.kunjungan.DataItem;
-import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
+import com.saami.app.projects.form.model.badanusaha.DataItem;
 import com.saami.app.projects.form.model.kunjungan.delete.KunjunganDeleteResponse;
-import com.saami.app.projects.form.sqlite.DBDataSource;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import retrofit2.Call;
@@ -31,15 +29,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHolder> {
+public class adapterFormSearch extends RecyclerView.Adapter<adapterFormSearch.ViewHolder> {
 
     Context mContext;
     Activity mActivity;
     LayoutInflater mInflater;
-    private List<DataItem> kunjungan;
+    private List<com.saami.app.projects.form.model.badanusaha.DataItem> kunjungan;
     SharedPrefManager sharedPrefManager;
 
-    public adapterFormList( Context ctx, Activity act, List<DataItem> kunjungan) {
+    public adapterFormSearch(Context ctx, Activity act, List<DataItem> kunjungan) {
         this.mContext = ctx;
         this.mActivity = act;
         mInflater = LayoutInflater.from(mContext);
@@ -47,7 +45,7 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
     }
 
     @Override
-    public adapterFormList.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public adapterFormSearch.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.custom_listview_formdata, parent, false);
@@ -59,21 +57,13 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
 
-//        datasource = new DBDataSource(mActivity);
-//
-//        final ProviderFormList item = assList.get(position);
-//        viewHolder.nama.setText(item.getF_KP_NAMA());
-//        viewHolder.phone.setText("Phone Number : " + item.getF_KP_PHONE());
-//        viewHolder.badanusaha.setText(item.getF_BDN_USH());
-//        viewHolder.alamat.setText(item.getF_ALAMAT());
-//        viewHolder.email.setText(item.getF_EMAIL());
-//        viewHolder.tglkunjungan.setText(item.getF_TGL_KUNJUNGAN());
+
         viewHolder.tglkunjungan.setText(kunjungan.get(position).getCreatedAt());
-        viewHolder.nama.setText(kunjungan.get(position).getBadanUsaha().getName());
-        viewHolder.phone.setText(kunjungan.get(position).getBadanUsaha().getPhone());
-        viewHolder.badanusaha.setText(kunjungan.get(position).getBadanUsaha().getBidangUsaha());
-        viewHolder.alamat.setText(kunjungan.get(position).getBadanUsaha().getAddress());
-        viewHolder.email.setText(kunjungan.get(position).getBadanUsaha().getEmail());
+        viewHolder.nama.setText(kunjungan.get(position).getName());
+        viewHolder.phone.setText(kunjungan.get(position).getPhone());
+        viewHolder.badanusaha.setText(kunjungan.get(position).getBidangUsaha());
+        viewHolder.alamat.setText(kunjungan.get(position).getAddress());
+        viewHolder.email.setText(kunjungan.get(position).getEmail());
 
 //        if (item.getF_SAVE_DRAFT().equals("1")) {
 //            viewHolder.draft.setVisibility(View.VISIBLE);
@@ -85,9 +75,9 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
 
                 Intent i = new Intent(mActivity, InsertDataBPJS.class);
                 i.putExtra("home", "0");
-                i.putExtra("view", "2");
+                i.putExtra("view", "3");
                 i.putExtra("edit", "0");
-                i.putExtra("data", kunjungan.get(position));
+                i.putExtra("databu", kunjungan.get(position));
 //                i.putExtra("kodeForm", item.getF_KODE());
                 mActivity.startActivity(i);
 
@@ -103,9 +93,9 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
                                 Intent i = new Intent(mContext, InsertDataBPJS.class);
                                 i.putExtra("home", "200");
                                 i.putExtra("view", "0");
-                                i.putExtra("edit", "2");
-                                i.putExtra("data", kunjungan.get(position));
-                                i.putExtra("id", kunjungan.get(position).getId());
+                                i.putExtra("edit", "3");
+                                i.putExtra("databu", kunjungan.get(position));
+                                i.putExtra("id", kunjungan.get(position).getKunjungan().getId());
                                 mContext.startActivity(i);
                             }
                         })
@@ -126,7 +116,7 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
                                 sharedPrefManager = new SharedPrefManager(v.getContext());
                                 String token = sharedPrefManager.getSpToken();
                                 Service service = Client.getClient().create(Service.class);
-                                Call<KunjunganDeleteResponse> delete = service.deleteKunjungan("Bearer " + token, String.valueOf(kunjungan.get(position).getId()));
+                                Call<KunjunganDeleteResponse> delete = service.deleteKunjungan("Bearer " + token, String.valueOf(kunjungan.get(position).getKunjungan().getId()));
                                 delete.enqueue(new Callback<KunjunganDeleteResponse>() {
                                     @Override
                                     public void onResponse(Call<KunjunganDeleteResponse> call, Response<KunjunganDeleteResponse> response) {
@@ -156,12 +146,6 @@ public class adapterFormList extends RecyclerView.Adapter<adapterFormList.ViewHo
             }
         });
 
-        viewHolder.panel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Toast.makeText(mActivity, item.getF_KODE() ,Toast.LENGTH_LONG).show();
-            }
-        });
 
     }
 
