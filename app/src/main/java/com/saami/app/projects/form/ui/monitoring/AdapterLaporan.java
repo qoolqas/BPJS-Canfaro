@@ -3,6 +3,7 @@ package com.saami.app.projects.form.ui.monitoring;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +47,8 @@ public class AdapterLaporan extends RecyclerView.Adapter<AdapterLaporan.ViewHold
     @Override
     public void onBindViewHolder(@NonNull AdapterLaporan.ViewHolder holder, int position) {
         holder.nomor.setText(String.valueOf(position+1));
-        holder.targetKunjungan.setText(String.valueOf(100));
-        holder.targetRekruitmen.setText(String.valueOf(100));
+        holder.targetKunjungan.setText(String.valueOf(monitoring.get(position).getTargetKunjungan()));
+        holder.targetRekruitmen.setText(String.valueOf(monitoring.get(position).getTargetRecruitment()));
         holder.realisasiKunjungan.setText(String.valueOf(monitoring.get(position).getTotalKunjungan()));
         holder.realisasiRekruitmen.setText(String.valueOf(monitoring.get(position).getTotalRecruitment()));
         //====================
