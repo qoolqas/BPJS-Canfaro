@@ -38,15 +38,15 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Kota"
+                    android:text="Kota / Kabupaten"
                     android:textColor="@color/colorSoftBlue" />
-
 
                 <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                     android:id="@+id/spnKota"

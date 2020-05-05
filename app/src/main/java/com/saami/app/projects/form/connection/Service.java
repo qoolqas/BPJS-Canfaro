@@ -4,9 +4,15 @@ import com.saami.app.projects.form.model.alamat.edit.AlamatEditResponse;
 import com.saami.app.projects.form.model.alamat.get.AlamatResponse;
 import com.saami.app.projects.form.model.alamat.delete.AlamatDeleteResponse;
 import com.saami.app.projects.form.model.alamat.post.AlamatPostResponse;
+import com.saami.app.projects.form.model.badanusaha.BadanUsahaSearchResponse;
 import com.saami.app.projects.form.model.image.ImageResponse;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
+import com.saami.app.projects.form.model.kunjungan.delete.KunjunganDeleteResponse;
+import com.saami.app.projects.form.model.kunjungan.edit.KunjunganEditResponse;
+import com.saami.app.projects.form.model.kunjungan.post.KunjunganPostResponse;
 import com.saami.app.projects.form.model.login.LoginResponse;
+import com.saami.app.projects.form.model.monitoring.KunjunganItem;
+import com.saami.app.projects.form.model.monitoring.MonitoringResponse;
 import com.saami.app.projects.form.model.post.Data;
 import com.saami.app.projects.form.model.post.PostResponse;
 import com.saami.app.projects.form.model.register.RegisterResponse;
@@ -54,30 +60,24 @@ public interface Service {
                                             @Query("userId") String uid,
                                             @Query("relationship") int relation);
 
-    @GET("kunjungan/{id}")
-    Call<KunjunganGetResponse> getKunjunganId(@Header("Authorization") String authorization,
-                                              @Path("id") int id
-    );
-
-    @GET("kunjungan")
-    Call<KunjunganGetResponse> getKunjunganSearch(@Header("Authorization") String authorization,
-                                                  @Query("userId") String uid,
-                                                  @Query("field") String search,
-                                                  @Query("relationship") int relation);
+    @GET("badan-usaha")
+    Call<BadanUsahaSearchResponse> getKunjunganSearch(@Header("Authorization") String authorization,
+                                                      @Query("q") String search,
+                                                      @Query("relationship") int relation);
 
     @DELETE("kunjungan/{id}")
-    Call<KunjunganGetResponse> deleteKunjungan(@Header("Authorization") String authorization,
-                                               @Path("id") String id);
+    Call<KunjunganDeleteResponse> deleteKunjungan(@Header("Authorization") String authorization,
+                                                  @Path("id") String id);
 
 
     @POST("kunjungan")
-    Call<PostResponse> saveKunjungan(@Header("Authorization") String authorization,
-                                     @Body Data data);
+    Call<KunjunganPostResponse> saveKunjungan(@Header("Authorization") String authorization,
+                                              @Body Data data);
 
     @PUT("kunjungan/{id}")
-    Call<PostResponse> saveEditKunjungan(@Header("Authorization") String authorization,
-                                         @Path("id") int id,
-                                         @Body Data data);
+    Call<KunjunganEditResponse> saveEditKunjungan(@Header("Authorization") String authorization,
+                                                  @Path("id") int id,
+                                                  @Body Data data);
 
     @Multipart
     @POST("image/upload/{type}")
@@ -88,6 +88,11 @@ public interface Service {
     @GET("alamat")
     Call<AlamatResponse> getAlamat(@Header("Authorization") String authorization,
                                    @Query("relationship") int relation);
+
+    @GET("alamat")
+    Call<AlamatResponse> getAlamatSearch(@Header("Authorization") String authorization,
+                                         @Query("relationship") int relation,
+                                         @Query("q") String search);
 
     @FormUrlEncoded
     @POST("alamat")
@@ -111,6 +116,9 @@ public interface Service {
     @DELETE("alamat/{id}")
     Call<AlamatDeleteResponse> deleteAlamat(@Header("Authorization") String authorization,
                                             @Path("id") int id);
+
+    @GET("/kunjungan-monitoring")
+    Call<MonitoringResponse> getMonitoring(@Header("Authorization") String authorization);
 
 
 }

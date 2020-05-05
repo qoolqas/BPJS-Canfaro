@@ -31,7 +31,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.alamat.AlamatAddActivity"></activity>
+        <activity android:name=".ui.kunjungan.KunjunganSearch"></activity>
+        <activity android:name=".ui.alamat.AlamatSearch" />
+        <activity android:name=".ui.alamat.AlamatAddActivity" />
         <activity android:name=".ui.alamat.AlamatActivity" />
         <activity android:name=".ui.LoginActivity">
             <intent-filter>
@@ -41,12 +43,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Laporan"
+            android:name=".ui.monitoring.Laporan"
             android:screenOrientation="landscape" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".ListView_BPJS" />
-        <activity android:name=".ListView_BPJS_Draft" />
-        <activity android:name=".InsertDataBPJS" />
+        <activity android:name=".ui.kunjungan.ListView_BPJS" />
+        <activity android:name=".ui.kunjungan.ListView_BPJS_Draft" />
+        <activity android:name=".ui.kunjungan.InsertDataBPJS" />
     </application>
 
 </manifest>

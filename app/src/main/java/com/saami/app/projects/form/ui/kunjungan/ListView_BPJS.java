@@ -1,13 +1,4 @@
-package com.saami.app.projects.form;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.saami.app.projects.form.ui.kunjungan;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -21,14 +12,23 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.saami.app.projects.form.HomeActivity;
+import com.saami.app.projects.form.R;
 import com.saami.app.projects.form.model.kunjungan.DataItem;
 import com.saami.app.projects.form.model.kunjungan.KunjunganGetResponse;
 import com.saami.app.projects.form.sqlite.DBDataSource;
-import com.saami.app.projects.form.sqlite.FormData;
 import com.saami.app.projects.form.ui.FixViewModel;
-import com.saami.app.projects.form.ui.SearchViewModel;
 
 import net.ozaydin.serkan.easy_csv.EasyCsv;
 import net.ozaydin.serkan.easy_csv.FileCallback;
@@ -38,7 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 public class ListView_BPJS extends AppCompatActivity {
 
@@ -55,7 +54,6 @@ public class ListView_BPJS extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
     private List<com.saami.app.projects.form.model.kunjungan.DataItem> getKunjungan = new ArrayList<>();
     private FixViewModel fixViewModel;
-    private SearchViewModel searchViewModel;
     RecyclerView listParkir;
     private ProgressBar pb;
 
@@ -68,7 +66,6 @@ public class ListView_BPJS extends AppCompatActivity {
         easyCsv.setSeparatorColumn("|");
         easyCsv.setSeperatorLine("`");
         fixViewModel = ViewModelProviders.of(this).get(FixViewModel.class);
-        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         pb = findViewById(R.id.pb);
         view();
         getData();
@@ -100,7 +97,9 @@ public class ListView_BPJS extends AppCompatActivity {
         cari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getDataByNama();
+                Intent intent = new Intent(ListView_BPJS.this, KunjunganSearch.class);
+                intent.putExtra("query", edtCarinama.getText().toString());
+                startActivity(intent);
             }
         });
 
@@ -170,7 +169,7 @@ public class ListView_BPJS extends AppCompatActivity {
         listParkir.setLayoutManager(mLayoutManager);
         listParkir.addItemDecoration(new DividerItemDecoration(this, 0));
         listParkir.setItemAnimator(new DefaultItemAnimator());
-        adapter = new adapterFormList(arraylistform, ListView_BPJS.this, ListView_BPJS.this, getKunjungan);
+        adapter = new adapterFormList(ListView_BPJS.this, ListView_BPJS.this, getKunjungan);
         listParkir.setAdapter(adapter);
     }
 
@@ -258,7 +257,7 @@ public class ListView_BPJS extends AppCompatActivity {
     }
 
 
-    private void getData() {
+    public void getData() {
 
 
         fixViewModel.liveGet().observe(this, new Observer<KunjunganGetResponse>() {
@@ -276,28 +275,6 @@ public class ListView_BPJS extends AppCompatActivity {
         });
     }
 
-//    private void getDataByNama() {
-//        String nameQuery = Objects.requireNonNull(edtCarinama.getText()).toString();
-//        searchViewModel.liveGet(nameQuery).observe(this, new Observer<KunjunganResponse>() {
-//            @Override
-//            public void onChanged(KunjunganResponse kunjunganGetResponse) {
-//                getKunjungan.clear();
-//                if (kunjunganGetResponse != null) {
-//                    getKunjungan.addAll(kunjunganGetResponse.getData());
-//                    listParkir.setAdapter(adapter);
-//                    adapter.notifyDataSetChanged();
-//                    pb.setVisibility(View.GONE);
-//
-//
-//                } else {
-//                    Toast.makeText(ListView_BPJS.this, edtCarinama.getText().toString() + " Tidak ditemukan", Toast.LENGTH_LONG).show();
-//                    getKunjungan.clear();
-//                    adapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
-//
-//
-//    }
+
 
 }

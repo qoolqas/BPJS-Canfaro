@@ -18,6 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
 import com.saami.app.projects.form.ui.alamat.AlamatActivity;
+import com.saami.app.projects.form.ui.kunjungan.InsertDataBPJS;
+import com.saami.app.projects.form.ui.kunjungan.ListView_BPJS;
+import com.saami.app.projects.form.ui.kunjungan.ListView_BPJS_Draft;
+import com.saami.app.projects.form.ui.monitoring.Laporan;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.ArrayList;
@@ -44,6 +48,9 @@ public class HomeActivity extends AppCompatActivity
             state = getIntent().getExtras().getString("state");
             if (state.equals("6")){
                 startActivity(new Intent(HomeActivity.this, ListView_BPJS.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+            }else if (state.equals("7")){
+                startActivity(new Intent(HomeActivity.this, AlamatActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         }catch (Exception e){
@@ -80,7 +87,7 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent i = new Intent(HomeActivity.this,ListView_BPJS_Draft.class);
+                Intent i = new Intent(HomeActivity.this, ListView_BPJS_Draft.class);
                 startActivity(i);
             }
         });
@@ -134,7 +141,7 @@ public class HomeActivity extends AppCompatActivity
                 spncab.setAdapter(adaptercab);
                 spncab.setTitle("");
 
-                TextView spnptugas = dialog.findViewById(R.id.spinner_petugas);
+                final TextView spnptugas = dialog.findViewById(R.id.spinner_petugas);
                 spnptugas.setText(getIntent().getStringExtra("firstName") + " " +getIntent().getStringExtra("lastName"));
 //                SearchableSpinner spnptugas = dialog.findViewById(R.id.spinner_petugas);
 //                ArrayAdapter adapterptugas = new ArrayAdapter(HomeActivity.this, android.R.layout.simple_spinner_item, kptugas);
@@ -156,6 +163,7 @@ public class HomeActivity extends AppCompatActivity
                     public void onClick(View view)
                     {
                         Intent i = new Intent(HomeActivity.this, Laporan.class);
+                        i.putExtra("name",spnptugas.getText().toString());
                         startActivity(i);
                     }
                 });
