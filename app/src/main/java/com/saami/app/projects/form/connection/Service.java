@@ -11,6 +11,8 @@ import com.saami.app.projects.form.model.kunjungan.delete.KunjunganDeleteRespons
 import com.saami.app.projects.form.model.kunjungan.edit.KunjunganEditResponse;
 import com.saami.app.projects.form.model.kunjungan.post.KunjunganPostResponse;
 import com.saami.app.projects.form.model.login.LoginResponse;
+import com.saami.app.projects.form.model.monitoring.KunjunganItem;
+import com.saami.app.projects.form.model.monitoring.MonitoringResponse;
 import com.saami.app.projects.form.model.post.Data;
 import com.saami.app.projects.form.model.post.PostResponse;
 import com.saami.app.projects.form.model.register.RegisterResponse;
@@ -57,11 +59,6 @@ public interface Service {
     Call<KunjunganGetResponse> getKunjungan(@Header("Authorization") String authorization,
                                             @Query("userId") String uid,
                                             @Query("relationship") int relation);
-
-    @GET("kunjungan/{id}")
-    Call<KunjunganGetResponse> getKunjunganId(@Header("Authorization") String authorization,
-                                              @Path("id") int id
-    );
 
     @GET("badan-usaha")
     Call<BadanUsahaSearchResponse> getKunjunganSearch(@Header("Authorization") String authorization,
@@ -119,6 +116,9 @@ public interface Service {
     @DELETE("alamat/{id}")
     Call<AlamatDeleteResponse> deleteAlamat(@Header("Authorization") String authorization,
                                             @Path("id") int id);
+
+    @GET("/kunjungan-monitoring")
+    Call<MonitoringResponse> getMonitoring(@Header("Authorization") String authorization);
 
 
 }

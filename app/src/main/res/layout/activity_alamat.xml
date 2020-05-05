@@ -46,6 +46,13 @@
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
             android:src="@mipmap/ico_refresh" />
+        <ImageView
+            android:id="@+id/filter"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@mipmap/ico_filter" />
     </LinearLayout>
 
 

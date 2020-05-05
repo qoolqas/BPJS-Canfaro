@@ -20,15 +20,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AlamatViewModel extends AndroidViewModel {
-    SharedPrefManager sharedPrefManager;
-    MutableLiveData<AlamatResponse> getAlamat;
+    private SharedPrefManager sharedPrefManager;
+    private MutableLiveData<AlamatResponse> getAlamat;
     public AlamatViewModel(@NonNull Application application) {
         super(application);
         sharedPrefManager = new SharedPrefManager(application);
     }
-    void loadAlamat() {
+    private void loadAlamat() {
         String token = sharedPrefManager.getSpToken();
-        String uid = sharedPrefManager.getSpUID();
         Service service = Client.getClient().create(Service.class);
         Call<AlamatResponse> call = service.getAlamat("Bearer " + token, 1);
         call.enqueue(new Callback<AlamatResponse>() {
@@ -53,7 +52,7 @@ public class AlamatViewModel extends AndroidViewModel {
         }
         return getAlamat;
     }
-    void loadAlamatSearch(String search) {
+    private void loadAlamatSearch(String search) {
         String token = sharedPrefManager.getSpToken();
         Service service = Client.getClient().create(Service.class);
         Call<AlamatResponse> call = service.getAlamatSearch("Bearer " + token, 1, search);
