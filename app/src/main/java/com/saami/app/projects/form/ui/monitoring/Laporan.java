@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.saami.app.projects.form.R;
 import com.saami.app.projects.form.model.monitoring.CurrentTarget;
-import com.saami.app.projects.form.model.monitoring.Data;
 import com.saami.app.projects.form.model.monitoring.KunjunganItem;
 import com.saami.app.projects.form.model.monitoring.MonitoringResponse;
 
@@ -28,6 +27,7 @@ public class Laporan extends AppCompatActivity {
     List<KunjunganItem> monitoring = new ArrayList<>();
     AdapterLaporan adapterLaporan;
     CurrentTarget data;
+    String waktu = "";
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -37,7 +37,7 @@ public class Laporan extends AppCompatActivity {
         petugas = findViewById(R.id.txtPetugas);
         petugas.setText("Petugas RO : "+getIntent().getStringExtra("name"));
         monitoringViewModel = ViewModelProviders.of(this).get(MonitoringViewModel.class);
-
+        waktu = getIntent().getStringExtra("waktu");
 
         view();
         getData();
@@ -52,7 +52,7 @@ public class Laporan extends AppCompatActivity {
         rv.setAdapter(adapterLaporan);
     }
     private void getData() {
-        monitoringViewModel.liveGet().observe(this, new Observer<MonitoringResponse>() {
+        monitoringViewModel.liveGet(waktu).observe(this, new Observer<MonitoringResponse>() {
             @Override
             public void onChanged(MonitoringResponse monitoringResponse) {
                 monitoring.clear();

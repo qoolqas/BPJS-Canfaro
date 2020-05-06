@@ -118,7 +118,8 @@ public interface Service {
                                             @Path("id") int id);
 
     @GET("/kunjungan-monitoring")
-    Call<MonitoringResponse> getMonitoring(@Header("Authorization") String authorization);
+    Call<MonitoringResponse> getMonitoring(@Header("Authorization") String authorization,
+                                           @Query("filterWaktu") String waktu);
 
 
 }

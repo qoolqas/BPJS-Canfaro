@@ -9,21 +9,6 @@ public class KunjunganItem{
 	@SerializedName("targetRecruitment")
 	private int targetRecruitment;
 
-	public int getTargetKunjungan() {
-		return targetKunjungan;
-	}
-
-	public void setTargetKunjungan(int targetKunjungan) {
-		this.targetKunjungan = targetKunjungan;
-	}
-
-	public int getTargetRecruitment() {
-		return targetRecruitment;
-	}
-
-	public void setTargetRecruitment(int targetRecruitment) {
-		this.targetRecruitment = targetRecruitment;
-	}
 
 	@SerializedName("createdAt")
 	private String createdAt;
@@ -56,6 +41,21 @@ public class KunjunganItem{
 
 	public int getTotalRecruitment(){
 		return totalRecruitment;
+	}
+	public int getTargetKunjungan() {
+		return targetKunjungan;
+	}
+
+	public void setTargetKunjungan(int targetKunjungan) {
+		this.targetKunjungan = targetKunjungan;
+	}
+
+	public int getTargetRecruitment() {
+		return targetRecruitment;
+	}
+
+	public void setTargetRecruitment(int targetRecruitment) {
+		this.targetRecruitment = targetRecruitment;
 	}
 
 	@Override

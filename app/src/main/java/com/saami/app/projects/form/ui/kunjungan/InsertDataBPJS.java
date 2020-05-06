@@ -635,14 +635,6 @@ public class InsertDataBPJS extends AppCompatActivity {
                             .apply(myOptions)
                             .load(selectedImage)
                             .into(photo);
-//                    String[] filePathColumn = {android.provider.MediaStore.Images.Media.DATA};
-//                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-//                    assert cursor != null;
-//                    cursor.moveToFirst();
-//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                    String mediaPath = cursor.getString(columnIndex);
-//                    cursor.close();
-//                    fileUri = Uri.parse(mediaPath);
 
                 }
                 break;
@@ -1310,7 +1302,6 @@ public class InsertDataBPJS extends AppCompatActivity {
         kunjungan.setTPP(tgl_peringatan_daftar.getText().toString());
         kunjungan.setTMPBU(tgl_max_bu.getText().toString());
         kunjungan.setTPD(tgl_serah_data.getText().toString());
-//        kunjungan.setTtdImage(BitMapToString(mSignaturePad2.getSignatureBitmap()));
         kunjungan.setTtdImage(dataTtd);
         kunjungan.setImage(dataPhoto);
         kunjungan.setNote(edtNotes.getText().toString());
@@ -1320,7 +1311,7 @@ public class InsertDataBPJS extends AppCompatActivity {
         if (valueNotif.equals("Surat Konfirmasi")) {
             kunjungan.setReminder(1);
         } else {
-            kunjungan.setReminder(0);
+            kunjungan.setReminder(1);
         }
         kunjungan.setAlasan(edtalasan.getText().toString());
         kunjungan.setTindakLanjut(edttindaklanjut.getText().toString());

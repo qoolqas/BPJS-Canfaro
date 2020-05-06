@@ -28,10 +28,10 @@ public class MonitoringViewModel extends AndroidViewModel {
         super(application);
         sharedPrefManager = new SharedPrefManager(application);
     }
-    void loadAlamat() {
+    void loadAlamat(String waktu) {
         String token = sharedPrefManager.getSpToken();
         Service service = Client.getClient().create(Service.class);
-        Call<MonitoringResponse> call = service.getMonitoring("Bearer " + token);
+        Call<MonitoringResponse> call = service.getMonitoring("Bearer " + token, waktu);
         call.enqueue(new Callback<MonitoringResponse>() {
 
             @Override
@@ -47,10 +47,10 @@ public class MonitoringViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<MonitoringResponse> liveGet() {
+    public LiveData<MonitoringResponse> liveGet(String waktu) {
         if (getAlamat == null) {
             getAlamat = new MutableLiveData<>();
-            loadAlamat();
+            loadAlamat(waktu);
         }
         return getAlamat;
     }
