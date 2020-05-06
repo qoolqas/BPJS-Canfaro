@@ -23,14 +23,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Laporan extends AppCompatActivity {
-    TextView petugas;
+    TextView petugas, txttotalKunjungan, txttotalRekruitmen;
     RecyclerView rv;
     MonitoringViewModel monitoringViewModel;
     List<KunjunganItem> monitoring = new ArrayList<>();
     AdapterLaporan adapterLaporan;
     CurrentTarget data;
     String waktu = "";
+
     private ProgressBar pb;
+    int tKunjungan = 0;
+    int tRekruitmen = 0;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -38,7 +41,9 @@ public class Laporan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_laporan);
         petugas = findViewById(R.id.txtPetugas);
-        petugas.setText("Petugas RO : "+getIntent().getStringExtra("name"));
+        txttotalKunjungan = findViewById(R.id.totalKunjungan);
+        txttotalRekruitmen = findViewById(R.id.totalRekruitmen);
+        petugas.setText("Petugas RO : " + getIntent().getStringExtra("name"));
         monitoringViewModel = ViewModelProviders.of(this).get(MonitoringViewModel.class);
         waktu = getIntent().getStringExtra("waktu");
         pb = findViewById(R.id.pb);
@@ -47,17 +52,20 @@ public class Laporan extends AppCompatActivity {
         view();
         getData();
     }
+
     private void view() {
         rv = findViewById(R.id.rv);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Laporan.this.getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
         rv.addItemDecoration(new DividerItemDecoration(this, 0));
         rv.setItemAnimator(new DefaultItemAnimator());
-        adapterLaporan = new AdapterLaporan(monitoring, this, this,data );
+        adapterLaporan = new AdapterLaporan(monitoring, this, this, data);
         rv.setAdapter(adapterLaporan);
     }
+
     private void getData() {
         monitoringViewModel.liveGet(waktu).observe(this, new Observer<MonitoringResponse>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(MonitoringResponse monitoringResponse) {
                 monitoring.clear();
@@ -65,6 +73,14 @@ public class Laporan extends AppCompatActivity {
                 rv.setAdapter(adapterLaporan);
                 adapterLaporan.notifyDataSetChanged();
                 pb.setVisibility(View.GONE);
+
+
+                for (int i = 0; i < monitoring.size(); i++) {
+                    tKunjungan = Integer.parseInt(String.valueOf(monitoring.get(i).getTotalKunjungan()));
+                    tRekruitmen = Integer.parseInt(String.valueOf(monitoring.get(i).getTotalRecruitment()));
+                }
+                txttotalRekruitmen.setText("Total Rekruitmen : " + tRekruitmen);
+                txttotalKunjungan.setText("Total Kunjungan : " + tKunjungan);
             }
         });
     }

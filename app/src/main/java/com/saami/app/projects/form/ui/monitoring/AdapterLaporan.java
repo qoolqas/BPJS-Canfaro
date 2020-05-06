@@ -61,6 +61,7 @@ public class AdapterLaporan extends RecyclerView.Adapter<AdapterLaporan.ViewHold
         holder.kunjungan.setText(kunjunganD + " %");
         holder.rekruitmen.setText(rekruitmenD + " %");
 
+
     }
 
     @Override
