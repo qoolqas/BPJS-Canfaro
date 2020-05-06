@@ -2,6 +2,8 @@ package com.saami.app.projects.form.ui.monitoring;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,7 @@ public class Laporan extends AppCompatActivity {
     AdapterLaporan adapterLaporan;
     CurrentTarget data;
     String waktu = "";
+    private ProgressBar pb;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -38,6 +41,8 @@ public class Laporan extends AppCompatActivity {
         petugas.setText("Petugas RO : "+getIntent().getStringExtra("name"));
         monitoringViewModel = ViewModelProviders.of(this).get(MonitoringViewModel.class);
         waktu = getIntent().getStringExtra("waktu");
+        pb = findViewById(R.id.pb);
+        pb.setVisibility(View.VISIBLE);
 
         view();
         getData();
@@ -59,6 +64,7 @@ public class Laporan extends AppCompatActivity {
                 monitoring.addAll(monitoringResponse.getData().getKunjungan());
                 rv.setAdapter(adapterLaporan);
                 adapterLaporan.notifyDataSetChanged();
+                pb.setVisibility(View.GONE);
             }
         });
     }
