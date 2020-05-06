@@ -198,19 +198,94 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/totalKunjungan"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="yayaya" />
-        <TextView
-            android:id="@+id/totalRekruitmen"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="yayaya" />
+            android:background="#e3e6e4"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#000"
+                android:gravity="center"
+                android:lines="1"
+                android:paddingHorizontal="5dp"
+                android:text="Total" />
+
+            <TextView
+                android:id="@+id/txtTargetKunjungan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lines="1"
+                android:paddingHorizontal="5dp"
+                android:text="20" />
+
+            <TextView
+                android:id="@+id/txtTargetRekruitmen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#000"
+                android:lines="1"
+                android:paddingHorizontal="5dp"
+                android:text="20" />
+
+            <TextView
+                android:id="@+id/totalKunjungan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#000"
+                android:lines="1"
+                android:paddingHorizontal="5dp"
+                android:text="10" />
+
+            <TextView
+                android:id="@+id/totalRekruitmen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="#000"
+                android:paddingHorizontal="5dp"
+                android:text="10" />
+
+            <TextView
+                android:id="@+id/txtKunjunganA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="#000"
+                android:paddingHorizontal="5dp"
+                android:text="@string/average" />
+
+            <TextView
+                android:id="@+id/txtRekruitmenA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="#000"
+                android:paddingHorizontal="5dp"
+                android:text="@string/average" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
+
 
 </LinearLayout>

@@ -47,15 +47,18 @@ public class AdapterLaporan extends RecyclerView.Adapter<AdapterLaporan.ViewHold
     @Override
     public void onBindViewHolder(@NonNull AdapterLaporan.ViewHolder holder, int position) {
         holder.nomor.setText(String.valueOf(position+1));
-        holder.targetKunjungan.setText(String.valueOf(monitoring.get(position).getTargetKunjungan()));
-        holder.targetRekruitmen.setText(String.valueOf(monitoring.get(position).getTargetRecruitment()));
+        //holder.targetKunjungan.setText(String.valueOf(monitoring.get(position).getTargetKunjungan()));
+        //holder.targetRekruitmen.setText(String.valueOf(monitoring.get(position).getTargetRecruitment()));
         holder.realisasiKunjungan.setText(String.valueOf(monitoring.get(position).getTotalKunjungan()));
         holder.realisasiRekruitmen.setText(String.valueOf(monitoring.get(position).getTotalRecruitment()));
+
+        holder.targetKunjungan.setText(String.valueOf(100));
+        holder.targetRekruitmen.setText(String.valueOf(100));
         //====================
-        Double Tkunjungan = Double.parseDouble(String.valueOf(holder.targetKunjungan.getText()));
-        Double Trekruitmen = Double.parseDouble(String.valueOf(holder.targetRekruitmen.getText()));
-        Double Rkunjungan = Double.parseDouble(String.valueOf(holder.realisasiKunjungan.getText()));
-        Double Rrekruitmen = Double.parseDouble(String.valueOf(holder.realisasiRekruitmen.getText()));
+        double Tkunjungan = Integer.parseInt(String.valueOf(holder.targetKunjungan.getText()));
+        double Trekruitmen = Integer.parseInt(String.valueOf(holder.targetRekruitmen.getText()));
+        double Rkunjungan = Integer.parseInt(String.valueOf(holder.realisasiKunjungan.getText()));
+        double Rrekruitmen = Integer.parseInt(String.valueOf(holder.realisasiRekruitmen.getText()));
         double kunjunganD = Rkunjungan/Tkunjungan * 100;
         double rekruitmenD = Rrekruitmen/Trekruitmen * 100;
         holder.kunjungan.setText(kunjunganD + " %");

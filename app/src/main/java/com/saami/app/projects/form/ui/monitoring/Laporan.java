@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Laporan extends AppCompatActivity {
-    TextView petugas, txttotalKunjungan, txttotalRekruitmen;
+    TextView petugas, txttotalKunjungan, txttotalRekruitmen, txttargetKunjungan, txttargetRekruitmen,txtKunjungan, txtRekruitmen;
     RecyclerView rv;
     MonitoringViewModel monitoringViewModel;
     List<KunjunganItem> monitoring = new ArrayList<>();
@@ -34,6 +34,9 @@ public class Laporan extends AppCompatActivity {
     private ProgressBar pb;
     int tKunjungan = 0;
     int tRekruitmen = 0;
+    int targetKunjungan = 0;
+    int targetRekruitmen = 0;
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -43,9 +46,14 @@ public class Laporan extends AppCompatActivity {
         petugas = findViewById(R.id.txtPetugas);
         txttotalKunjungan = findViewById(R.id.totalKunjungan);
         txttotalRekruitmen = findViewById(R.id.totalRekruitmen);
+        txttargetKunjungan = findViewById(R.id.txtTargetKunjungan);
+        txttargetRekruitmen = findViewById(R.id.txtTargetRekruitmen);
+        txtKunjungan = findViewById(R.id.txtKunjunganA);
+        txtRekruitmen = findViewById(R.id.txtRekruitmenA);
+
         petugas.setText("Petugas RO : " + getIntent().getStringExtra("name"));
         monitoringViewModel = ViewModelProviders.of(this).get(MonitoringViewModel.class);
-        waktu = getIntent().getStringExtra("waktu");
+//        waktu = getIntent().getStringExtra("waktu");
         pb = findViewById(R.id.pb);
         pb.setVisibility(View.VISIBLE);
 
@@ -76,11 +84,21 @@ public class Laporan extends AppCompatActivity {
 
 
                 for (int i = 0; i < monitoring.size(); i++) {
-                    tKunjungan = Integer.parseInt(String.valueOf(monitoring.get(i).getTotalKunjungan()));
-                    tRekruitmen = Integer.parseInt(String.valueOf(monitoring.get(i).getTotalRecruitment()));
+                    tKunjungan += monitoring.get(i).getTotalKunjungan();
+                    tRekruitmen += monitoring.get(i).getTotalRecruitment();
+                    targetKunjungan += monitoring.get(i).getTargetKunjungan();
+                    targetRekruitmen += monitoring.get(i).getTargetRecruitment();
+
+
                 }
-                txttotalRekruitmen.setText("Total Rekruitmen : " + tRekruitmen);
-                txttotalKunjungan.setText("Total Kunjungan : " + tKunjungan);
+                double persenKunjungan = tKunjungan/monitoring.size();
+                double persenRekruitmen = tRekruitmen/monitoring.size();
+                txttotalRekruitmen.setText(String.valueOf(tRekruitmen));
+                txttotalKunjungan.setText(String.valueOf(tKunjungan));
+                txttargetKunjungan.setText(String.valueOf(targetKunjungan));
+                txttargetRekruitmen.setText(String.valueOf(targetRekruitmen));
+                txtKunjungan.setText(persenKunjungan + " %");
+                txtRekruitmen.setText(persenRekruitmen + " %");
             }
         });
     }
