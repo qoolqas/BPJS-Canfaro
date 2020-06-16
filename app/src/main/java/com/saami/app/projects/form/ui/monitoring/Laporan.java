@@ -88,8 +88,6 @@ public class Laporan extends AppCompatActivity {
                     tRekruitmen += monitoring.get(i).getTotalRecruitment();
                     targetKunjungan += monitoring.get(i).getTargetKunjungan();
                     targetRekruitmen += monitoring.get(i).getTargetRecruitment();
-
-
                 }
                 double persenKunjungan = tKunjungan/monitoring.size();
                 double persenRekruitmen = tRekruitmen/monitoring.size();

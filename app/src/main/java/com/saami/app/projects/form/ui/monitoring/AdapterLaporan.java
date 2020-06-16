@@ -47,13 +47,10 @@ public class AdapterLaporan extends RecyclerView.Adapter<AdapterLaporan.ViewHold
     @Override
     public void onBindViewHolder(@NonNull AdapterLaporan.ViewHolder holder, int position) {
         holder.nomor.setText(String.valueOf(position+1));
-        //holder.targetKunjungan.setText(String.valueOf(monitoring.get(position).getTargetKunjungan()));
-        //holder.targetRekruitmen.setText(String.valueOf(monitoring.get(position).getTargetRecruitment()));
+        holder.targetKunjungan.setText(String.valueOf(monitoring.get(position).getTargetKunjungan()));
+        holder.targetRekruitmen.setText(String.valueOf(monitoring.get(position).getTargetRecruitment()));
         holder.realisasiKunjungan.setText(String.valueOf(monitoring.get(position).getTotalKunjungan()));
         holder.realisasiRekruitmen.setText(String.valueOf(monitoring.get(position).getTotalRecruitment()));
-
-        holder.targetKunjungan.setText(String.valueOf(100));
-        holder.targetRekruitmen.setText(String.valueOf(100));
         //====================
         double Tkunjungan = Integer.parseInt(String.valueOf(holder.targetKunjungan.getText()));
         double Trekruitmen = Integer.parseInt(String.valueOf(holder.targetRekruitmen.getText()));

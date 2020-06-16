@@ -761,7 +761,6 @@ public class InsertDataBPJS extends AppCompatActivity {
         tgl_peringatan_daftar.setText(dataItem.getTPP());
         tgl_max_bu.setText(dataItem.getTMPBU());
         tgl_serah_data.setText(dataItem.getTPD());
-//            mSignaturePad2.setSignatureBitmap(StringToBitMap(dataItem.getTtdImage().getUrl()));
         edtNotes.setText(dataItem.getNote());
         if (dataItem.isReminder()) {
             rGroupNotifikasi.check(R.id.rd_notifikasi_ya);
@@ -805,7 +804,6 @@ public class InsertDataBPJS extends AppCompatActivity {
         }
 
         edtTambahan.setText(dataItem.getBadanUsaha().getKeterangan());
-//            mSignaturePad.setSignatureBitmap(StringToBitMap(dataItem.getBadanUsaha().getTtdImage().getUrl()));
 
         edtPsNama.setText(dataItem.getContactBadanUsaha().getName());
         edtPsJabatan.setText(dataItem.getContactBadanUsaha().getJabatan());
@@ -938,7 +936,6 @@ public class InsertDataBPJS extends AppCompatActivity {
         tgl_peringatan_daftar.setText(databu.getKunjungan().getTPP());
         tgl_max_bu.setText(databu.getKunjungan().getTMPBU());
         tgl_serah_data.setText(databu.getKunjungan().getTPD());
-        //mSignaturePad2.setSignatureBitmap(StringToBitMap(databu.getTtdImage().getUrl()));
         edtNotes.setText(databu.getKunjungan().getNote());
         if (databu.getKunjungan().isReminder()) {
             rGroupNotifikasi.check(R.id.rd_notifikasi_ya);
