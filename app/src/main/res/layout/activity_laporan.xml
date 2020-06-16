@@ -6,100 +6,105 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.monitoring.Laporan">
+
     <TextView
         android:id="@+id/txtPetugas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:text="Petugas RO"
         android:textColor="#000"
-        android:textSize="16sp"
-        android:layout_margin="8dp"/>
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:background="@color/colorHardBlue"
+            android:gravity="left|center"
+            android:lines="2"
+            android:paddingHorizontal="5dp"
             android:text="Nomor"
-            android:gravity="left|center"
-            android:paddingHorizontal="5dp"
-            android:textSize="12dp"
             android:textColor="@android:color/white"
-            android:lines="2"
-            android:background="@color/colorHardBlue"/>
+            android:textSize="12dp" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:background="@color/colorSoftBlue"
+            android:gravity="left|center"
+            android:lines="2"
+            android:paddingHorizontal="5dp"
             android:text="Target Kunjungan"
-            android:gravity="left|center"
-            android:paddingHorizontal="5dp"
-            android:textSize="12dp"
             android:textColor="@android:color/white"
-            android:lines="2"
-            android:background="@color/colorSoftBlue"/>
+            android:textSize="12dp" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:gravity="left|center"
             android:lines="2"
+            android:paddingHorizontal="5dp"
             android:text="Target Rekrutmen"
-            android:gravity="left|center"
-            android:paddingHorizontal="5dp"
-            android:textSize="12dp"
             android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"/>
+            android:textSize="12dp" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:background="@color/colorWhiteBlue"
+            android:gravity="left|center"
             android:lines="2"
-            android:textSize="10dp"
+            android:paddingHorizontal="5dp"
             android:text="Realisasi Kunjungan"
-            android:gravity="left|center"
-            android:paddingHorizontal="5dp"
             android:textColor="@android:color/white"
-            android:background="@color/colorWhiteBlue"/>
+            android:textSize="10dp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:background="@color/colorHardBlue"
+            android:gravity="left|center"
             android:lines="2"
-            android:textSize="10sp"
+            android:paddingHorizontal="5dp"
             android:text="Realisasi Rekrutmen"
-            android:gravity="left|center"
-            android:paddingHorizontal="5dp"
             android:textColor="@android:color/white"
-            android:background="@color/colorHardBlue"/>
+            android:textSize="10sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="0.8"
+            android:background="@color/colorPurple"
+            android:gravity="left|center"
+            android:lines="2"
+            android:paddingHorizontal="5dp"
             android:text="Kunjungan"
-            android:gravity="left|center"
-            android:paddingHorizontal="5dp"
-            android:textSize="12dp"
             android:textColor="@android:color/white"
-            android:lines="2"
-            android:background="@color/colorPurple"/>
+            android:textSize="12dp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="0.8"
-            android:lines="2"
-            android:text="Rekrutmen"
-            android:textSize="12dp"
+            android:background="@color/colorSoftred"
             android:gravity="left|center"
+            android:lines="2"
             android:paddingHorizontal="5dp"
+            android:text="Rekrutmen"
             android:textColor="@android:color/white"
-            android:background="@color/colorSoftred"/>
+            android:textSize="12dp" />
 
 
     </LinearLayout>
@@ -114,66 +119,173 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="20"
             android:gravity="center"
+            android:lines="1"
             android:paddingHorizontal="5dp"
-            android:lines="1"/>
+            android:text="20" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="20"
             android:gravity="center"
+            android:lines="1"
             android:paddingHorizontal="5dp"
-            android:lines="1"/>
+            android:text="20" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="10"
             android:gravity="center"
+            android:lines="1"
             android:paddingHorizontal="5dp"
-            android:lines="1"/>
+            android:text="10" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="10"
             android:gravity="center"
+            android:lines="1"
             android:paddingHorizontal="5dp"
-            android:lines="1"/>
+            android:text="10" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
-            android:text="50%"
             android:gravity="center"
+            android:lines="1"
             android:paddingHorizontal="5dp"
-            android:lines="1"/>
+            android:text="50%" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
-            android:text="50%"
             android:gravity="center"
+            android:lines="1"
             android:paddingHorizontal="5dp"
-            android:lines="1"/>
+            android:text="50%" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/pb"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv"
                 android:layout_width="match_parent"
-                tools:listitem="@layout/custom_listview_laporan"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/custom_listview_laporan" />
         </LinearLayout>
 
+
+
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#e3e6e4"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#000"
+                android:gravity="center"
+                android:lines="1"
+                android:paddingHorizontal="5dp"
+                android:text="Total" />
+
+            <TextView
+                android:id="@+id/txtTargetKunjungan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lines="1"
+                android:paddingHorizontal="5dp"
+                android:text="20" />
+
+            <TextView
+                android:id="@+id/txtTargetRekruitmen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#000"
+                android:lines="1"
+                android:paddingHorizontal="5dp"
+                android:text="20" />
+
+            <TextView
+                android:id="@+id/totalKunjungan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#000"
+                android:lines="1"
+                android:paddingHorizontal="5dp"
+                android:text="10" />
+
+            <TextView
+                android:id="@+id/totalRekruitmen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="#000"
+                android:paddingHorizontal="5dp"
+                android:text="10" />
+
+            <TextView
+                android:id="@+id/txtKunjunganA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="#000"
+                android:paddingHorizontal="5dp"
+                android:text="@string/average" />
+
+            <TextView
+                android:id="@+id/txtRekruitmenA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="#000"
+                android:paddingHorizontal="5dp"
+                android:text="@string/average" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

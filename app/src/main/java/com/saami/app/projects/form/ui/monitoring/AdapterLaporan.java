@@ -52,14 +52,15 @@ public class AdapterLaporan extends RecyclerView.Adapter<AdapterLaporan.ViewHold
         holder.realisasiKunjungan.setText(String.valueOf(monitoring.get(position).getTotalKunjungan()));
         holder.realisasiRekruitmen.setText(String.valueOf(monitoring.get(position).getTotalRecruitment()));
         //====================
-        Double Tkunjungan = Double.parseDouble(String.valueOf(holder.targetKunjungan.getText()));
-        Double Trekruitmen = Double.parseDouble(String.valueOf(holder.targetRekruitmen.getText()));
-        Double Rkunjungan = Double.parseDouble(String.valueOf(holder.realisasiKunjungan.getText()));
-        Double Rrekruitmen = Double.parseDouble(String.valueOf(holder.realisasiRekruitmen.getText()));
+        double Tkunjungan = Integer.parseInt(String.valueOf(holder.targetKunjungan.getText()));
+        double Trekruitmen = Integer.parseInt(String.valueOf(holder.targetRekruitmen.getText()));
+        double Rkunjungan = Integer.parseInt(String.valueOf(holder.realisasiKunjungan.getText()));
+        double Rrekruitmen = Integer.parseInt(String.valueOf(holder.realisasiRekruitmen.getText()));
         double kunjunganD = Rkunjungan/Tkunjungan * 100;
         double rekruitmenD = Rrekruitmen/Trekruitmen * 100;
         holder.kunjungan.setText(kunjunganD + " %");
         holder.rekruitmen.setText(rekruitmenD + " %");
+
 
     }
 
